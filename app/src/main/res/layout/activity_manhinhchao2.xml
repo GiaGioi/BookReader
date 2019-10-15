@@ -13,7 +13,7 @@
         android:layout_marginTop="50dp"
         android:layout_gravity="center"
         android:textColor="@color/color1"
-        android:text="Earn Points To Buy \n \t\t\t\t\t\t\t\t\tBooks"
+        android:text="Read Books for free"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
@@ -23,12 +23,12 @@
         android:layout_marginTop="10dp"
         android:layout_gravity="center"
         android:textColor="@color/color1"
-        android:text="Can earn points easily without charge"
+        android:text="Save some money"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
     <ImageView
         android:id="@+id/imageView"
-        android:src="@drawable/icon_slide"
+        android:src="@drawable/chao2"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_width="300dp"
