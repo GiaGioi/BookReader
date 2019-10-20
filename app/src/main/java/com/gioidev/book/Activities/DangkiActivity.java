@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,7 +23,7 @@ public class DangkiActivity extends AppCompatActivity {
     private EditText signuppassword;
     private EditText requespassword;
     private Button btnLogin;
-
+    private ProgressBar progressBar;
     private FirebaseAuth auth;
 
     @Override
@@ -34,6 +35,7 @@ public class DangkiActivity extends AppCompatActivity {
         signuppassword = (EditText) findViewById(R.id.signuppassword);
         requespassword = (EditText) findViewById(R.id.requespassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     public void Signup(View view) {
@@ -59,7 +61,7 @@ public class DangkiActivity extends AppCompatActivity {
 //                    + task.isSuccessful()
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Toast.makeText(DangkiActivity.this, "Đăng kí thành công" , Toast.LENGTH_SHORT).show();
-//                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.

@@ -3,7 +3,9 @@ package com.gioidev.book.Activities;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,8 +20,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private EditText inputemail;
 
-
-
+    private ProgressBar progressBar;
 
 
     @Override
@@ -28,6 +29,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         setContentView(R.layout.activity_reset_password);
         inputemail = (EditText) findViewById(R.id.inputemail);
+        progressBar = findViewById(R.id.progressBar);
     }
 
     public void reset(View view) {
@@ -38,7 +40,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
             return;
         }
 
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         auth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -49,7 +51,7 @@ public class ResetPasswordActivity extends AppCompatActivity {
                             Toast.makeText(ResetPasswordActivity.this, "Thất bại trong việc gửi Email!", Toast.LENGTH_SHORT).show();
                         }
 
-//                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                     }
                 });
     }

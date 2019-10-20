@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         btnSignup = (TextView) findViewById(R.id.btnSignup);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnReset = (TextView) findViewById(R.id.btnreset);
-
+        progressBar = findViewById(R.id.progressBar);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = auth.getCurrentUser();
+        progressBar.setVisibility(View.GONE);
 
     }
 
@@ -77,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-//        progressBar.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.VISIBLE);
         auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
                         // If sign in fails, display a message to the user. If sign in succeeds
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
-//                        progressBar.setVisibility(View.GONE);
+                        progressBar.setVisibility(View.GONE);
                         if (!task.isSuccessful()) {
                             // there was an error
                             if (password.length() < 6) {
