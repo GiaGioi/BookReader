@@ -6,4 +6,6 @@
     <string name="khosach">Kho sách</string>
     <string name="tusach">Tủ sách</string>
     <string name="canhan">Cá nhân</string>
+    <string name="minimum_password">Mật khẩu phải lớn hơn 6 kí tự</string>
+    <string name="auth_failed">Đăng nhập thất bại</string>
 </resources>

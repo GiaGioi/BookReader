@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".Activities.LoginActivity">
+
+<TextView
+    android:textColor="#000000"
+    android:textStyle="bold"
+    android:layout_marginTop="40dp"
+    android:layout_gravity="center_horizontal"
+    android:textSize="30dp"
+    android:text="Đăng nhập"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/inputemail"
+        android:hint="Tên đăng nhập/Email"
+        android:layout_width="350dp"
+        android:background="@drawable/bgbtn1"
+        android:drawableLeft="@drawable/iconfinder_username"
+        android:layout_marginTop="100dp"
+        android:layout_gravity="center"
+        android:layout_height="50dp"/>
+
+    <EditText
+        android:id="@+id/inputpassword"
+        android:background="@drawable/bgbtn1"
+        android:layout_width="351dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:hint="Mật khẩu"
+       android:drawableLeft="@drawable/iconfinder_password"
+         />
+    <LinearLayout
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/btnSignup"
+            android:textColor="#212121"
+            android:layout_marginLeft="40dp"
+            android:textSize="19dp"
+            android:text="Đăng kí ngay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/btnreset"
+            android:textColor="#212121"
+            android:layout_marginLeft="95dp"
+            android:textSize="19dp"
+            android:text="Quên mật khẩu?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <Button
+        android:onClick="Login"
+        android:id="@+id/btnLogin"
+        android:textAllCaps="false"
+        android:textSize="17sp"
+        android:textColor="@color/color2"
+        android:text="Đăng nhập"
+        android:layout_marginTop="60dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bgbtn"
+        android:layout_width="350dp"
+        android:layout_height="50dp"/>
+
+    <LinearLayout
+        android:layout_marginTop="30dp"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="horizontal">
+
+        <View
+
+            android:layout_width="80dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#000000" />
+
+        <TextView
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Hoặc"
+            android:textSize="25dp" />
+
+        <View
+            android:layout_width="80dp"
+            android:layout_height="4dp"
+            android:layout_gravity="center_horizontal"
+            android:background="#000000" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageButton
+            android:layout_marginLeft="120dp"
+            android:src="@drawable/iconfinder_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <ImageButton
+            android:layout_marginLeft="80dp"
+            android:src="@drawable/iconfinder_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

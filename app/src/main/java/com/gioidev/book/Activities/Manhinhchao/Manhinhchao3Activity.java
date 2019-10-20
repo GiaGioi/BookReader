@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.gioidev.book.Activities.HomeActivity;
+import com.gioidev.book.Activities.LoginActivity;
 import com.gioidev.book.R;
 
 public class Manhinhchao3Activity extends AppCompatActivity {
@@ -42,7 +43,7 @@ public class Manhinhchao3Activity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(Manhinhchao3Activity.this, HomeActivity.class));
+                startActivity(new Intent(Manhinhchao3Activity.this, LoginActivity.class));
             }
         });
     }
