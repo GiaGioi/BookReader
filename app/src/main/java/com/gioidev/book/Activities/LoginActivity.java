@@ -34,6 +34,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         auth = FirebaseAuth.getInstance();
+        if (auth.getCurrentUser() != null) {
+            startActivity(new Intent(LoginActivity.this, HomeActivity.class));
+            finish();
+        }
         inputEmail = (EditText) findViewById(R.id.inputemail);
         inputPassword = (EditText) findViewById(R.id.inputpassword);
         btnSignup = (TextView) findViewById(R.id.btnSignup);
@@ -61,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = auth.getCurrentUser();
-        progressBar.setVisibility(View.GONE);
+
 
     }
 
