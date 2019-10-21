@@ -24,7 +24,7 @@
         android:layout_gravity="center"
         android:layout_height="50dp"/>
     <EditText
-        android:id="@+id/requespassword"
+        android:id="@+id/confirmspassword"
         android:hint="Nhập lại mật khẩu(*)"
         android:layout_width="350dp"
         android:background="@drawable/bgbtn1"
@@ -44,6 +44,7 @@
         android:layout_width="350dp"
         android:layout_height="50dp"/>
     <TextView
+        android:onClick="nextlogin"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
         android:textSize="18dp"

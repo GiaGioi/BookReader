@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -14,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.gioidev.book.R;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -27,8 +30,13 @@ public class LoginActivity extends AppCompatActivity {
     private TextView btnSignup, btnReset;
     private ProgressBar progressBar;
     public static final String TITLE = "title";
+    static final int GOOGLE_SIGN_IN = 123;
     public static final String DESCRIPTION = "description";
     public static final String BUNDLE = "bundel";
+    private ImageView logingoogle;
+    private ImageView loginfacebook;
+//    GoogleSignInC mGoogleSignInClient;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +52,8 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnReset = (TextView) findViewById(R.id.btnreset);
         progressBar = findViewById(R.id.progressBar);
+        logingoogle = (ImageView) findViewById(R.id.logingoogle);
+        loginfacebook =  (ImageView) findViewById(R.id.loginfacebook);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +68,11 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
     }
     @Override
     public void onStart() {

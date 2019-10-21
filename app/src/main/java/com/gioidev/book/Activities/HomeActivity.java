@@ -17,14 +17,15 @@ import com.gioidev.book.Activities.Manhinhchao.Manhinhchao3Activity;
 import com.gioidev.book.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 
 public class HomeActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
-
+    private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        auth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -80,6 +81,10 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
         } else if (id == R.id.nav_collections) {
         } else if (id == R.id.nav_favorite) {
         } else if (id == R.id.nav_sign_out) {
+            auth.signOut();
+            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -115,12 +115,14 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/loginfacebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="100dp"
             android:src="@drawable/iconfinder_facebook" />
 
         <ImageView
+            android:id="@+id/logingoogle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="100dp"
