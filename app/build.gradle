@@ -43,4 +43,5 @@ dependencies {
     implementation 'com.github.clans:fab:1.6.4'
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0-beta05'
+    implementation 'com.mikhaellopez:circularimageview:4.0.2'
 }

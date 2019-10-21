@@ -3,6 +3,7 @@
 
     <item
         android:id="@+id/navigation_home"
+        android:icon="@drawable/iconfinder_home"
         android:title="@string/khosach" />
 
     <item

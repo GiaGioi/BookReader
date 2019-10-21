@@ -31,6 +31,7 @@
         android:foreground="?attr/selectableItemBackground"
         app:itemIconTint="@android:color/black"
         app:itemTextColor="@android:color/black"
+        app:itemIconSize="30dp"
         app:menu="@menu/navigation" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
