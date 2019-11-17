@@ -21,15 +21,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
-import com.facebook.AccessToken;
-import com.facebook.login.LoginManager;
-import com.gioidev.book.Activities.Manhinhchao.Manhinhchao3Activity;
+import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
+import com.gioidev.book.Fragment.Fragment_Home;
+import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -66,7 +64,7 @@ import es.dmoral.toasty.Toasty;
 
 public class HomeActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
     private FirebaseAuth auth;
-    private GoogleSignInClient mGoogleSignInClient;
+//    private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
 
     String TAG = "TAG";
