@@ -102,11 +102,12 @@ public class DangkiActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            FirebaseUser user = auth.getCurrentUser();
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(DangkiActivity.this, "Đăng kí thành công, vui lòng đăng nhập!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DangkiActivity.this, "Đăng kí thành công!",Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(DangkiActivity.this,LoginActivity.class);
+                            FirebaseUser user = auth.getCurrentUser();
                             startActivity(intent);
+                            finish();
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -114,7 +115,7 @@ public class DangkiActivity extends AppCompatActivity {
                                     Toast.LENGTH_SHORT).show();
                         }
 
-                        // ...
+                        finish();
                     }
                 });
     }
@@ -122,5 +123,6 @@ public class DangkiActivity extends AppCompatActivity {
     public void nextlogin(View view) {
         Intent intent = new Intent(DangkiActivity.this,LoginActivity.class);
         startActivity(intent);
+        finish();
     }
 }

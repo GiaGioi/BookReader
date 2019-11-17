@@ -6,31 +6,58 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Activities.DangkiActivity">
-
-    <EditText
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_marginTop="100dp"
+    android:layout_width="match_parent"
+    app:errorEnabled="true"
+    android:layout_height="wrap_content">
+    <com.google.android.material.textfield.TextInputEditText
         android:id="@+id/signupemail"
         android:hint="Email(*)"
+        android:paddingLeft="10dp"
         android:layout_width="350dp"
+        android:inputType="textEmailAddress"
         android:background="@drawable/bgbtn1"
         android:layout_marginTop="100dp"
         android:layout_gravity="center"
         android:layout_height="50dp"/>
-    <EditText
-        android:id="@+id/signuppassword"
-        android:hint="Mật khẩu(*)"
-        android:layout_width="350dp"
-        android:background="@drawable/bgbtn1"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
-        android:layout_height="50dp"/>
-    <EditText
-        android:id="@+id/confirmspassword"
-        android:hint="Nhập lại mật khẩu(*)"
-        android:layout_width="350dp"
-        android:background="@drawable/bgbtn1"
-        android:layout_marginTop="30dp"
-        android:layout_gravity="center"
-        android:layout_height="50dp"/>
+
+</com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        app:errorEnabled="true"
+        app:passwordToggleEnabled="true"
+        android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/signuppassword"
+            android:hint="Mật khẩu(*)"
+            android:layout_width="350dp"
+            android:paddingLeft="10dp"
+            android:inputType="textPassword"
+            android:background="@drawable/bgbtn1"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:layout_height="50dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        app:errorEnabled="true"
+        app:passwordToggleEnabled="true"
+        android:layout_height="wrap_content">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/confirmspassword"
+            android:hint="Nhập lại mật khẩu(*)"
+            android:layout_width="350dp"
+            android:paddingLeft="10dp"
+            android:inputType="textPassword"
+            android:background="@drawable/bgbtn1"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:layout_height="50dp"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
     <Button
         android:onClick="Signup"
         android:id="@+id/btnLogin"
