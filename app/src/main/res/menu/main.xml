@@ -3,8 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_vip"
         android:orderInCategory="100"
         android:title="Search"
+        android:icon="@drawable/vip"
         app:showAsAction="ifRoom|collapseActionView"/>
 </menu>

@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':reader', ':folioreader'
 rootProject.name='Book'

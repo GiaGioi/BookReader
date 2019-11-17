@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1018571373605-em98hqp3ji05iu8s4690qca884t7381q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gioidev.book",
+            "certificate_hash": "f6c1652d3cec2165b2fb5844d7d69a487162febb"
+          }
+        },
+        {
           "client_id": "1018571373605-9n3761tbkjfk30hqm5rhkular2c9gmhc.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

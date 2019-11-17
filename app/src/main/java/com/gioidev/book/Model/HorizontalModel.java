@@ -2,14 +2,65 @@ package com.gioidev.book.Model;
 
 public class HorizontalModel {
 
-    private String name, description;
+    private String nameBook, description,url,gs,image,price,nameAuthor;
 
-    public String getName() {
-        return name;
+    public String getNameBook() {
+        return nameBook;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNameBook(String nameBook) {
+        this.nameBook = nameBook;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getGs() {
+        return gs;
+    }
+
+    public void setGs(String gs) {
+        this.gs = gs;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getPrice() {
+        return price;
+    }
+
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getNameAuthor() {
+        return nameAuthor;
+    }
+
+    public void setNameAuthor(String nameAuthor) {
+        this.nameAuthor = nameAuthor;
+    }
+
+    public HorizontalModel(){}
+    public HorizontalModel(String nameBook, String description, String url, String gs, String image, String price, String nameAuthor) {
+        this.nameBook = nameBook;
+        this.description = description;
+        this.url = url;
+        this.gs = gs;
+        this.image = image;
+        this.price = price;
+        this.nameAuthor = nameAuthor;
     }
 
     public String getDescription() {

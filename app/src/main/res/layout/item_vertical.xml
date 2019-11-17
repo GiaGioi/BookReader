@@ -1,9 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:selectableItemBackground"
     android:orientation="vertical">
+
+    <com.smarteist.autoimageslider.SliderView
+        android:id="@+id/imageSlider"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        app:sliderAnimationDuration="600"
+        app:sliderAutoCycleDirection="back_and_forth"
+        app:sliderAutoCycleEnabled="true"
+        app:sliderCircularHandlerEnabled="true"
+        app:sliderIndicatorAnimationDuration="600"
+        app:sliderIndicatorGravity="right|bottom"
+        app:sliderIndicatorMargin="15dp"
+        app:sliderIndicatorOrientation="horizontal"
+        app:sliderIndicatorPadding="3dp"
+        app:sliderIndicatorRadius="2dp"
+        app:sliderIndicatorSelectedColor="#5ABD8C"
+        app:sliderIndicatorUnselectedColor="#5A5A5A"
+        app:sliderScrollTimeInSec="4"
+        app:sliderStartAutoCycle="true" />
+
+    <TextView
+        android:id="@+id/tvNameGoodBook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:padding="5dp"
+        android:text="_Harvard Bốn rưỡi sáng, xiu-ying-wei_"
+        android:textAllCaps="true"
+        android:textColor="@color/color3"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvTextInBook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="15dp"
+        android:gravity="center"
+        android:text="Giữa biển lớn cuộc đời, chẳng con thuyền nào không bị rạn nứt"
+        android:textColor="@color/colorAuther"
+        android:textSize="14sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/colorAuther" />
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,7 +64,7 @@
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tvViewAll"
+            android:layout_alignStart="@+id/tvViewNewBook"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
@@ -23,19 +73,20 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tvViewAll"
+            android:id="@+id/tvViewNewBook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:text="XEM TẤT CẢ"
-            android:textColor="@color/color1" />
+            android:textColor="@color/color1"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="250dp"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp" />
@@ -55,7 +106,7 @@
             android:id="@+id/tvBookForYou"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tvViewAll2"
+            android:layout_alignStart="@+id/tvViewPrivate"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
             android:gravity="center_vertical"
@@ -64,45 +115,55 @@
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tvViewAll2"
+            android:id="@+id/tvViewPrivate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:text="XEM TẤT CẢ"
-            android:textColor="@color/color1" />
+            android:textColor="@color/color1"
+            android:textStyle="bold" />
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGridView"
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="480dp"
         android:layout_gravity="center_vertical"
         android:orientation="horizontal"
-        android:padding="8dp" />
+        android:padding="6dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_marginTop="@dimen/nav_header_10dp"
+        android:background="@color/colorView" />
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="500dp"
+        android:background="@drawable/bg_comic"
         android:padding="@dimen/nav_header_10dp">
 
         <TextView
             android:id="@+id/tvBookStory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tvViewAll3"
+            android:layout_alignStart="@+id/tvViewComic"
             android:layout_alignParentStart="true"
             android:text="Truyện tranh"
-            android:textColor="@android:color/black"
+            android:textColor="@color/color2"
             android:textSize="18sp" />
 
         <TextView
-            android:id="@+id/tvViewAll3"
+            android:id="@+id/tvViewComic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:text="XEM TẤT CẢ"
-            android:textColor="@color/color1" />
+            android:textColor="@color/color2"
+            android:textStyle="bold" />
 
     </RelativeLayout>
+
 </LinearLayout>

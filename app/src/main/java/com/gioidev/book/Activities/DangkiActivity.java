@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,8 @@ public class DangkiActivity extends AppCompatActivity {
     private Button btnLogin;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
+    private TextView tvLogin;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,14 @@ public class DangkiActivity extends AppCompatActivity {
         requespassword = (EditText) findViewById(R.id.requespassword);
         btnLogin = (Button) findViewById(R.id.btnLogin);
         progressBar = findViewById(R.id.progressBar);
+        tvLogin = findViewById(R.id.tvLogin);
+
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(DangkiActivity.this,LoginActivity.class));
+            }
+        });
     }
 
     public void Signup(View view) {

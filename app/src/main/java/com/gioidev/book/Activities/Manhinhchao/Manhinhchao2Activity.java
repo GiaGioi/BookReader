@@ -3,6 +3,7 @@ package com.gioidev.book.Activities.Manhinhchao;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.view.animation.Animation;
@@ -11,6 +12,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.gioidev.book.Activities.HomeActivity;
+import com.gioidev.book.Activities.LoginActivity;
 import com.gioidev.book.R;
 
 public class Manhinhchao2Activity extends AppCompatActivity {
@@ -45,5 +48,6 @@ public class Manhinhchao2Activity extends AppCompatActivity {
         tvText.startAnimation(nothingtocome);
         tvText2.startAnimation(nothingtocome);
         btnContinue.startAnimation(nothingtoup);
+
     }
 }

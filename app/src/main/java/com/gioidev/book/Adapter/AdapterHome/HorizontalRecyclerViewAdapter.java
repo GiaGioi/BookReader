@@ -1,6 +1,7 @@
 package com.gioidev.book.Adapter.AdapterHome;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,19 +12,21 @@ import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.R;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HorizontalRecyclerViewAdapter extends
         RecyclerView.Adapter<HorizontalRecyclerViewAdapter.HorizontalViewHolder> {
 
     private Context mContext;
-    private ArrayList<HorizontalModel> mArrayList;
+    private List<HorizontalModel> mArrayList;
 
     public HorizontalRecyclerViewAdapter(Context mContext,
-                                         ArrayList<HorizontalModel> mArrayList) {
+                                         List<HorizontalModel> mArrayList) {
         this.mContext = mContext;
         this.mArrayList = mArrayList;
     }
@@ -41,20 +44,25 @@ public class HorizontalRecyclerViewAdapter extends
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Mở sách", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Sách" + current.getDescription(), Toast.LENGTH_SHORT).show();
             }
         });
+        Glide.with(mContext).load(current.getImage()).into(holder.imageClick);
+        holder.tvAuther.setText(current.getNameAuthor());
+        holder.tvSach.setText(current.getNameBook());
         holder.tvAuther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Tác giả", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "Tác giả" + current.getDescription(), Toast.LENGTH_SHORT).show();
+                Log.e("Image", "onClick: " + current.getImage()
+                );
             }
         });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, current.getName(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, current.getGs(), Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -68,9 +76,13 @@ public class HorizontalRecyclerViewAdapter extends
         private LinearLayout linerBook;
         private ImageView imageClick;
         private TextView tvAuther;
+        private TextView tvSach;
+
 
         public HorizontalViewHolder(View itemView) {
             super(itemView);
+
+            tvSach = itemView.findViewById(R.id.tvNameBook);
             linerBook = itemView.findViewById(R.id.linerBook);
             imageClick = itemView.findViewById(R.id.imageClick);
             tvAuther = itemView.findViewById(R.id.tvAuther);
