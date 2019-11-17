@@ -21,27 +21,31 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
-import com.gioidev.book.Fragment.Fragment_Home;
-import com.gioidev.book.Helper.FirebaseDatabaseHelper;
-import com.gioidev.book.Model.Books;
-import com.gioidev.book.Model.GridViewModel;
-import com.gioidev.book.Model.HorizontalModel;
-import com.gioidev.book.Model.SliderModel;
-import com.gioidev.book.Model.User;
-import com.gioidev.book.Model.VerticalModel;
-import com.gioidev.book.Onclick.OnClickFireBase;
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
+import com.gioidev.book.Activities.Manhinhchao.Manhinhchao3Activity;
 import com.gioidev.book.R;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.gioidev.book.Utils.Functions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
+
+import static java.security.AccessController.getContext;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -60,8 +64,10 @@ import java.util.zip.Inflater;
 
 import es.dmoral.toasty.Toasty;
 
-public class HomeActivity extends AppCompatActivity  implements
-        NavigationView.OnNavigationItemSelectedListener{
+public class HomeActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
+    private FirebaseAuth auth;
+    private GoogleSignInClient mGoogleSignInClient;
+    private GoogleApiClient mGoogleApiClient;
 
     String TAG = "TAG";
     DrawerLayout drawer;
@@ -87,12 +93,11 @@ public class HomeActivity extends AppCompatActivity  implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-
-        toolbar = findViewById(R.id.toolbar);
+        auth = FirebaseAuth.getInstance();
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        drawer = findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -192,10 +197,54 @@ public class HomeActivity extends AppCompatActivity  implements
 
         }
 
+//        if (FirebaseAuth.getInstance().getAccessToken(true) != null){
+//            signOut();
+//        }
+//        else if(auth.getCurrentUser().getDisplayName() != null){
+//            signOutAuthenication();
+//        }
+//        else if (AccessToken.getCurrentAccessToken()!= null){
+//            LoginManager.getInstance().logOut();
+//            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+//            startActivity(intent);
+//            finish();
+//        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+//    private void signOut() {
+//   final FirebaseAuth auth = FirebaseAuth.getInstance();
+//    GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//            .requestIdToken(getString(R.string.default_web_client_id))
+//            .requestEmail().build();
+//    GoogleSignInClient signInClient = GoogleSignIn.getClient(HomeActivity.this,signInOptions);
+//    signInClient.revokeAccess().addOnSuccessListener(new OnSuccessListener<Void>() {
+//        @Override
+//        public void onSuccess(Void aVoid) {
+//            Toast.makeText(HomeActivity.this,auth.getCurrentUser().getDisplayName()+" Đăng xuất thành công" ,Toast.LENGTH_SHORT).show();
+//            auth.signOut();
+//            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            startActivity(intent);
+//            finish();
+//        }
+//    }).addOnFailureListener(new OnFailureListener() {
+//        @Override
+//        public void onFailure(@NonNull Exception e) {
+//
+//        }
+//    });
+//
+//    }
+//    private void signOutAuthenication(){
+//        auth.signOut();
+//        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
+//        startActivity(intent);
+//        finish();
+//    }
+
+
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {

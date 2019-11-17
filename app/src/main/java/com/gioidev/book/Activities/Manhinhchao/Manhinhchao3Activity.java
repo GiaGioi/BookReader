@@ -45,6 +45,7 @@ public class Manhinhchao3Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(Manhinhchao3Activity.this, LoginActivity.class));
+                finish();
             }
         });
     }
