@@ -83,10 +83,6 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     private SwipeRefreshLayout swipeRefreshLayout;
 
     Toolbar toolbar;
-
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

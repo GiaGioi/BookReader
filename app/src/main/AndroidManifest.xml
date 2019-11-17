@@ -38,15 +38,16 @@
             android:theme="@style/Style" />
         <activity
             android:name=".Activities.Manhinhchao.ManhinhchaoActivity"
-            android:theme="@style/Style" />
-        <!--Home-->
-        <activity android:name=".Activities.HomeActivity">
+            android:theme="@style/Style" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <!--Home-->
+        <activity android:name=".Activities.HomeActivity">
+
         </activity>
         <activity android:name=".Activities.DialogActivity"></activity>
 
