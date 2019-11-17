@@ -74,7 +74,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
         auth = FirebaseAuth.getInstance();
 
         FirebaseUser user = auth.getCurrentUser();
-        userId = user.getUid();
+//        userId = user.get;
         imageSlider = view.findViewById(R.id.imageSlider);
         rvVertical = view.findViewById(R.id.rvVertical);
         swipeRefreshLayout = view.findViewById(R.id.swipe_refresh_layout);

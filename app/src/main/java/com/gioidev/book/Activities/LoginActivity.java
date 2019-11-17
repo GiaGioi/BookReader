@@ -70,14 +70,11 @@ public class LoginActivity extends AppCompatActivity {
 //    private SignInButton googleButton;
 
 
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
         FacebookSdk.sdkInitialize(getApplicationContext());
+        setContentView(R.layout.activity_login);
         AppEventsLogger.activateApp(this);
         //dang loi o dong nay
 //        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
