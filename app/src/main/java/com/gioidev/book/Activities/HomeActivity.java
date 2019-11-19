@@ -15,15 +15,22 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
+import com.facebook.Profile;
+import com.facebook.appevents.AppEventsLogger;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Model.VerticalModel;
@@ -66,6 +73,9 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     private FirebaseAuth auth;
 //    private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
+    private TextView textViewnameemail;
+
+
 
     String TAG = "TAG";
     DrawerLayout drawer;
@@ -87,16 +97,31 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         auth = FirebaseAuth.getInstance();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String email = user.getEmail();
+//            textViewnameemail.setText(email);
+        }
+        else if (AccessToken.getCurrentAccessToken()!= null){
+            Profile profile = Profile.getCurrentProfile();
+            textViewnameemail.setText(profile.getName() + "");
+        }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        textViewnameemail = (TextView) findViewById(R.id.textViewnameemail);
+
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
+        NavigationView navigationView = findViewById(R.id.nav_view);
+
         navigationView.setNavigationItemSelectedListener(this);
         toolbar.setTitle("AA");
         toolbar.setNavigationIcon(R.drawable.toggle);
@@ -186,6 +211,8 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
         }else if (id == R.id.nav_comic) {
 
         }else if (id == R.id.nav_audio_book) {
+            Intent intent = new Intent(HomeActivity.this,AudioBookActivity.class);
+            startActivity(intent);
 
         }else if (id == R.id.nav_link) {
 
