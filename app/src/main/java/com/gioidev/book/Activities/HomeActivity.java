@@ -87,7 +87,7 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     ArrayList<VerticalModel> mArrayList = new ArrayList<>();
 
     VerticalRecyclerViewAdapter mAdapter;
-
+TextView textViewnameemail;
     private SliderView imageSlider;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -165,7 +165,7 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
                     return true;
                 case R.id.navigation_category:
                     overridePendingTransition(R.anim.right_to_left,R.anim.left_to_right);
-                    fragment = new BookcaseActivity();
+                    fragment = new BookcaseFragment();
                     loadFragment(fragment);
                     hide_show();
                 case R.id.navigation_image:
