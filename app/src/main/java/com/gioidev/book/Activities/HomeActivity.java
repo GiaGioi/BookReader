@@ -9,15 +9,11 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,40 +21,22 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
+import com.gioidev.book.Fragment.BookcaseFragment;
 import com.gioidev.book.Fragment.Fragment_Home;
+import com.gioidev.book.Fragment.Fragment_Khach_Hang;
+import com.gioidev.book.Fragment.Fragment_Ki_Nang;
 import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.gioidev.book.Utils.Functions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
-import static java.security.AccessController.getContext;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.GenericTypeIndicator;
-import com.google.firebase.database.ValueEventListener;
 import com.smarteist.autoimageslider.SliderView;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.zip.Inflater;
 
 import es.dmoral.toasty.Toasty;
 
@@ -118,6 +96,7 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
         inflater.inflate(R.menu.main,menu);
         return super.onCreateOptionsMenu(menu);
     }
+//
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -141,7 +120,7 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
                     return true;
                 case R.id.navigation_category:
                     overridePendingTransition(R.anim.right_to_left,R.anim.left_to_right);
-                    fragment = new BookcaseActivity();
+                    fragment = new BookcaseFragment();
                     loadFragment(fragment);
                     hide_show();
                 case R.id.navigation_image:
@@ -173,13 +152,17 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        Fragment fragment;
         int id = menuItem.getItemId();
 
         if (id == R.id.nav_marketing) {
-
+            fragment = new Fragment_Khach_Hang();
+            loadFragment(fragment);
         } else if (id == R.id.nav_horoscope) {
 
         } else if (id == R.id.nav_skillbook) {
+            fragment = new Fragment_Ki_Nang();
+            loadFragment(fragment);
 
         } else if (id == R.id.nav_short_story) {
 

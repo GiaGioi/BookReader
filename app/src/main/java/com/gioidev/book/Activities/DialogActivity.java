@@ -1,6 +1,7 @@
 package com.gioidev.book.Activities;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,22 +24,19 @@ public class DialogActivity extends AppCompatActivity {
 
         View view = getLayoutInflater().inflate(R.layout.item_full_screen_dialog,null);
 
-        btnDialog = findViewById(R.id.btnDialog);
-
         rvLayout = view.findViewById(R.id.rvLayout);
 
         dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.setContentView(view);
-        btnDialog.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.show();
-            }
-        });
+        dialog.show();
+
         rvLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+//                startActivity(new Intent(DialogActivity.this,ReadBookActivity.class));
+
                 dialog.dismiss();
+
             }
         });
     }

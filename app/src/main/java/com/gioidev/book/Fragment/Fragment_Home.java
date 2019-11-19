@@ -61,11 +61,11 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
     List<HorizontalModel> horizontalModels;
     ArrayList<GridViewModel> gridViewModels;
 
-    String userId;
     HorizontalModel user;
     FirebaseDatabase database;
     FirebaseAuth auth;
     DatabaseReference mDatabase;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,10 +82,8 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
         swipeRefreshLayout.isRefreshing();
         swipeRefreshLayout.setOnRefreshListener(this);
 
-
         mainContainer = view.findViewById(R.id.main_container);
         rvVertical = view.findViewById(R.id.rvVertical);
-
 
         timer = new Timer();
         rvVertical.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
@@ -94,8 +92,6 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
         setDataOnVerticalRecyclerView();
         getDataHorizontal();
         getDataGridview();
-
-
 
         return view;
 
@@ -117,6 +113,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     String Url = String.valueOf(snapshot.child("Url").getValue());
                     String Gs = String.valueOf(snapshot.child("Gs").getValue());
                     String Price = String.valueOf(snapshot.child("Price").getValue());
+                    String Category = String.valueOf(snapshot.child("Category").getValue());
                     mHorizontalModel = new HorizontalModel();
                     mHorizontalModel.setNameBook(nameBook);
                     mHorizontalModel.setPrice(Price);
@@ -125,6 +122,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     mHorizontalModel.setImage(Image);
                     mHorizontalModel.setGs(Gs);
                     mHorizontalModel.setDescription(Description);
+                    mHorizontalModel.setCategory(Category);
 
                     horizontalModels.add(mHorizontalModel);
 
@@ -157,6 +155,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     String Url = String.valueOf(snapshot.child("Url").getValue());
                     String Gs = String.valueOf(snapshot.child("Gs").getValue());
                     String Price = String.valueOf(snapshot.child("Price").getValue());
+                    String Category = String.valueOf(snapshot.child("Category").getValue());
                     gridViewModel = new GridViewModel();
                     gridViewModel.setNameBook(nameBook);
                     gridViewModel.setPrice(Price);
@@ -165,13 +164,12 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     gridViewModel.setImage(Image);
                     gridViewModel.setGs(Gs);
                     gridViewModel.setDescription(Description);
+                    mHorizontalModel.setCategory(Category);
 
                     gridViewModels.add(gridViewModel);
 
                     mVerticalModel.setArrayList(horizontalModels);
                     mAdapter.notifyDataSetChanged();
-
-                    Log.e(TAG, "onDataChange: " + mHorizontalModel.getImage());
                 }
             }
             @Override

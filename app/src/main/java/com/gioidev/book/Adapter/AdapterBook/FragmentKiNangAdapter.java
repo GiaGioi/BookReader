@@ -1,4 +1,4 @@
-package com.gioidev.book.Adapter.AdapterHome;
+package com.gioidev.book.Adapter.AdapterBook;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,40 +9,41 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.gioidev.book.Model.GridViewModel;
+import com.gioidev.book.Model.GridViewFragment;
 import com.gioidev.book.R;
 
 import java.util.ArrayList;
 
-public class GridViewRecyclerViewAdapter extends
-        RecyclerView.Adapter<GridViewRecyclerViewAdapter.GridViewHolder> {
+public class FragmentKiNangAdapter extends
+        RecyclerView.Adapter<FragmentKiNangAdapter.FragmentKiNangHolder> {
 
     private Context mContext;
-    private ArrayList<GridViewModel> gridViewModels;
+    private ArrayList<GridViewFragment> gridViewModels;
 
-    public GridViewRecyclerViewAdapter(Context mContext,
-                                       ArrayList<GridViewModel> mArrayList) {
+    public FragmentKiNangAdapter(Context mContext, ArrayList<GridViewFragment> gridViewModels) {
         this.mContext = mContext;
-        this.gridViewModels = mArrayList;
+        this.gridViewModels = gridViewModels;
     }
 
+    @NonNull
     @Override
-    public GridViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public FragmentKiNangHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_gridview, parent, false);
-        return new GridViewHolder(view);
+                .inflate(R.layout.item_fragment_ki_nang, parent, false);
+
+        return new FragmentKiNangHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(GridViewHolder holder, int position) {
-        final GridViewModel current = gridViewModels.get(position);
+    public void onBindViewHolder(@NonNull FragmentKiNangHolder holder, int position) {
+        final GridViewFragment current = gridViewModels.get(position);
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext,  current.getUrl(), Toast.LENGTH_SHORT).show();
             }
         });
         holder.tvAuther.setText(current.getNameAuthor());
@@ -63,22 +64,24 @@ public class GridViewRecyclerViewAdapter extends
 
     @Override
     public int getItemCount() {
-        return gridViewModels.size();
+        return 0;
     }
 
-    class GridViewHolder extends RecyclerView.ViewHolder {
+    public class FragmentKiNangHolder extends RecyclerView.ViewHolder {
+
         private LinearLayout linerBook;
         private ImageView imageClick;
         private TextView tvAuther;
         private TextView tvNameBook;
 
-        public GridViewHolder(View itemView) {
+        public FragmentKiNangHolder(@NonNull View itemView) {
             super(itemView);
-            linerBook = itemView.findViewById(R.id.linerBook1);
-            imageClick = itemView.findViewById(R.id.imageClick1);
-            tvAuther = itemView.findViewById(R.id.tvAuther1);
-            tvNameBook = itemView.findViewById(R.id.tvnamBook_Grid);
-
+            linerBook = itemView.findViewById(R.id.linerBook_ki_nang);
+            imageClick = itemView.findViewById(R.id.image_fragment_ki_nang);
+            tvAuther = itemView.findViewById(R.id.tvAuther_fragment_ki_nang);
+            tvNameBook = itemView.findViewById(R.id.tvnamBook_fragment_ki_nang);
         }
     }
+
+
 }

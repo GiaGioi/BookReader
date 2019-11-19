@@ -1,85 +1,302 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/materialup.appbar"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Activities.ReadBookActivity">
+
+
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+            android:layout_height="0.5dp"
+            android:background="@color/color3" />
 
-            <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/collapsing"
+        <RelativeLayout
+            android:id="@+id/rvtoolbar"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:tint="#BB2E2E30">
+
+            <ImageView
+                android:id="@+id/image_x"
+                android:layout_width="70dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:scaleType="centerCrop"
+                android:src="@drawable/iconfinder_x"
+                android:tint="#BB2E2E30" />
+
+            <ImageView
+                android:id="@+id/image_share"
+                android:layout_width="40dp"
+                android:layout_height="?attr/actionBarSize"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="15sp"
+                android:layout_toLeftOf="@+id/image_x"
+                android:scaleType="centerCrop"
+                android:src="@drawable/iconfinder_share"
+                android:tint="#BB2E2E30" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/color3" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="220dp">
+
+            <ImageView
+                android:id="@+id/image_bg"
                 android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/icon_book"
+                android:tint="#BB141414"></ImageView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="120dp"
                 android:layout_height="180dp"
-                app:expandedTitleMarginEnd="64dp"
-                app:expandedTitleMarginStart="48dp"
-                app:layout_scrollFlags="scroll|snap">
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="8dp"
+                app:cardMaxElevation="8dp">
 
                 <ImageView
-                    android:id="@+id/image_background_src"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:scaleType="centerCrop"
-                    android:src="@drawable/icon_book"
-                    android:tint="#BB2E2E30"
-                    app:layout_collapseMode="parallax" />
-                <ImageView
-                    android:id="@+id/src_image"
-                    android:layout_width="120dp"
-                    android:layout_height="160dp"
-                    android:scaleType="centerCrop"
+                    android:id="@+id/image"
+                    android:layout_width="140dp"
+                    android:layout_height="200dp"
+                    android:layout_centerHorizontal="true"
                     android:layout_gravity="center"
-                    android:src="@drawable/icon_book"/>
-            </com.google.android.material.appbar.CollapsingToolbarLayout>
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/icon_book" />
+            </androidx.cardview.widget.CardView>
+
+        </RelativeLayout>
 
 
-
-            <LinearLayout
-                android:id="@+id/linear1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="8dp"
-                app:layout_scrollFlags="scroll|enterAlways|snap">
-
-                <TextView
-                    android:id="@+id/tv_name_book"
-                    android:layout_width="fill_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    android:gravity="center"
-                    android:text="@string/title_name_book"
-                    android:textColor="#000000"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/tv_name_author"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="4dp"
-                    android:text="@string/author_book"
-                    android:textColor="#222020" />
-                ​</LinearLayout>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/lorem" />
-        </com.google.android.material.appbar.AppBarLayout>
-        ​
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/flfavorite"
+        <TextView
+            android:id="@+id/tvTenSach"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/activity_horizontal_margin"
-            android:clickable="true"
-            android:elevation="8dp"
-            android:src="@drawable/iconfinder_favorite"
-            app:layout_anchor="@id/collapsing"
-            app:layout_anchorGravity="bottom|right|end" />
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/nav_header_10dp"
+            android:text="Tuổi trẻ đáng giá bao nhiêu"
+            android:textColor="#707070"
+            android:textSize="17sp"
+            android:textStyle="bold" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="35dp">
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <TextView
+                android:id="@+id/tvTenTacGia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/nav_header_10dp"
+                android:text="Rosi Nguyễn"
+                android:textColor="#707070"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvGia"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="70dp"
+                android:text="Giá: "
+                android:textColor="#707070"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="center"
+                android:layout_marginRight="8dp"
+                android:text="100,000Đ"
+                android:textColor="#707070"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+        <!--Description-->
+        <at.blogc.android.views.ExpandableTextView
+            android:id="@+id/expandableTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:ellipsize="end"
+            android:maxLines="5"
+            android:text="@string/text_read_book"
+            app:animation_duration="750" />
+
+        <TextView
+            android:id="@+id/tv_toggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Xem thêm"
+            android:textColor="@color/color1"
+            android:textSize="18sp" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/color3" />
+
+        <Button
+            android:id="@+id/btnReadBook"
+            android:layout_width="370dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bgbtn2"
+            android:text="Đọc sách"
+            android:textColor="@color/color2" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/colorView" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_margin="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+            android:text="Thông tin chi tiết"
+            android:textColor="#707070"
+            android:textSize="@dimen/text_16sp"
+            android:textStyle="bold" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorView" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="0.2"
+                android:layout_margin="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="Thể loại"
+                android:textColor="#707070"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvCategory"
+                android:layout_weight="10"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_margin="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="Kĩ năng"
+                android:textColor="#707070"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/colorView" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_margin="8dp"
+                android:text="Liên kết"
+                android:textColor="#707070"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
+            <View
+                android:layout_width="1dp"
+                android:layout_weight="10"
+                android:layout_height="10dp"/>
+            <ImageView
+                android:id="@+id/image_forward"
+                android:src="@drawable/iconfinder_forward"
+                android:layout_weight="2"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_margin="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="Kĩ năng"
+                android:textColor="#707070"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:background="@color/colorAuther"
+            android:layout_height="0.5dp"/>
+        <LinearLayout
+            android:id="@+id/linerFanpage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_weight="0.2"
+                android:layout_margin="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="Fanpage"
+                android:textColor="#707070"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_weight="10"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_margin="8dp"
+                android:layout_marginRight="8dp"
+                android:gravity="center"
+                android:text="http://facebook.com/BookReader"
+                android:textColor="#707070"
+                android:textSize="@dimen/text_16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>

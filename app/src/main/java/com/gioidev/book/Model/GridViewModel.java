@@ -2,11 +2,11 @@ package com.gioidev.book.Model;
 
 public class GridViewModel {
 
-    private String nameBook, description,url,gs,image,price,nameAuthor;
+    private String nameBook, description,url,gs,image,price,nameAuthor,category;
 
     public GridViewModel(){
     }
-    public GridViewModel(String nameBook, String description, String url, String gs, String image, String price, String nameAuthor) {
+    public GridViewModel(String nameBook, String description, String url, String gs, String image, String price, String nameAuthor, String category) {
         this.nameBook = nameBook;
         this.description = description;
         this.url = url;
@@ -14,6 +14,15 @@ public class GridViewModel {
         this.image = image;
         this.price = price;
         this.nameAuthor = nameAuthor;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getNameBook() {

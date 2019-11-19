@@ -1,8 +1,28 @@
 package com.gioidev.book.Model;
 
-public class HorizontalModel {
-
+public class GridViewFragment {
     private String nameBook, description,url,gs,image,price,nameAuthor,category;
+
+    public GridViewFragment(){
+    }
+    public GridViewFragment(String nameBook, String description, String url, String gs, String image, String price, String nameAuthor, String category) {
+        this.nameBook = nameBook;
+        this.description = description;
+        this.url = url;
+        this.gs = gs;
+        this.image = image;
+        this.price = price;
+        this.nameAuthor = nameAuthor;
+        this.category = category;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getNameBook() {
         return nameBook;
@@ -10,6 +30,14 @@ public class HorizontalModel {
 
     public void setNameBook(String nameBook) {
         this.nameBook = nameBook;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public String getUrl() {
@@ -50,34 +78,5 @@ public class HorizontalModel {
 
     public void setNameAuthor(String nameAuthor) {
         this.nameAuthor = nameAuthor;
-    }
-
-    public HorizontalModel(){}
-
-    public HorizontalModel(String nameBook, String description, String url, String gs, String image, String price, String nameAuthor,String category) {
-        this.nameBook = nameBook;
-        this.description = description;
-        this.url = url;
-        this.gs = gs;
-        this.image = image;
-        this.price = price;
-        this.nameAuthor = nameAuthor;
-        this.category = category;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }

@@ -1,4 +1,4 @@
-package com.gioidev.book.Activities;
+package com.gioidev.book.Fragment;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,13 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.gioidev.book.Adapter.AdapterBook.ViewPagerAdapter;
-import com.gioidev.book.Fragment.Fragment_Khach_Hang;
-import com.gioidev.book.Fragment.Fragment_Ki_Nang;
-import com.gioidev.book.Fragment.Fragment_Phong_Thuy;
 import com.gioidev.book.R;
 import com.google.android.material.tabs.TabLayout;
 
-public class BookcaseActivity extends Fragment {
+public class BookcaseFragment extends Fragment {
 
     private TabLayout tabBookCase;
     private ViewPager viewpageBookCase;
@@ -46,12 +43,4 @@ public class BookcaseActivity extends Fragment {
         return view;
 
     }
-
-//    @Override
-//    protected void onCreateView(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_book_case);
-//
-//
-//    }
 }

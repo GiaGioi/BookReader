@@ -6,10 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.DownloadManager;
+import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.PersistableBundle;
 import android.util.Log;
 import android.view.View;
@@ -37,13 +41,18 @@ import com.gioidev.book.Model.User;
 import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
 
+import com.github.barteksc.pdfviewer.PDFView;
+import com.github.barteksc.pdfviewer.source.DocumentSource;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shockwave.pdfium.PdfDocument;
+import com.shockwave.pdfium.PdfiumCore;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +66,7 @@ import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubReader;
 
 public class DownloadActivity extends
-        AppCompatActivity implements OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener {
+        AppCompatActivity {
 
     private TextView tvDownload;
     private Button btnDownload;
@@ -72,198 +81,58 @@ public class DownloadActivity extends
     FolioReader reader;
 
     AssetManager assetManager;
-
+    PDFView pdfView;
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
+//
+//        imageClick = findViewById(R.id.imageClick);
+//        tvtacGia = findViewById(R.id.tvTenSach);
+//        tvAuther = findViewById(R.id.tvAuther);
+//        btnDownload = findViewById(R.id.btnDownload);
+//
+//        btnDownload.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+////                download();
+//            }
+//        });
 
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        assetManager = getAssets();
-        reader = FolioReader.get()
-                .setOnHighlightListener(this)
-                .setReadPositionListener(this)
-                .setOnClosedListener(this);
-
-        imageClick = findViewById(R.id.imageClick);
-        tvtacGia = findViewById(R.id.tvTenSach);
-        tvAuther = findViewById(R.id.tvAuther);
-        btnDownload = findViewById(R.id.btnDownload);
-
-//        rvDownload = findViewById(R.id.rvDownload);
-//        tvDownload = findViewById(R.id.tvDownload);
-
-//        rvDownload.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-//        mAdapter = new BookViewAdapter(this, books);
-//        rvDownload.setAdapter(mAdapter);
-
-        btnDownload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                download();
-                try {
-                    // find InputStream for book
-                    InputStream epubInputStream = assetManager
-
-                            .open("gs://book-38ccb.appspot.com/Marketing - Khách hàng/Epub/40+ Bí Kíp Chinh Phục Khách Hàng Qua Điện Thoại.epub");
-
-                    // Load Book from inputStream
-                    Book book = (new EpubReader()).readEpub(epubInputStream);
-
-                    // Log the book's authors
-                    Log.i("epublib", "author(s): " + book.getMetadata().getAuthors());
-
-                    // Log the book's title
-                    Log.i("epublib", "title: " + book.getTitle());
-
-                    // Log the book's coverimage property
-                    Bitmap coverImage = BitmapFactory.decodeStream(book.getCoverImage()
-                            .getInputStream());
-                    Log.i("epublib", "Coverimage is " + coverImage.getWidth() + " by "
-                            + coverImage.getHeight() + " pixels");
-
-                    // Log the tale of contents
-                    logTableOfContents(book.getTableOfContents().getTocReferences(), 0);
-                } catch (IOException e) {
-                    Log.e("epublib", e.getMessage());
-                }
-
-            }
-        });
 
     }
-    private void logTableOfContents(List<TOCReference> tocReferences, int depth) {
-        if (tocReferences == null) {
-            return;
+
+
+    public void download() {
+
+        String DIR_NAME = "Download";
+        String filename = "filename.epub";
+        String downloadUrlOfImage = "https://firebasestorage.googleapis.com/v0/b/book-38ccb.appspot.com/o/S%C3%A1ch%20t%C3%A2m%20l%C3%AD%20-%20K%C4%A9%20n%C4%83ng%20s%E1%BB%91ng%2FPDF%2FBi%E1%BA%BFt%20H%C3%A0i%20L%C3%B2ng.pdf?alt=media&token=1bccc5d3-0689-4aca-9ab9-9a27a92f686e";
+        File direct =
+                new File(Environment
+                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+                        .getAbsolutePath() + "/" + DIR_NAME + "/");
+
+
+        if (!direct.exists()) {
+            direct.mkdir();
+            Log.d("TAG", "dir created for first time");
         }
-        for (TOCReference tocReference : tocReferences) {
-            StringBuilder tocString = new StringBuilder();
-            for (int i = 0; i < depth; i++) {
-                tocString.append("\t");
-            }
-            tocString.append(tocReference.getTitle());
-            Log.i("epublib", tocString.toString());
+        DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri downloadUri = Uri.parse(downloadUrlOfImage);
+        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                .setAllowedOverRoaming(false)
+                .setTitle(filename)
+                .setMimeType("file/epub")
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
+                        File.separator + DIR_NAME + File.separator + filename);
 
-            logTableOfContents(tocReference.getChildren(), depth + 1);
-        }
-    }
-    private ReadPosition getLastReadPosition() {
-
-        String jsonString = loadAssetTextAsString("read_positions/read_position.json");
-        return ReadPositionImpl.createInstance(jsonString);
-    }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-    }
-    public void download(){
-        books = new ArrayList<>();
-        mDatabase.child("books/PDF/SkillBook/Url")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            String name = (String) dataSnapshot.getValue();
-
-                            ReadPosition readPosition = getLastReadPosition();
-
-                            Config config = AppUtil.getSavedConfig(getApplicationContext());
-                            if (config == null)
-                                config = new Config();
-                            config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
-                            reader.setReadPosition(readPosition)
-                                    .setConfig(config, true)
-                                    .openBook(name);
-
-                            Log.e("Get Data", "" + reader);
-                        }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+        dm.enqueue(request);
     }
 
 
-
-    @Override
-    public void saveReadPosition(ReadPosition readPosition) {
-        Log.i(LOG_TAG, "-> ReadPosition = " + readPosition.toJson());
-    }
-    private void getHighlightsAndSave() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-               List<HighlightData> highlightList = null;
-                ObjectMapper objectMapper = new ObjectMapper();
-                try {
-                    highlightList = objectMapper.readValue(
-                            Objects.requireNonNull(loadAssetTextAsString("highlights/highlights_data.json")),
-                            new TypeReference<List<HighlightData>>() {
-                            });
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (highlightList == null) {
-                    reader.saveReceivedHighLights(null, new OnSaveHighlight() {
-                        @Override
-                        public void onFinished() {
-                            //You can do anything on successful saving highlight list
-                        }
-                    });
-                }
-            }
-        }).start();
-    }
-
-    private String loadAssetTextAsString(String name) {
-        BufferedReader in = null;
-        try {
-            StringBuilder buf = new StringBuilder();
-            InputStream is = getAssets().open(name);
-            in = new BufferedReader(new InputStreamReader(is));
-
-            String str;
-            boolean isFirst = true;
-            while ((str = in.readLine()) != null) {
-                if (isFirst)
-                    isFirst = false;
-                else
-                    buf.append('\n');
-                buf.append(str);
-            }
-            return buf.toString();
-        } catch (IOException e) {
-            Log.e("HomeActivity", "Error opening asset " + name);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    Log.e("HomeActivity", "Error closing asset " + name);
-                }
-            }
-        }
-        return null;
-    }
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        FolioReader.clear();
-    }
-    @Override
-    public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
-        Toast.makeText(this,
-                "highlight id = " + highlight.getUUID() + " type = " + type,
-                Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    public void onFolioReaderClosed() {
-        Log.v(LOG_TAG, "-> onFolioReaderClosed");
-    }
 }

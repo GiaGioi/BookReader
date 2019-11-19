@@ -1,6 +1,7 @@
 package com.gioidev.book.Adapter.AdapterHome;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.gioidev.book.Activities.ReadBookActivity;
 import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.R;
 
@@ -44,7 +46,18 @@ public class HorizontalRecyclerViewAdapter extends
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Sách" + current.getDescription(), Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(mContext, ReadBookActivity.class);
+                intent.putExtra("Url", String.valueOf(current.getUrl()));
+                intent.putExtra("NameBook", current.getNameBook());
+                intent.putExtra("NameAuthor", current.getNameAuthor());
+                intent.putExtra("Description", current.getDescription());
+                intent.putExtra("Gs", current.getGs());
+                intent.putExtra("Image", current.getImage());
+                intent.putExtra("Price", current.getPrice());
+                intent.putExtra("Category", current.getCategory());
+                mContext.startActivity(intent);
+
+                Log.e("TAG", "onClick: " + current);
             }
         });
         Glide.with(mContext).load(current.getImage()).into(holder.imageClick);
@@ -53,7 +66,6 @@ public class HorizontalRecyclerViewAdapter extends
         holder.tvAuther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Tác giả" + current.getDescription(), Toast.LENGTH_SHORT).show();
                 Log.e("Image", "onClick: " + current.getImage()
                 );
             }
@@ -62,7 +74,6 @@ public class HorizontalRecyclerViewAdapter extends
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, current.getGs(), Toast.LENGTH_SHORT).show();
             }
         });
     }
