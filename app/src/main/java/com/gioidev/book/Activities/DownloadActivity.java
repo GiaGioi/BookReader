@@ -127,7 +127,6 @@ public class DownloadActivity extends
                 .setAllowedOverRoaming(false)
                 .setTitle(filename)
                 .setMimeType("file/epub")
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED)
                 .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
                         File.separator + DIR_NAME + File.separator + filename);
 

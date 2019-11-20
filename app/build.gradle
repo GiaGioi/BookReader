@@ -85,4 +85,8 @@ dependencies {
     //image slider
     implementation 'com.github.smarteist:autoimageslider:1.3.2'
     implementation 'at.blogc:expandabletextview:1.0.5'
+
+    //chartAndroid
+    implementation 'com.github.lecho:hellocharts-library:1.5.8@aar'
+
 }

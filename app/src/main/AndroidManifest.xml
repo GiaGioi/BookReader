@@ -24,10 +24,18 @@
         </activity>
         <activity android:name=".Activities.ReadBookActivity">
 
-            <!-- Open book -->
+
         </activity>
-        <activity android:name=".Activities.OpenBookActivity" /> <!-- Download -->
-        <activity android:name=".Activities.DownloadActivity" /> <!-- Book case -->
+        <!-- Open book -->
+        <activity android:name=".Activities.OpenBookActivity" />
+        <!-- Book case -->
+        <activity android:name=".Activities.DownloadActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Activities.ResetPasswordActivity" />
         <activity android:name=".Activities.DangkiActivity" />
         <activity android:name=".Activities.LoginActivity" />
@@ -40,11 +48,7 @@
         <activity
             android:name=".Activities.Manhinhchao.ManhinhchaoActivity"
             android:theme="@style/Style">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity> <!-- Home -->
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.DialogActivity" />

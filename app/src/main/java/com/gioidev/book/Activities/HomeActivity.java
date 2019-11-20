@@ -30,13 +30,17 @@ import com.facebook.AccessToken;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
 import com.gioidev.book.Fragment.BookcaseFragment;
+import com.gioidev.book.Fragment.Fragment_CaNhan;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Fragment.Fragment_Khach_Hang;
 import com.gioidev.book.Fragment.Fragment_Ki_Nang;
 import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
@@ -108,7 +112,7 @@ TextView textViewnameemail;
         }
         else if (AccessToken.getCurrentAccessToken()!= null){
             Profile profile = Profile.getCurrentProfile();
-            textViewnameemail.setText(profile.getName() + "");
+//            textViewnameemail.setText(profile.getName() + "");
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         textViewnameemail = (TextView) findViewById(R.id.textViewnameemail);
@@ -168,8 +172,13 @@ TextView textViewnameemail;
                     fragment = new BookcaseFragment();
                     loadFragment(fragment);
                     hide_show();
+                    return true;
                 case R.id.navigation_image:
-
+                    overridePendingTransition(R.anim.right_to_left,R.anim.left_to_right);
+                    Fragment fragmentcanhan;
+                    fragmentcanhan = new Fragment_CaNhan();
+                    loadFragment(fragmentcanhan);
+//                    hide_show();
                     return true;
 
             }
@@ -217,7 +226,9 @@ TextView textViewnameemail;
             Intent intent = new Intent(HomeActivity.this,AudioBookActivity.class);
             startActivity(intent);
 
-        }else if (id == R.id.nav_link) {
+        }else
+            if (id == R.id.nav_link) {
+//
 
         }
 
