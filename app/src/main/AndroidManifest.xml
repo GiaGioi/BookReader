@@ -20,7 +20,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Activities.AudioBookActivity">
-
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".Activities.ReadBookActivity">
 
@@ -40,11 +44,7 @@
         <activity
             android:name=".Activities.Manhinhchao.ManhinhchaoActivity"
             android:theme="@style/Style">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+
         </activity> <!-- Home -->
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.DialogActivity" />

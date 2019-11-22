@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +45,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AudioBookActivity extends AppCompatActivity implements JcPlayerManagerListener, AdapterAudio.OnlistSongListener {
+public class AudioBookActivity extends AppCompatActivity implements JcPlayerManagerListener {
     private Button btntest;
     RecyclerView mRecyclerView;
     ArrayList<DownSong> downSongArrayList = new ArrayList<>();
@@ -53,8 +54,11 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
     private StorageReference mStorageRef;
     private JcPlayerView jcplayer;
     private LinearLayout cardviewsong;
+    private ImageView btnplaymusic;
 
 
+
+    MediaPlayer mediaPlayer;
     private TextView namesong;
 
     String Chapter;
@@ -69,12 +73,12 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
 
         View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.songcardview,null);
         cardviewsong = (LinearLayout) view.findViewById(R.id.cardviewsong);
-
+        btnplaymusic = (ImageView) findViewById(R.id.btnplaymusic);
         namesong = (TextView) view.findViewById(R.id.namesong);
         mRecyclerView= findViewById(R.id.recyclesong);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        myAdapter = new AdapterAudio(this,downSongArrayList,this);
+        myAdapter = new AdapterAudio(this,downSongArrayList);
 
         jcplayer = (JcPlayerView) findViewById(R.id.jcplayer);
         jcplayer.setJcPlayerManagerListener(this);
@@ -193,11 +197,29 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
     }
 
 
-    @Override
-    public void onSongClick(int position) {
-        downSongArrayList.get(position);
-        Intent intent = new Intent(this,DangkiActivity.class);
-        startActivity(intent);
-    }
+    public void playsong(int adapterPosition) throws IOException {
 
+            final DownSong downSong = downSongArrayList.get(adapterPosition);
+//        final ArrayList<JcAudio> jcAudios = new ArrayList<>();
+//        jcplayer.playAudio(JcAudio.createFromAssets(downSong.getLink()));
+//        jcAudios.add(JcAudio.createFromAssets("Play audio", "audio.mp3"));
+//        jcplayer.initAnonPlaylist(jcAudios);
+
+        if (mediaPlayer!=null){
+            mediaPlayer.stop();
+            mediaPlayer.release();
+            mediaPlayer=null;
+        }
+        mediaPlayer = new MediaPlayer();
+        mediaPlayer.setDataSource(downSong.getLink());
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+                mp.start();
+//                jcplayer.setJcPlayerManagerListener(AudioBookActivity.this);
+            }
+        });
+        mediaPlayer.prepareAsync();
+
+    }
 }

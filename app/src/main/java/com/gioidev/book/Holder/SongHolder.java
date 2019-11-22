@@ -17,7 +17,7 @@ public TextView mLink;
 public TextView mTime;
 public Button mStopSong;
 public Button mPlaySong;
-    public SongHolder(@NonNull View itemView, AdapterAudio.OnlistSongListener monlistSongListener) {
+    public SongHolder(@NonNull View itemView) {
         super(itemView);
         mName=itemView.findViewById(R.id.namesong);
 //        mLink=itemView.findViewById(R.id.linksong);
