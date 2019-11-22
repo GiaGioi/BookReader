@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -25,6 +26,7 @@ import android.widget.Toast;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.folioreader.Config;
+import com.folioreader.Constants;
 import com.folioreader.FolioReader;
 import com.folioreader.model.HighLight;
 import com.folioreader.model.ReadPosition;
@@ -66,7 +68,7 @@ import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubReader;
 
 public class DownloadActivity extends
-        AppCompatActivity {
+        AppCompatActivity implements OnHighlightListener{
 
     private TextView tvDownload;
     private Button btnDownload;
@@ -78,7 +80,7 @@ public class DownloadActivity extends
     private ImageView imageClick;
     private TextView tvtacGia;
     private TextView tvAuther;
-    FolioReader reader;
+    FolioReader folioReader;
 
     AssetManager assetManager;
     PDFView pdfView;
@@ -88,18 +90,23 @@ public class DownloadActivity extends
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_download);
-//
-//        imageClick = findViewById(R.id.imageClick);
-//        tvtacGia = findViewById(R.id.tvTenSach);
-//        tvAuther = findViewById(R.id.tvAuther);
-//        btnDownload = findViewById(R.id.btnDownload);
-//
-//        btnDownload.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-////                download();
-//            }
-//        });
+
+        folioReader = FolioReader.get()
+                .setOnHighlightListener(this);
+
+        imageClick = findViewById(R.id.imageClick);
+        tvtacGia = findViewById(R.id.tvTenSach);
+        tvAuther = findViewById(R.id.tvAuther);
+        btnDownload = findViewById(R.id.btnDownload);
+
+        getHighlightsAndSave();
+
+        btnDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                download();
+            }
+        });
 
 
     }
@@ -107,14 +114,18 @@ public class DownloadActivity extends
 
     public void download() {
 
-        String DIR_NAME = "Download";
-        String filename = "filename.epub";
-        String downloadUrlOfImage = "https://firebasestorage.googleapis.com/v0/b/book-38ccb.appspot.com/o/S%C3%A1ch%20t%C3%A2m%20l%C3%AD%20-%20K%C4%A9%20n%C4%83ng%20s%E1%BB%91ng%2FPDF%2FBi%E1%BA%BFt%20H%C3%A0i%20L%C3%B2ng.pdf?alt=media&token=1bccc5d3-0689-4aca-9ab9-9a27a92f686e";
+        String DIR_NAME = "Book Reader";
+
+        String downloadUrlOfImage = "https://firebasestorage.googleapis.com/v0/b/book-38ccb.appspot.com/o/Marketing%20-%20Kh%C3%A1ch%20h%C3%A0ng%2FEpub%2F40%2B%20B%C3%AD%20K%C3%ADp%20Chinh%20Ph%E1%BB%A5c%20Kh%C3%A1ch%20H%C3%A0ng%20Qua%20%C4%90i%E1%BB%87n%20Tho%E1%BA%A1i.epub?alt=media&token=78ea6462-147e-4cbf-9a7f-d75cb792a521";
         File direct =
                 new File(Environment
                         .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-                        .getAbsolutePath() + "/" + DIR_NAME + "/");
+                        .getAbsolutePath() + "/" + DIR_NAME);
 
+        String filename = direct + "/filename.epub";
+        Intent intent = new Intent(DownloadActivity.this,ReadBookActivity.class);
+        intent.putExtra("FileName", filename);
+        folioReader.openBook(filename);
 
         if (!direct.exists()) {
             direct.mkdir();
@@ -131,7 +142,67 @@ public class DownloadActivity extends
                         File.separator + DIR_NAME + File.separator + filename);
 
         dm.enqueue(request);
+
+        Log.e("LOG_TAG", "download: " + filename);
     }
+    private String loadAssetTextAsString(String name) {
+        BufferedReader in = null;
+        try {
+            StringBuilder buf = new StringBuilder();
+            InputStream is = getAssets().open(name);
+            in = new BufferedReader(new InputStreamReader(is));
 
+            String str;
+            boolean isFirst = true;
+            while ((str = in.readLine()) != null) {
+                if (isFirst)
+                    isFirst = false;
+                else
+                    buf.append('\n');
+                buf.append(str);
+            }
+            return buf.toString();
+        } catch (IOException e) {
+            Log.e("HomeActivity", "Error opening asset " + name);
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    Log.e("HomeActivity", "Error closing asset " + name);
+                }
+            }
+        }
+        return null;
+    }
+    private void getHighlightsAndSave() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<HighlightData> highlightList = null;
+                ObjectMapper objectMapper = new ObjectMapper();
+                try {
+                    highlightList = objectMapper.readValue(
+                            loadAssetTextAsString("highlights/highlights_data.json"),
+                            new TypeReference<List<HighlightData>>() {
+                            });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+                if (highlightList == null) {
+                    folioReader.saveReceivedHighLights(null, new OnSaveHighlight() {
+                        @Override
+                        public void onFinished() {
+                            //You can do anything on successful saving highlight list
+                        }
+                    });
+                }
+            }
+        }).start();
+    }
+    @Override
+    public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
+
+    }
 }

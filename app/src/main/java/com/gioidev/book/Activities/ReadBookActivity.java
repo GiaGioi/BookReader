@@ -1,5 +1,6 @@
 package com.gioidev.book.Activities;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.ViewCompat;
@@ -8,9 +9,14 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,10 +48,16 @@ import com.gioidev.book.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -73,6 +85,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageForward;
     private TextView tvCategory;
     FolioReader folioReader;
+    private long downloadID;
 
 
 
@@ -88,6 +101,8 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         getHighlightsAndSave();
         expandtext();
         init();
+
+
 
 
     }
@@ -189,24 +204,76 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btnReadBook:
 //                Intent intent = new Intent(ReadBookActivity.this,DialogActivity.class);
 //                startActivity(intent);
-                ReadPosition readPosition = getLastReadPosition();
-                Config config = AppUtil.getSavedConfig(getApplicationContext());
-                if (config == null)
-                    config = new Config();
-                config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
-                folioReader.setConfig(config, true)
-                        .openBook(Constants.ASSET + "biethailong.epub");
+                download();
 
                 break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void download() {
+
+//        Intent intent = getIntent();
+//        String  url = intent.getStringExtra("Url");
+//
+//        String DIR_NAME = "Book Reader";
+//
+//        String downloadUrlOfImage = url;
+//        File direct =
+//                new File(Environment
+//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+//                        .getAbsolutePath() + "/" + DIR_NAME);
+//
+//        String filename = direct + "/filename.epub";
+//        Config config = AppUtil.getSavedConfig(getApplicationContext());
+//        if (config == null)
+//            config = new Config();
+//        config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
+//        folioReader.openBook(filename);
+//
+//        if (!direct.exists()) {
+//            direct.mkdir();
+//            Log.d("TAG", "dir created for first time");
+//        }
+//        DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
+//        Uri downloadUri = Uri.parse(downloadUrlOfImage);
+//        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+//                .setAllowedOverRoaming(false)
+//                .setTitle(filename)
+//                .setMimeType("file/epub")
+//                .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
+//                        File.separator + DIR_NAME + File.separator + filename);
+//
+//        dm.enqueue(request);
+//
+//        Log.e("LOG_TAG", "download: " + filename);
+        File file= new File(getExternalFilesDir("/Alarms"), "book.epub");
+       /*
+
+       Create a DownloadManager.Request with all the information necessary to start the download
+        */
+        DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("https://firebasestorage.googleapis.com/v0/b/book-38ccb.appspot.com/o/S%C3%A1ch%20t%C3%A2m%20l%C3%AD%20-%20K%C4%A9%20n%C4%83ng%20s%E1%BB%91ng%2FPDF%2FBi%E1%BA%BFt%20H%C3%A0i%20L%C3%B2ng.pdf?alt=media&token=1bccc5d3-0689-4aca-9ab9-9a27a92f686e"))
+                .setTitle("Dummy File")// Title of the Download Notification
+                .setDescription("Downloading")// Description of the Download Notification
+                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)// Visibility of the download Notification
+                .setDestinationUri(Uri.fromFile(file))// Uri of the destination file
+                .setRequiresCharging(false)// Set if charging is required to begin the download
+                .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
+                .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
+
+        dm.enqueue(request);
+
+        Log.e("TAG", "download: " + file );
+    }
     @Override
     public void onFolioReaderClosed() {
         Log.v(LOG_TAG, "-> onFolioReaderClosed");
