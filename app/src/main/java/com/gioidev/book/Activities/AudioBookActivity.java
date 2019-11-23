@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -73,7 +74,7 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
 
         View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.songcardview,null);
         cardviewsong = (LinearLayout) view.findViewById(R.id.cardviewsong);
-        btnplaymusic = (ImageView) findViewById(R.id.btnplaymusic);
+
         namesong = (TextView) view.findViewById(R.id.namesong);
         mRecyclerView= findViewById(R.id.recyclesong);
         mRecyclerView.setHasFixedSize(true);

@@ -95,18 +95,18 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        if (FirebaseAuth.getInstance().getAccessToken(true) != null){
-            signOut();
-        }
-        else if(auth.getCurrentUser().getDisplayName() != null){
-            signOutAuthenication();
-        }
+                if (auth.getCurrentUser() != null){
+                    signOut();
+                }
         else if (AccessToken.getCurrentAccessToken()!= null){
             LoginManager.getInstance().logOut();
             Intent intent = new Intent(getContext(),LoginActivity.class);
             startActivity(intent);
 
         }
+                else {
+                    signOutAuthenication();
+                }
             }
         });
         tvten= view.findViewById(R.id.tvTen);
