@@ -1,6 +1,7 @@
 package com.gioidev.book.Activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 
@@ -52,6 +53,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     public static final String TITLE = "title";
     static final int GOOGLE_SIGN = 123;
+    private SharedPreferences sharedPreferences;
 
     public static final String DESCRIPTION = "description";
     public static final String BUNDLE = "bundel";
@@ -72,6 +74,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+        sharedPreferences=getSharedPreferences("DATA",MODE_PRIVATE);
         AppEventsLogger.activateApp(this);
         //dang loi o dong nay
 //        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
@@ -190,6 +193,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent intent = new Intent(this,HomeActivity.class);
                 startActivity(intent);
                 finish();
+                sharedPreferences.edit().putString("hieungu","1").apply();
                 Toast.makeText(this,"Đăng nhập thành công",Toast.LENGTH_SHORT).show();
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -288,6 +292,7 @@ private void checkloginstatus(){
                                 Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                             }
                         } else {
+                            sharedPreferences.edit().putString("hieungu","0").apply();
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             startActivity(intent);
                             finish();

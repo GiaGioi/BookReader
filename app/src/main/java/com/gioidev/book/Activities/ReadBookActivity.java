@@ -200,6 +200,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnReadBook:
+                download();
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -210,7 +211,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                     }
                 }, 3000);
 
-                download();
+
                 break;
             case R.id.image_x:
 
@@ -259,7 +260,6 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
 
         filename = sdCardRoot.getPath();
-
 
         Log.e("check_path", "" + filename);
     }

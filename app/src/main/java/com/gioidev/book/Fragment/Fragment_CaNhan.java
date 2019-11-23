@@ -1,5 +1,6 @@
 package com.gioidev.book.Fragment;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -96,15 +97,22 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (auth.getCurrentUser() != null) {
-                    signOut();
-                } else if (AccessToken.getCurrentAccessToken() != null) {
-                    LoginManager.getInstance().logOut();
-                    Intent intent = new Intent(getContext(), LoginActivity.class);
-                    startActivity(intent);
-
-                } else {
+//                if (auth.getCurrentUser() != null) {
+//                    signOut();
+//                } else if (AccessToken.getCurrentAccessToken() != null) {
+//                    LoginManager.getInstance().logOut();
+//                    Intent intent = new Intent(getContext(), LoginActivity.class);
+//                    startActivity(intent);
+//
+//                } else {
+//                    signOutAuthenication();
+//                }
+                if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
                     signOutAuthenication();
+                }
+                if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+                    signOut();
+
                 }
             }
         });

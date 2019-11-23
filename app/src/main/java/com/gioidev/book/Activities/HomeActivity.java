@@ -96,6 +96,7 @@ TextView textViewnameemail;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,8 +104,9 @@ TextView textViewnameemail;
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         auth = FirebaseAuth.getInstance();
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             String email = user.getEmail();
@@ -165,20 +167,22 @@ TextView textViewnameemail;
                 case R.id.navigation_home:
                     fragment = new Fragment_Home();
                     loadFragment(fragment);
-                    hide_show();
+                    toolbar.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_category:
+
                     overridePendingTransition(R.anim.right_to_left,R.anim.left_to_right);
                     fragment = new BookcaseFragment();
                     loadFragment(fragment);
-                    hide_show();
+                    toolbar.setVisibility(View.GONE);
+
                     return true;
                 case R.id.navigation_image:
                     overridePendingTransition(R.anim.right_to_left,R.anim.left_to_right);
                     Fragment fragmentcanhan;
                     fragmentcanhan = new Fragment_CaNhan();
                     loadFragment(fragmentcanhan);
-//                    hide_show();
+
                     return true;
 
             }
@@ -188,14 +192,10 @@ TextView textViewnameemail;
     public void hide_show(){
         if(getSupportActionBar() != null){
             getSupportActionBar().hide();
-        }else if (getSupportActionBar().isHideOnContentScrollEnabled()){
-            setSupportActionBar(toolbar);
-            getSupportActionBar().show();
-        }else {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().show();
         }
+
+
+
     }
     private void loadFragment(Fragment fragment) {
         // load fragment
@@ -295,7 +295,6 @@ TextView textViewnameemail;
             isExit = true;
             Toast.makeText(this, "Nhấn lần nữa để trở lại", Toast.LENGTH_SHORT).show();
             timeTask = new TimerTask() {
-
                 @Override
                 public void run() {
                     isExit = false;
