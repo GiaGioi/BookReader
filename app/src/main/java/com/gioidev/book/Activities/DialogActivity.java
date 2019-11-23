@@ -3,6 +3,7 @@ package com.gioidev.book.Activities;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -29,15 +30,22 @@ public class DialogActivity extends AppCompatActivity {
         dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
         dialog.setContentView(view);
         dialog.show();
-
         rvLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 //                startActivity(new Intent(DialogActivity.this,ReadBookActivity.class));
-
-                dialog.dismiss();
+//                dialog.dismiss();
 
             }
         });
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                Intent intent = new Intent(DialogActivity.this,OpenBookActivity.class);
+                startActivity(intent);
+
+            }
+        },3000);
     }
 }

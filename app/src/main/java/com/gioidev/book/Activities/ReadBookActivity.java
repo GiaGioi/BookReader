@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -66,7 +67,7 @@ import at.blogc.android.views.ExpandableTextView;
 import es.dmoral.toasty.Toasty;
 
 public class ReadBookActivity extends AppCompatActivity implements View.OnClickListener
-    , OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener{
+        , OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener {
 
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 
@@ -85,8 +86,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageForward;
     private TextView tvCategory;
     FolioReader folioReader;
-    private long downloadID;
-
+    String filename;
 
 
     @Override
@@ -103,10 +103,9 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         init();
 
 
-
-
     }
-    public void expandtext(){
+
+    public void expandtext() {
         final ExpandableTextView expandableTextView = (ExpandableTextView) this.findViewById(R.id.expandableTextView);
         final TextView buttonToggle = (TextView) this.findViewById(R.id.tv_toggle);
 
@@ -121,29 +120,22 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         expandableTextView.setCollapseInterpolator(new OvershootInterpolator());
 
 // toggle the ExpandableTextView
-        buttonToggle.setOnClickListener(new View.OnClickListener()
-        {
+        buttonToggle.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
+            public void onClick(final View v) {
                 buttonToggle.setText(expandableTextView.isExpanded() ? R.string.expand : R.string.collapse);
                 expandableTextView.toggle();
             }
         });
 
 // but, you can also do the checks yourself
-        buttonToggle.setOnClickListener(new View.OnClickListener()
-        {
+        buttonToggle.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(final View v)
-            {
-                if (expandableTextView.isExpanded())
-                {
+            public void onClick(final View v) {
+                if (expandableTextView.isExpanded()) {
                     expandableTextView.collapse();
                     buttonToggle.setText(R.string.expand);
-                }
-                else
-                {
+                } else {
                     expandableTextView.expand();
                     buttonToggle.setText(R.string.collapse);
                 }
@@ -151,22 +143,20 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         });
 
 // listen for expand / collapse events
-        expandableTextView.addOnExpandListener(new ExpandableTextView.OnExpandListener()
-        {
+        expandableTextView.addOnExpandListener(new ExpandableTextView.OnExpandListener() {
             @Override
-            public void onExpand(final ExpandableTextView view)
-            {
+            public void onExpand(final ExpandableTextView view) {
                 Log.d("TAG", "ExpandableTextView expanded");
             }
 
             @Override
-            public void onCollapse(final ExpandableTextView view)
-            {
+            public void onCollapse(final ExpandableTextView view) {
                 Log.d("TAG", "ExpandableTextView collapsed");
             }
         });
     }
-    public void init(){
+
+    public void init() {
         imageX = findViewById(R.id.image_x);
         imageShare = findViewById(R.id.image_share);
         imageBg = findViewById(R.id.image_bg);
@@ -182,16 +172,17 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         tvCategory = findViewById(R.id.tvCategory);
 
         btnReadBook.setOnClickListener(this);
+        imageX.setOnClickListener(this);
 
         Intent intent = getIntent();
-        String  namebook = intent.getStringExtra("NameBook");
-        String  nameauthor = intent.getStringExtra("NameAuthor");
-        String  url = intent.getStringExtra("Url");
-        String  description = intent.getStringExtra("Description");
-        String  gs = intent.getStringExtra("Gs");
-        String  imagebg = intent.getStringExtra("Image");
-        String  price = intent.getStringExtra("Price");
-        String  category = intent.getStringExtra("Category");
+        String namebook = intent.getStringExtra("NameBook");
+        String nameauthor = intent.getStringExtra("NameAuthor");
+        String url = intent.getStringExtra("Url");
+        String description = intent.getStringExtra("Description");
+        String gs = intent.getStringExtra("Gs");
+        String imagebg = intent.getStringExtra("Image");
+        String price = intent.getStringExtra("Price");
+        String category = intent.getStringExtra("Category");
 
         Glide.with(this).load(imagebg).into(imageBg);
         Glide.with(this).load(imagebg).into(image);
@@ -207,19 +198,71 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btnReadBook:
-//                Intent intent = new Intent(ReadBookActivity.this,DialogActivity.class);
-//                startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent intent = new Intent(ReadBookActivity.this, OpenBookActivity.class);
+                        intent.putExtra("FileName", String.valueOf(filename));
+                        startActivity(intent);
+                    }
+                }, 3000);
+
                 download();
+                break;
+            case R.id.image_x:
 
                 break;
+
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void download() {
+        Intent intent = getIntent();
+        String url = intent.getStringExtra("Url");
 
+        String storagePath = Environment.getExternalStorageDirectory()
+                .getPath()
+                + "/Book Reader/";
+        File f = new File(storagePath);
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        //storagePath.mkdirs();
+//        String pathname = uri.toString();
+        if (!f.exists()) {
+            f.mkdirs();
+        }
+        Uri uri = Uri.parse(url);
+
+
+        DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
+        DownloadManager.Request request = new DownloadManager.Request(uri)
+                .setTitle("Book Reader")// Title of the Download Notification
+                // Description of the Download Notification
+                // Visibility of the download Notification
+                .setDestinationUri(Uri.fromFile(f))// Uri of the destination file
+                .setRequiresCharging(false)// Set if charging is required to begin the download
+                .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
+                .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
+
+//                Log.d("Storage ",""+pathname);
+        request.setDestinationInExternalPublicDir("/Book Reader", uri.getLastPathSegment());
+        dm.enqueue(request);
+
+//        File file = Environment.getDataDirectory();
+//        String pathname = String.valueOf(Environment.getDataDirectory());
+
+        File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+
+        filename = sdCardRoot.getPath();
+
+
+        Log.e("check_path", "" + filename);
+    }
 //        Intent intent = getIntent();
 //        String  url = intent.getStringExtra("Url");
 //
@@ -232,11 +275,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 //                        .getAbsolutePath() + "/" + DIR_NAME);
 //
 //        String filename = direct + "/filename.epub";
-//        Config config = AppUtil.getSavedConfig(getApplicationContext());
-//        if (config == null)
-//            config = new Config();
-//        config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
-//        folioReader.openBook(filename);
+//
 //
 //        if (!direct.exists()) {
 //            direct.mkdir();
@@ -255,25 +294,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 //        dm.enqueue(request);
 //
 //        Log.e("LOG_TAG", "download: " + filename);
-        File file= new File(getExternalFilesDir("/Alarms"), "book.epub");
-       /*
 
-       Create a DownloadManager.Request with all the information necessary to start the download
-        */
-        DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request=new DownloadManager.Request(Uri.parse("https://firebasestorage.googleapis.com/v0/b/book-38ccb.appspot.com/o/S%C3%A1ch%20t%C3%A2m%20l%C3%AD%20-%20K%C4%A9%20n%C4%83ng%20s%E1%BB%91ng%2FPDF%2FBi%E1%BA%BFt%20H%C3%A0i%20L%C3%B2ng.pdf?alt=media&token=1bccc5d3-0689-4aca-9ab9-9a27a92f686e"))
-                .setTitle("Dummy File")// Title of the Download Notification
-                .setDescription("Downloading")// Description of the Download Notification
-                .setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE)// Visibility of the download Notification
-                .setDestinationUri(Uri.fromFile(file))// Uri of the destination file
-                .setRequiresCharging(false)// Set if charging is required to begin the download
-                .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
-                .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
-
-        dm.enqueue(request);
-
-        Log.e("TAG", "download: " + file );
-    }
     @Override
     public void onFolioReaderClosed() {
         Log.v(LOG_TAG, "-> onFolioReaderClosed");
@@ -284,6 +305,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         String jsonString = loadAssetTextAsString("read_positions/read_position.json");
         return ReadPositionImpl.createInstance(jsonString);
     }
+
     private String loadAssetTextAsString(String name) {
         BufferedReader in = null;
         try {
@@ -341,6 +363,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
             }
         }).start();
     }
+
     @Override
     public void onHighlight(HighLight highlight, HighLight.HighLightAction type) {
     }
@@ -350,6 +373,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 
         Log.i(LOG_TAG, "-> ReadPosition = " + readPosition.toJson());
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

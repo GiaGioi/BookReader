@@ -51,12 +51,14 @@ public class GridViewRecyclerViewAdapter extends
         holder.tvAuther.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
             }
         });
     }
