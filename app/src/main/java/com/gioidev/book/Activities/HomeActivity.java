@@ -306,7 +306,6 @@ TextView textViewnameemail;
     }
     @Override
     protected void onDestroy() {
-        timer.cancel();
         super.onDestroy();
     }
 

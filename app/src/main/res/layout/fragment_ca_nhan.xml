@@ -60,16 +60,16 @@
 
         </LinearLayout>
 
-        <TextView
-
+        <Button
+            android:background="@drawable/bgbtn"
             android:id="@+id/tvLogOUt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_margin="25dp"
             android:text="Đăng Xuất"
-            android:textColor="#FF0000"
-            android:textSize="30dp" />
+            android:textColor="#FFFFFF"
+            android:textSize="18sp" />
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

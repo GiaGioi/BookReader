@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -63,7 +64,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
     private FrameLayout mainContainer;
     private RecyclerView rvVertical;
     ArrayList<VerticalModel> mArrayList = new ArrayList<>();
-    private TextView tvLogOut;
+    private Button tvLogOut;
     VerticalRecyclerViewAdapter mAdapter;
 
     private SliderView imageSlider;
@@ -95,21 +96,19 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (auth.getCurrentUser() != null){
+                if (auth.getCurrentUser() != null) {
                     signOut();
-                }
-        else if (AccessToken.getCurrentAccessToken()!= null){
-            LoginManager.getInstance().logOut();
-            Intent intent = new Intent(getContext(),LoginActivity.class);
-            startActivity(intent);
+                } else if (AccessToken.getCurrentAccessToken() != null) {
+                    LoginManager.getInstance().logOut();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
 
-        }
-                else {
+                } else {
                     signOutAuthenication();
                 }
             }
         });
-        tvten= view.findViewById(R.id.tvTen);
+        tvten = view.findViewById(R.id.tvTen);
 //        tvten.setText(user.getEmail());
         lineChartView = view.findViewById(R.id.chart);
 
@@ -154,36 +153,39 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         return view;
 
     }
-        private void signOut() {
-   final FirebaseAuth auth = FirebaseAuth.getInstance();
-    GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail().build();
-    GoogleSignInClient signInClient = GoogleSignIn.getClient(getContext(),signInOptions);
-    signInClient.revokeAccess().addOnSuccessListener(new OnSuccessListener<Void>() {
-        @Override
-        public void onSuccess(Void aVoid) {
-            Toast.makeText(getContext(),auth.getCurrentUser().getDisplayName()+" Đăng xuất thành công" ,Toast.LENGTH_SHORT).show();
-            auth.signOut();
-            Intent intent = new Intent(getContext(),LoginActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
 
-        }
-    }).addOnFailureListener(new OnFailureListener() {
-        @Override
-        public void onFailure(@NonNull Exception e) {
+    private void signOut() {
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail().build();
+        GoogleSignInClient signInClient = GoogleSignIn.getClient(getContext(), signInOptions);
+        signInClient.revokeAccess().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Toast.makeText(getContext(), auth.getCurrentUser().getDisplayName() + " Đăng xuất thành công", Toast.LENGTH_SHORT).show();
+                auth.signOut();
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                startActivity(intent);
 
-        }
-    });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+            }
+        });
 
     }
-    private void signOutAuthenication(){
+
+    private void signOutAuthenication() {
         auth.signOut();
-        Intent intent = new Intent(getContext(),LoginActivity.class);
+        Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
 
     }
+
     @Override
     public void onRefresh() {
 
