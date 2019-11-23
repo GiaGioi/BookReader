@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -85,7 +86,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageForward;
     private TextView tvCategory;
     FolioReader folioReader;
-    private long downloadID;
+    String filename;
 
 
     @Override
@@ -171,6 +172,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         tvCategory = findViewById(R.id.tvCategory);
 
         btnReadBook.setOnClickListener(this);
+        imageX.setOnClickListener(this);
 
         Intent intent = getIntent();
         String namebook = intent.getStringExtra("NameBook");
@@ -198,16 +200,29 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnReadBook:
-//                Intent intent = new Intent(ReadBookActivity.this,DialogActivity.class);
-//                startActivity(intent);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Intent intent = new Intent(ReadBookActivity.this, OpenBookActivity.class);
+                        intent.putExtra("FileName", String.valueOf(filename));
+                        startActivity(intent);
+                    }
+                }, 3000);
+
                 download();
+                break;
+            case R.id.image_x:
 
                 break;
+
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void download() {
+        Intent intent = getIntent();
+        String url = intent.getStringExtra("Url");
 
         String storagePath = Environment.getExternalStorageDirectory()
                 .getPath()
@@ -221,14 +236,14 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         if (!f.exists()) {
             f.mkdirs();
         }
-        Uri uri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/book-38ccb.appspot.com/o/Marketing%20-%20Kh%C3%A1ch%20h%C3%A0ng%2FEpub%2F40%2B%20B%C3%AD%20K%C3%ADp%20Chinh%20Ph%E1%BB%A5c%20Kh%C3%A1ch%20H%C3%A0ng%20Qua%20%C4%90i%E1%BB%87n%20Tho%E1%BA%A1i.epub?alt=media&token=78ea6462-147e-4cbf-9a7f-d75cb792a521");
+        Uri uri = Uri.parse(url);
+
 
         DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
         DownloadManager.Request request = new DownloadManager.Request(uri)
                 .setTitle("Book Reader")// Title of the Download Notification
                 // Description of the Download Notification
                 // Visibility of the download Notification
-                .setShowRunningNotification(false)
                 .setDestinationUri(Uri.fromFile(f))// Uri of the destination file
                 .setRequiresCharging(false)// Set if charging is required to begin the download
                 .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
@@ -241,10 +256,12 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 //        File file = Environment.getDataDirectory();
 //        String pathname = String.valueOf(Environment.getDataDirectory());
 
-        Log.e("TAG", "download: " + storagePath);
-//        Log.e("TAG2", "download: " + pathname);
-        Log.e("TAG3", "download: " + f);
-        Log.e("TAG3", "download: " + uri);
+        File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+
+        filename = sdCardRoot.getPath();
+
+
+        Log.e("check_path", "" + filename);
     }
 //        Intent intent = getIntent();
 //        String  url = intent.getStringExtra("Url");
@@ -258,11 +275,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 //                        .getAbsolutePath() + "/" + DIR_NAME);
 //
 //        String filename = direct + "/filename.epub";
-//        Config config = AppUtil.getSavedConfig(getApplicationContext());
-//        if (config == null)
-//            config = new Config();
-//        config.setAllowedDirection(Config.AllowedDirection.VERTICAL_AND_HORIZONTAL);
-//        folioReader.openBook(filename);
+//
 //
 //        if (!direct.exists()) {
 //            direct.mkdir();

@@ -97,7 +97,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
 
     }
     public void getDataHorizontal(){
-        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/SkillBook");
+        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("Epub/SkillBook");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
