@@ -2,6 +2,7 @@ package com.gioidev.book.Adapter.AdapterHome;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,10 @@ public class HorizontalRecyclerViewAdapter extends
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                SharedPreferences preferences = mContext.getSharedPreferences("Data", Context.MODE_PRIVATE);
+                preferences.edit().putString("Horizontal","0").apply();
+
                 Intent intent = new Intent(mContext, ReadBookActivity.class);
                 intent.putExtra("Url", String.valueOf(current.getUrl()));
                 intent.putExtra("NameBook", current.getNameBook());

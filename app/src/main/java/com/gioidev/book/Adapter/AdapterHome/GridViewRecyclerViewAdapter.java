@@ -1,6 +1,8 @@
 package com.gioidev.book.Adapter.AdapterHome;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.gioidev.book.Activities.ReadBookActivity;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.R;
 
@@ -42,7 +45,19 @@ public class GridViewRecyclerViewAdapter extends
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext,  current.getUrl(), Toast.LENGTH_SHORT).show();
+                SharedPreferences preferences = mContext.getSharedPreferences("Data", Context.MODE_PRIVATE);
+                preferences.edit().putString("Horizontal","1").apply();
+
+                Intent intent = new Intent(mContext, ReadBookActivity.class);
+                intent.putExtra("Url", String.valueOf(current.getUrl()));
+                intent.putExtra("NameBook", current.getNameBook());
+                intent.putExtra("NameAuthor", current.getNameAuthor());
+                intent.putExtra("Description", current.getDescription());
+                intent.putExtra("Gs", current.getGs());
+                intent.putExtra("Image", current.getImage());
+                intent.putExtra("Price", current.getPrice());
+                intent.putExtra("Category", current.getCategory());
+                mContext.startActivity(intent);
             }
         });
         holder.tvAuther.setText(current.getNameAuthor());

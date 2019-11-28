@@ -9,9 +9,12 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.app.Dialog;
 import android.app.DownloadManager;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -27,6 +30,8 @@ import android.view.WindowManager;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,6 +53,7 @@ import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.pdftron.pdf.controls.DocumentActivity;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -69,6 +75,12 @@ import es.dmoral.toasty.Toasty;
 public class ReadBookActivity extends AppCompatActivity implements View.OnClickListener
         , OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener {
 
+    private Button btnDialog;
+    Dialog dialog;
+    private RelativeLayout rvLayout;
+    private ImageView image2;
+    private ImageView view1;
+    private ProgressBar progressBar;
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 
     HorizontalModel horizontalModel;
@@ -87,6 +99,8 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     private TextView tvCategory;
     FolioReader folioReader;
     String filename;
+    Uri uri;
+    SharedPreferences sharedPreferences;
 
 
     @Override
@@ -192,6 +206,10 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         tvPrice.setText(price);
         tvCategory.setText(category);
 
+        sharedPreferences=getSharedPreferences("DATA2",MODE_PRIVATE);
+        sharedPreferences.edit().putString("Image",imagebg).apply();
+
+
 
     }
 
@@ -200,26 +218,43 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnReadBook:
-                download();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        Intent intent = new Intent(ReadBookActivity.this, OpenBookActivity.class);
-                        intent.putExtra("FileName", String.valueOf(filename));
-                        startActivity(intent);
-                    }
-                }, 3000);
-
+//                download();
+//                viewDialog();
+                if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("0")){
+                    new DownloadfromInternet().execute();
+                }
+                if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("1"))
+                    new DownloadfilePDF().execute();
 
                 break;
             case R.id.image_x:
-
+                startActivity(new Intent(ReadBookActivity.this,HomeActivity.class));
                 break;
 
         }
     }
+    public void viewDialog(){
+        Intent intent = getIntent();
+        String imagebg = intent.getStringExtra("Image");
 
+        View view = getLayoutInflater().inflate(R.layout.item_full_screen_dialog,null);
+        rvLayout = view.findViewById(R.id.rvLayout);
+        view1 = view.findViewById(R.id.viewImage);
+        progressBar = view.findViewById(R.id.progress);
+
+        image2 = view.findViewById(R.id.image);
+
+        Glide.with(this).load(imagebg).into(image2);
+        Glide.with(this).load(imagebg).into(view1);
+
+        dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.setContentView(view);
+
+        progressBar.setIndeterminate(false);
+        progressBar.setMax(100);
+        progressBar.setVisibility(View.VISIBLE);
+        dialog.show();
+    }
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void download() {
         Intent intent = getIntent();
@@ -232,68 +267,188 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         if (!f.exists()) {
             f.mkdirs();
         }
-        //storagePath.mkdirs();
-//        String pathname = uri.toString();
-        if (!f.exists()) {
-            f.mkdirs();
-        }
         Uri uri = Uri.parse(url);
+        File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+//
+//        filename = sdCardRoot.getPath();
+//
+//        Log.e("check_path", "" + filename);
+        Log.e("SD", "" + sdCardRoot);
+        if (sdCardRoot.exists()) {
+            Intent intentopen = new Intent(ReadBookActivity.this, OpenBookActivity.class);
+//            intentopen.putExtra("FileName", String.valueOf(filename));
+            startActivity(intentopen);
 
 
-        DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
-        DownloadManager.Request request = new DownloadManager.Request(uri)
-                .setTitle("Book Reader")// Title of the Download Notification
-                // Description of the Download Notification
-                // Visibility of the download Notification
-                .setDestinationUri(Uri.fromFile(f))// Uri of the destination file
-                .setRequiresCharging(false)// Set if charging is required to begin the download
-                .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
-                .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
+        } else {
+            DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
+            DownloadManager.Request request = new DownloadManager.Request(uri)
+                    .setTitle("Book Reader")// Title of the Download Notification
+                    // Description of the Download Notification
+                    // Visibility of the download Notification
+                    .setDestinationUri(Uri.fromFile(f))// Uri of the destination file
+                    .setRequiresCharging(false)// Set if charging is required to begin the download
+                    .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
+                    .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
 
 //                Log.d("Storage ",""+pathname);
-        request.setDestinationInExternalPublicDir("/Book Reader", uri.getLastPathSegment());
-        dm.enqueue(request);
+            request.setDestinationInExternalPublicDir("/Book Reader", uri.getLastPathSegment());
+            dm.enqueue(request);
 
-//        File file = Environment.getDataDirectory();
-//        String pathname = String.valueOf(Environment.getDataDirectory());
 
-        File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+            //File file = Environment.getDataDirectory();
+            //String pathname = String.valueOf(Environment.getDataDirectory());
 
-        filename = sdCardRoot.getPath();
 
-        Log.e("check_path", "" + filename);
+        }
+
+        //storagePath.mkdirs();
+//        String pathname = uri.toString();
+
+
     }
-//        Intent intent = getIntent();
-//        String  url = intent.getStringExtra("Url");
-//
-//        String DIR_NAME = "Book Reader";
-//
-//        String downloadUrlOfImage = url;
-//        File direct =
-//                new File(Environment
-//                        .getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-//                        .getAbsolutePath() + "/" + DIR_NAME);
-//
-//        String filename = direct + "/filename.epub";
-//
-//
-//        if (!direct.exists()) {
-//            direct.mkdir();
-//            Log.d("TAG", "dir created for first time");
-//        }
-//        DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
-//        Uri downloadUri = Uri.parse(downloadUrlOfImage);
-//        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-//        request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
-//                .setAllowedOverRoaming(false)
-//                .setTitle(filename)
-//                .setMimeType("file/epub")
-//                .setDestinationInExternalPublicDir(Environment.DIRECTORY_PICTURES,
-//                        File.separator + DIR_NAME + File.separator + filename);
-//
-//        dm.enqueue(request);
-//
-//        Log.e("LOG_TAG", "download: " + filename);
+
+    class DownloadfromInternet extends AsyncTask<String, String, String> {
+
+        // Show Progress bar before downloading Music
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Shows Progress Bar Dialog and then call doInBackground method
+            viewDialog();
+        }
+
+        // Download Music File from Internet
+        @Override
+        protected String doInBackground(String... f_url) {
+            int count;
+            try {
+                Intent intent = getIntent();
+                String url1 = intent.getStringExtra("Url");
+                Uri uri = Uri.parse(url1);
+
+                URL url = new URL(url1);
+                URLConnection conection = url.openConnection();
+                conection.connect();
+                // Get File file length
+                int lenghtOfFile = conection.getContentLength();
+                // input stream to read file - with 8k buffer
+                InputStream input = new BufferedInputStream(url.openStream(), 10 * 1024);
+                // Output stream to write file in SD card
+                OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+
+                File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+                filename = sdCardRoot.getPath();
+
+                Log.e("TAG", "onCreate: "+ filename);
+                byte data[] = new byte[1024];
+                long total = 0;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    // Publish the progress which triggers onProgressUpdate method
+                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+
+                    // Write data to file
+                    output.write(data, 0, count);
+                }
+                // Flush output
+                output.flush();
+                // Close streams
+                output.close();
+                input.close();
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+            return null;
+        }
+
+        // While Downloading Music File
+        protected void onProgressUpdate(String... progress) {
+            // Set progress percentage
+            progressBar.setProgress(Integer.parseInt(progress[0]));
+        }
+
+        // Once Music File is downloaded
+        @Override
+        protected void onPostExecute(String file_url) {
+            // Dismiss the dialog after the Music file was downloaded
+
+            sharedPreferences=getSharedPreferences("DATA",MODE_PRIVATE);
+            sharedPreferences.edit().putString("File",filename).apply();
+            startActivity(new Intent(ReadBookActivity.this,OpenBookActivity.class));
+            dialog.dismiss();
+            // Play the music
+        }
+    }
+
+    class DownloadfilePDF extends AsyncTask<String, String, String> {
+
+        // Show Progress bar before downloading Music
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            // Shows Progress Bar Dialog and then call doInBackground method
+            viewDialog();
+        }
+
+        // Download Music File from Internet
+        @Override
+        protected String doInBackground(String... f_url) {
+            int count;
+            try {
+                Intent intent = getIntent();
+                String url1 = intent.getStringExtra("Url");
+                uri = Uri.parse(url1);
+
+                URL url = new URL(url1);
+                URLConnection conection = url.openConnection();
+                conection.connect();
+                // Get File file length
+                int lenghtOfFile = conection.getContentLength();
+                // input stream to read file - with 8k buffer
+                InputStream input = new BufferedInputStream(url.openStream(), 10 * 1024);
+                // Output stream to write file in SD card
+                OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+
+                byte data[] = new byte[1024];
+                long total = 0;
+                while ((count = input.read(data)) != -1) {
+                    total += count;
+                    // Publish the progress which triggers onProgressUpdate method
+                    publishProgress("" + (int) ((total * 100) / lenghtOfFile));
+
+                    // Write data to file
+                    output.write(data, 0, count);
+                }
+                // Flush output
+                output.flush();
+                // Close streams
+                output.close();
+                input.close();
+            } catch (Exception e) {
+                Log.e("Error: ", e.getMessage());
+            }
+            return null;
+        }
+
+        // While Downloading Music File
+        protected void onProgressUpdate(String... progress) {
+            // Set progress percentage
+
+            progressBar.setProgress(Integer.parseInt(progress[0]));
+        }
+
+        // Once Music File is downloaded
+        @Override
+        protected void onPostExecute(String file_url) {
+            // Dismiss the dialog after the Music file was downloaded
+            // Play the music
+            File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
+
+            DocumentActivity.openDocument(ReadBookActivity.this, Uri.parse(sdCardRoot.getPath()));
+            dialog.dismiss();
+        }
+    }
 
     @Override
     public void onFolioReaderClosed() {

@@ -2,6 +2,7 @@ package com.gioidev.book.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,11 +38,8 @@ public class OpenBookActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_open_book);
 
-        Intent intent = getIntent();
-        String filename = intent.getStringExtra("FileName");
-
-        Log.e("TAG", "onCreate: " + filename );
-
+        String filename = getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("File","");
+        Log.e("TAG", "onCreate: " + filename);
         folioReader = FolioReader.get()
                 .setOnHighlightListener(this)
                 .setOnClosedListener(this);
@@ -140,5 +138,12 @@ public class OpenBookActivity extends AppCompatActivity implements
     protected void onDestroy() {
         super.onDestroy();
         FolioReader.clear();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        startActivity(new Intent(OpenBookActivity.this,HomeActivity.class));
     }
 }

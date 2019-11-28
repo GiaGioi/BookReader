@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Book</string>
+    <string name="app_name">Book Reader</string>
     <string name="facebook_app_id">406010473642740</string>
     <string name="fb_login_protocol_scheme">fb406010473642740</string>
 
@@ -35,4 +35,5 @@
     <string name="expand">Xem thêm</string>
     <string name="collapse" >Thu gọn</string>
     <string name="title_activity_audio_book">AudioBookActivity</string>
+    <string name="home">Home</string>
 </resources>

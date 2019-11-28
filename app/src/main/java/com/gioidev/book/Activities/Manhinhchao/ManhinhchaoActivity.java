@@ -2,6 +2,7 @@ package com.gioidev.book.Activities.Manhinhchao;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.Manifest;
 import android.app.backup.SharedPreferencesBackupHelper;
 import android.content.Context;
 import android.content.Intent;
@@ -9,8 +10,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Telephony;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +42,6 @@ public class ManhinhchaoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manhinhchao);
-
 
 
 

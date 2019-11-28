@@ -19,6 +19,7 @@ buildscript {
     }
 }
 
+
 allprojects {
     repositories {
         mavenCentral()
@@ -28,6 +29,10 @@ allprojects {
         maven { url "https://dl.bintray.com/mobisystech/maven" }
         maven {
             url 'https://github.com/psiegman/mvn-repo/raw/master/releases'
+        }
+        //pdf
+        maven {
+            url "https://pdftron-maven.s3.amazonaws.com/release"
         }
         mavenLocal()
     }

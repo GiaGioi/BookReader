@@ -1,6 +1,7 @@
 package com.gioidev.book.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -15,6 +16,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -65,6 +68,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.pdftron.pdf.controls.DocumentActivity;
 import com.smarteist.autoimageslider.SliderView;
 import java.util.ArrayList;
 import java.util.List;
@@ -91,12 +95,13 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     ArrayList<VerticalModel> mArrayList = new ArrayList<>();
 
     VerticalRecyclerViewAdapter mAdapter;
-TextView textViewnameemail;
+    TextView textViewnameemail;
     private SliderView imageSlider;
     private SwipeRefreshLayout swipeRefreshLayout;
 
     Toolbar toolbar;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -128,7 +133,8 @@ TextView textViewnameemail;
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
-        toolbar.setTitle("AA");
+        toolbar.setTitle(R.string.home);
+        toolbar.setTitleTextColor(android.R.color.background_dark);
         toolbar.setNavigationIcon(R.drawable.toggle);
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
@@ -189,14 +195,6 @@ TextView textViewnameemail;
             return false;
         }
     };
-    public void hide_show(){
-        if(getSupportActionBar() != null){
-            getSupportActionBar().hide();
-        }
-
-
-
-    }
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -278,16 +276,20 @@ TextView textViewnameemail;
 //        startActivity(intent);
 //        finish();
 //    }
-
-
+    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            doubleExit();
+        if(getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        }
+        else if(getFragmentManager().getBackStackEntryCount() == 1) {
+            moveTaskToBack(false);
+        }
+        else {
+            getFragmentManager().popBackStack();
         }
     }
+
     private void doubleExit() {
         if (isExit) {
             finish();
@@ -307,7 +309,5 @@ TextView textViewnameemail;
     protected void onDestroy() {
         super.onDestroy();
     }
-
-
 
 }
