@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -107,13 +108,20 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
 //                } else {
 //                    signOutAuthenication();
 //                }
-                if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+                  if (AccessToken.getCurrentAccessToken() != null) {
+                    Log.e("ditconme","ddeo dang xuat duoc");
+                    LoginManager.getInstance().logOut();
+                    Intent intent = new Intent(getContext(), LoginActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+                }
+                 else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
                     signOutAuthenication();
                 }
-                if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+                 else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
                     signOut();
-
                 }
+
             }
         });
         tvten = view.findViewById(R.id.tvTen);
@@ -176,6 +184,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
+                getActivity().finish();
 
             }
         }).addOnFailureListener(new OnFailureListener() {
@@ -191,7 +200,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         auth.signOut();
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
-
+        getActivity().finish();
     }
 
     @Override
