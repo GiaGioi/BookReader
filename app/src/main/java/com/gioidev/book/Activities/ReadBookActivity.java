@@ -226,6 +226,9 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                 if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("1"))
                     new DownloadfilePDF().execute();
 
+                if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("3"))
+                    new DownloadfilePDF().execute();
+
                 break;
             case R.id.image_x:
                 startActivity(new Intent(ReadBookActivity.this,HomeActivity.class));

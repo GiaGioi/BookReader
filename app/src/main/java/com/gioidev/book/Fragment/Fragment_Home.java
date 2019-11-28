@@ -58,9 +58,11 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
 
     HorizontalModel mHorizontalModel;
     GridViewModel gridViewModel;
+    SliderModel sliderModel;
     VerticalModel mVerticalModel;
     List<HorizontalModel> horizontalModels;
     ArrayList<GridViewModel> gridViewModels;
+    ArrayList<SliderModel> sliderModels;
 
     HorizontalModel user;
     FirebaseDatabase database;
@@ -93,6 +95,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
         setDataOnVerticalRecyclerView();
         getDataHorizontal();
         getDataGridview();
+        getDataSlider();
 
         return view;
 
@@ -165,11 +168,51 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     gridViewModel.setImage(Image);
                     gridViewModel.setGs(Gs);
                     gridViewModel.setDescription(Description);
-                    mHorizontalModel.setCategory(Category);
+                    gridViewModel.setCategory(Category);
 
                     gridViewModels.add(gridViewModel);
 
                     mVerticalModel.setArrayList(horizontalModels);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    public void getDataSlider(){
+        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("Slider");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    keys.add(snapshot.getKey());
+
+                    String nameBook = String.valueOf(snapshot.child("NameBook").getValue());
+                    String nameAuthor = String.valueOf(snapshot.child("NameAuthor").getValue());
+                    String Description = String.valueOf(snapshot.child("Description").getValue());
+                    String Image = String.valueOf(snapshot.child("Image").getValue());
+                    String Url = String.valueOf(snapshot.child("Url").getValue());
+                    String Gs = String.valueOf(snapshot.child("Gs").getValue());
+                    String Price = String.valueOf(snapshot.child("Price").getValue());
+                    String Category = String.valueOf(snapshot.child("Category").getValue());
+                    sliderModel = new SliderModel();
+                    sliderModel.setNameBook(nameBook);
+                    sliderModel.setPrice(Price);
+                    sliderModel.setUrl(Url);
+                    sliderModel.setNameAuthor(nameAuthor);
+                    sliderModel.setImage(Image);
+                    sliderModel.setGs(Gs);
+                    sliderModel.setDescription(Description);
+                    sliderModel.setCategory(Category);
+
+                    sliderModels.add(sliderModel);
+
+                    mVerticalModel.setSliderModels(sliderModels);
                     mAdapter.notifyDataSetChanged();
                 }
             }
@@ -195,15 +238,14 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             mVerticalModel.setArrayList(horizontalModels);
 
             //slider
-            ArrayList<SliderModel> sliderModels = new ArrayList<>();
-
-            for (int j = 0; j <= 5; j++) {
-                SliderModel sliderModel = new SliderModel();
-                sliderModel.getImage();
+            for (int j = 0; j < 4; j++) {
+                sliderModels = new ArrayList<>();
+                sliderModel = new SliderModel();
                 sliderModels.add(sliderModel);
             }
             mVerticalModel.setSliderModels(sliderModels);
-            for (int j = 0; j <6; j++) {
+
+            for (int j = 0; j < 6; j++) {
                 //gridview
                 gridViewModels = new ArrayList<>();
                 gridViewModel = new GridViewModel();
@@ -230,6 +272,8 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             @Override
             public void run() {
                 getDataHorizontal();
+                getDataGridview();
+                getDataSlider();
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 1000);

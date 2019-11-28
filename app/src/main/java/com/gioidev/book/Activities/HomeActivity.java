@@ -26,6 +26,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,6 +101,8 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     private SwipeRefreshLayout swipeRefreshLayout;
 
     Toolbar toolbar;
+    private ImageView imageView;
+    private TextView textView;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -145,6 +148,10 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
 
         Fragment_Home homeFragment = new Fragment_Home();
         Functions.changeMainFragment(HomeActivity.this, homeFragment);
+
+        imageView = findViewById(R.id.imageView);
+        textView = findViewById(R.id.textView);
+
 
     }
     @Override
