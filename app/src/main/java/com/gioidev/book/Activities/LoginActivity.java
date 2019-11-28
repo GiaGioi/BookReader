@@ -139,7 +139,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
                         startActivity(intent);
                         finish();
-
+                        sharedPreferences.edit().putString("hieungu1","1").apply();
                     }
 
                     @Override
