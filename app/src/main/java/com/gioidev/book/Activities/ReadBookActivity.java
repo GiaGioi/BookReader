@@ -187,6 +187,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 
         btnReadBook.setOnClickListener(this);
         imageX.setOnClickListener(this);
+        imageShare.setOnClickListener(this);
 
         Intent intent = getIntent();
         String namebook = intent.getStringExtra("NameBook");
@@ -233,6 +234,17 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
             case R.id.image_x:
                 startActivity(new Intent(ReadBookActivity.this,HomeActivity.class));
                 break;
+
+            case R.id.image_share:
+
+                Intent intent = new Intent(Intent.ACTION_SEND);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TEXT,"Mời bạn đọc sách");
+                startActivity(intent);
+                break;
+
+
 
         }
     }

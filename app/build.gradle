@@ -13,7 +13,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         //vector
         vectorDrawables.useSupportLibrary = true
-        manifestPlaceholders = [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
+        manifestPlaceholders = [pdftronLicenseKey: PDFTRON_LICENSE_KEY]
 
     }
     buildTypes {

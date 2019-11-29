@@ -7,13 +7,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.gioidev.book.Model.GridViewFragment;
+import com.gioidev.book.Model.GridViewFragmentModel;
 import com.gioidev.book.R;
 
 import java.util.ArrayList;
@@ -22,9 +21,9 @@ public class FragmentKiNangAdapter extends
         RecyclerView.Adapter<FragmentKiNangAdapter.FragmentKiNangHolder> {
 
     private Context mContext;
-    private ArrayList<GridViewFragment> gridViewModels;
+    private ArrayList<GridViewFragmentModel> gridViewModels;
 
-    public FragmentKiNangAdapter(Context mContext, ArrayList<GridViewFragment> gridViewModels) {
+    public FragmentKiNangAdapter(Context mContext, ArrayList<GridViewFragmentModel> gridViewModels) {
         this.mContext = mContext;
         this.gridViewModels = gridViewModels;
     }
@@ -40,10 +39,11 @@ public class FragmentKiNangAdapter extends
 
     @Override
     public void onBindViewHolder(@NonNull FragmentKiNangHolder holder, int position) {
-        final GridViewFragment current = gridViewModels.get(position);
+        final GridViewFragmentModel current = gridViewModels.get(position);
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
             }
         });
         holder.tvAuther.setText(current.getNameAuthor());
@@ -64,7 +64,7 @@ public class FragmentKiNangAdapter extends
 
     @Override
     public int getItemCount() {
-        return 0;
+        return gridViewModels.size();
     }
 
     public class FragmentKiNangHolder extends RecyclerView.ViewHolder {

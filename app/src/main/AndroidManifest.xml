@@ -23,30 +23,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <!--Add key pdf tron-->
+        <activity android:name=".Activities.ReadBookComicActivity"></activity>
+        <!-- Add key pdf tron -->
         <meta-data
             android:name="pdftron_license_key"
-            android:value="${pdftronLicenseKey}"/>
-
-        <!-- Document viewer activity declaration-->
-        <activity android:name="com.pdftron.pdf.controls.DocumentActivity"
+            android:value="${pdftronLicenseKey}" /> <!-- Document viewer activity declaration -->
+        <activity
+            android:name="com.pdftron.pdf.controls.DocumentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/CustomAppTheme"/>
-
-        <activity android:name=".Activities.AudioBookActivity">
-
-        </activity>
-        <activity android:name=".Activities.ReadBookActivity">
-
-
-        </activity>
-        <!-- Open book -->
-        <activity android:name=".Activities.OpenBookActivity" />
-        <!-- Book case -->
-        <activity android:name=".Activities.DownloadActivity" >
-
-        </activity>
+            android:theme="@style/CustomAppTheme"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".Activities.AudioBookActivity"></activity>
+        <activity android:name=".Activities.ReadBookActivity"></activity> <!-- Open book -->
+        <activity android:name=".Activities.OpenBookActivity" /> <!-- Book case -->
+        <activity android:name=".Activities.DownloadActivity"></activity>
         <activity android:name=".Activities.ResetPasswordActivity" />
         <activity android:name=".Activities.DangkiActivity" />
         <activity android:name=".Activities.LoginActivity" />
@@ -62,12 +52,11 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity> <!-- Home -->
-        <activity android:name=".Activities.HomeActivity" >
-
-        </activity>
+        <activity android:name=".Activities.HomeActivity"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
@@ -92,8 +81,6 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
     </application>
-
 
 </manifest>

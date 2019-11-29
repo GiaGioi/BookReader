@@ -1,11 +1,12 @@
 package com.gioidev.book.Model;
 
-public class GridViewFragment {
+public class ComicBookModel {
+
     private String nameBook, description,url,gs,image,price,nameAuthor,category;
 
-    public GridViewFragment(){
-    }
-    public GridViewFragment(String nameBook, String description, String url, String gs, String image, String price, String nameAuthor, String category) {
+    public ComicBookModel(){}
+
+    public ComicBookModel(String nameBook, String description, String url, String gs, String image, String price, String nameAuthor, String category) {
         this.nameBook = nameBook;
         this.description = description;
         this.url = url;
@@ -13,14 +14,6 @@ public class GridViewFragment {
         this.image = image;
         this.price = price;
         this.nameAuthor = nameAuthor;
-        this.category = category;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
         this.category = category;
     }
 
@@ -78,5 +71,13 @@ public class GridViewFragment {
 
     public void setNameAuthor(String nameAuthor) {
         this.nameAuthor = nameAuthor;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

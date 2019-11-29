@@ -5,15 +5,25 @@ import java.util.List;
 
 public class VerticalModel {
 
-   private String title;
+    private String title;
 
-   private List<HorizontalModel> arrayList;
+    private List<HorizontalModel> arrayList;
 
-   private ArrayList<SliderModel> sliderModels;
+    private ArrayList<SliderModel> sliderModels;
 
-   private ArrayList<VerticalModel> verticalModels;
+    private ArrayList<VerticalModel> verticalModels;
 
     private ArrayList<GridViewModel> gridViewModels;
+
+    private ArrayList<ComicBookModel> comicBookModels;
+
+    public ArrayList<ComicBookModel> getComicBookModels() {
+        return comicBookModels;
+    }
+
+    public void setComicBookModels(ArrayList<ComicBookModel> comicBookModels) {
+        this.comicBookModels = comicBookModels;
+    }
 
     public ArrayList<GridViewModel> gridViewModelArrayList() {
         return gridViewModels;
@@ -22,7 +32,6 @@ public class VerticalModel {
     public void setGridViewModels(ArrayList<GridViewModel> gridViewModelArrayList) {
         this.gridViewModels = gridViewModelArrayList;
     }
-
 
     public String getTitle() {
         return title;

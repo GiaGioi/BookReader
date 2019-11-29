@@ -10,7 +10,9 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
+import com.gioidev.book.Model.ComicBookModel;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.Model.SliderModel;
@@ -28,13 +30,6 @@ public class VerticalRecyclerViewAdapter extends
     RecyclerView rvVertical;
     HorizontalRecyclerViewAdapter mAdapter;
     private ArrayList<VerticalModel> mArrayList = new ArrayList<>();
-
-    public void setConfig(RecyclerView config, Context context, List<HorizontalModel> horizontalModels, List<String> keys){
-
-        rvVertical.setLayoutManager(new LinearLayoutManager(context));
-        mAdapter = new HorizontalRecyclerViewAdapter(context, horizontalModels);
-        rvVertical.setAdapter(mAdapter);
-    }
 
     public VerticalRecyclerViewAdapter(Context mContext, ArrayList<VerticalModel> mArrayList) {
         this.mContext = mContext;
@@ -90,6 +85,12 @@ public class VerticalRecyclerViewAdapter extends
 
         holder.rvHorizontal.setNestedScrollingEnabled(false);
 
+        //comic book viewpager
+        ArrayList<ComicBookModel> comicBookModels = current.getComicBookModels();
+        ComicBookAdapter comicBookAdapter = new ComicBookAdapter(comicBookModels, mContext);
+        holder.viewPager.setAdapter(comicBookAdapter);
+        holder.viewPager.setPadding(130, 0, 130, 0);
+
         holder.tvViewNewBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -126,6 +127,7 @@ public class VerticalRecyclerViewAdapter extends
         private TextView tvViewComic;
         private RecyclerView rvGridView;
 
+        private ViewPager viewPager;
 
 
         private SliderView imageSlider;
@@ -150,6 +152,9 @@ public class VerticalRecyclerViewAdapter extends
 
             tvBookStory = itemView.findViewById(R.id.tvBookStory);
             tvViewComic = itemView.findViewById(R.id.tvViewComic);
+
+            viewPager = itemView.findViewById(R.id.viewPager);
+
 
         }
     }

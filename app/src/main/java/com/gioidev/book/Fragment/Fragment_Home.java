@@ -1,5 +1,7 @@
 package com.gioidev.book.Fragment;
 
+import android.animation.ArgbEvaluator;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -7,19 +9,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.view.GravityCompat;
+import androidx.annotation.RequiresApi;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
+import com.gioidev.book.Adapter.AdapterHome.ComicBookAdapter;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
+import com.gioidev.book.Model.ChildComicBookModel;
+import com.gioidev.book.Model.ComicBookModel;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.Model.SliderModel;
@@ -39,7 +43,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
+public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     String TAG = "TAG";
     DrawerLayout drawer;
@@ -63,6 +67,14 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
     List<HorizontalModel> horizontalModels;
     ArrayList<GridViewModel> gridViewModels;
     ArrayList<SliderModel> sliderModels;
+
+    //comic book
+    ViewPager viewPager;
+    ComicBookAdapter comicBookAdapter;
+    ArrayList<ComicBookModel> comicBookModels;
+    ComicBookModel comicBookModel;
+    Integer[] colors = null;
+    ArgbEvaluator argbEvaluator = new ArgbEvaluator();
 
     HorizontalModel user;
     FirebaseDatabase database;
@@ -96,11 +108,13 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
         getDataHorizontal();
         getDataGridview();
         getDataSlider();
+        getDataComicBook();
 
         return view;
 
     }
-    public void getDataHorizontal(){
+
+    public void getDataHorizontal() {
         mDatabase = FirebaseDatabase.getInstance().getReference("books").child("Epub/SkillBook");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -136,13 +150,15 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     Log.e(TAG, "onDataChange: " + mHorizontalModel.getImage());
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
-    public void getDataGridview(){
+
+    public void getDataGridview() {
         mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/SkillBook");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -150,8 +166,10 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                 gridViewModels.clear();
                 List<String> keys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    keys.add(snapshot.getKey());
+                    keys.add(snapshot.child("Url").getKey());
 
+//                    String url2 = String.valueOf(snapshot.child("Url").getKey());
+//                    Log.e(TAG, "onDataChange: " + url2 );
                     String nameBook = String.valueOf(snapshot.child("NameBook").getValue());
                     String nameAuthor = String.valueOf(snapshot.child("NameAuthor").getValue());
                     String Description = String.valueOf(snapshot.child("Description").getValue());
@@ -172,17 +190,19 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
 
                     gridViewModels.add(gridViewModel);
 
-                    mVerticalModel.setArrayList(horizontalModels);
+                    mVerticalModel.setGridViewModels(gridViewModels);
                     mAdapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
-    public void getDataSlider(){
+
+    public void getDataSlider() {
         mDatabase = FirebaseDatabase.getInstance().getReference("books").child("Slider");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -216,12 +236,63 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     mAdapter.notifyDataSetChanged();
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
+
+    public void getDataComicBook() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/Comic");
+        mDatabase.addValueEventListener(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    ArrayList<ChildComicBookModel> models = new ArrayList<>();
+                    ChildComicBookModel model = new ChildComicBookModel();
+                    String url2 = String.valueOf(snapshot.child("url").getValue());
+                    model.setUrl(url2);
+                    models.add(model);
+
+                    Log.e(TAG, "onDataChange: " + String.valueOf(model.getUrl()));
+
+                    String nameBook = String.valueOf(snapshot.child("NameBook").getValue());
+                    String nameAuthor = String.valueOf(snapshot.child("NameAuthor").getValue());
+                    String Description = String.valueOf(snapshot.child("Description").getValue());
+                    String Image = String.valueOf(snapshot.child("Image").getValue());
+                    String Gs = String.valueOf(snapshot.child("Gs").getValue());
+                    String Price = String.valueOf(snapshot.child("Price").getValue());
+                    String Category = String.valueOf(snapshot.child("Category").getValue());
+
+                    comicBookModel = new ComicBookModel();
+                    comicBookModel.setNameBook(nameBook);
+                    comicBookModel.setPrice(Price);
+                    comicBookModel.setNameAuthor(nameAuthor);
+                    comicBookModel.setImage(Image);
+                    comicBookModel.setGs(Gs);
+                    comicBookModel.setDescription(Description);
+                    comicBookModel.setCategory(Category);
+
+                    comicBookModels.add(comicBookModel);
+
+                    mVerticalModel.setComicBookModels(comicBookModels);
+                    mAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     private void setDataOnVerticalRecyclerView() {
         for (int i = 1; i <= 1; i++) {
 
@@ -245,6 +316,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             }
             mVerticalModel.setSliderModels(sliderModels);
 
+            //gridview
             for (int j = 0; j < 6; j++) {
                 //gridview
                 gridViewModels = new ArrayList<>();
@@ -252,6 +324,52 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                 gridViewModels.add(gridViewModel);
             }
             mVerticalModel.setGridViewModels(gridViewModels);
+
+            //comic book
+            for (int j = 0; j < 2; j++) {
+                //gridview
+                comicBookModels = new ArrayList<>();
+                comicBookModel = new ComicBookModel();
+                comicBookModels.add(comicBookModel);
+            }
+            mVerticalModel.setComicBookModels(comicBookModels);
+//            Integer[] colors_temp = {
+//                    getResources().getColor(R.color.color1),
+//                    getResources().getColor(R.color.color2),
+//                    getResources().getColor(R.color.color3),
+//                    getResources().getColor(R.color.colorBook)
+//            };
+//            colors = colors_temp;
+//            viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//                @Override
+//                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//
+//                    if (position < (comicBookAdapter.getCount() -1) && position < (colors.length - 1)) {
+//                        viewPager.setBackgroundColor(
+//
+//                                (Integer) argbEvaluator.evaluate(
+//                                        positionOffset,
+//                                        colors[position],
+//                                        colors[position + 1]
+//                                )
+//                        );
+//                    }
+//
+//                    else {
+//                        viewPager.setBackgroundColor(colors[colors.length - 1]);
+//                    }
+//                }
+//
+//                @Override
+//                public void onPageSelected(int position) {
+//
+//                }
+//
+//                @Override
+//                public void onPageScrollStateChanged(int state) {
+//
+//                }
+//            });
 
 
             mArrayList.add(mVerticalModel);
@@ -273,7 +391,6 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             public void run() {
                 getDataHorizontal();
                 getDataGridview();
-                getDataSlider();
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 1000);
