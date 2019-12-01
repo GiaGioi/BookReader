@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import android.widget.Toast;
 
 import com.example.jean.jcplayer.model.JcAudio;
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
@@ -47,6 +49,7 @@ import com.gioidev.book.Model.TimerUser;
 import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -89,7 +92,9 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     private FirebaseAuth auth;
 //    private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
+    private TextView txtName,txtEmail;
 
+    private CallbackManager callbackManager;
     String TAG = "TAG";
     DrawerLayout drawer;
     private boolean isExit = false;
@@ -157,7 +162,7 @@ TextView textViewnameemail;
 
         Fragment_Home homeFragment = new Fragment_Home();
         Functions.changeMainFragment(HomeActivity.this, homeFragment);
-
+        startRepeating();
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -251,53 +256,11 @@ TextView textViewnameemail;
 
         }
 
-//        if (FirebaseAuth.getInstance().getAccessToken(true) != null){
-//            signOut();
-//        }
-//        else if(auth.getCurrentUser().getDisplayName() != null){
-//            signOutAuthenication();
-//        }
-//        else if (AccessToken.getCurrentAccessToken()!= null){
-//            LoginManager.getInstance().logOut();
-//            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-//    private void signOut() {
-//   final FirebaseAuth auth = FirebaseAuth.getInstance();
-//    GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(getString(R.string.default_web_client_id))
-//            .requestEmail().build();
-//    GoogleSignInClient signInClient = GoogleSignIn.getClient(HomeActivity.this,signInOptions);
-//    signInClient.revokeAccess().addOnSuccessListener(new OnSuccessListener<Void>() {
-//        @Override
-//        public void onSuccess(Void aVoid) {
-//            Toast.makeText(HomeActivity.this,auth.getCurrentUser().getDisplayName()+" Đăng xuất thành công" ,Toast.LENGTH_SHORT).show();
-//            auth.signOut();
-//            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }).addOnFailureListener(new OnFailureListener() {
-//        @Override
-//        public void onFailure(@NonNull Exception e) {
-//
-//        }
-//    });
-//
-//    }
-//    private void signOutAuthenication(){
-//        auth.signOut();
-//        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
-
 
     @Override
     public void onBackPressed() {
@@ -342,35 +305,74 @@ TextView textViewnameemail;
 
         @Override
         public void run() {
+            if (AccessToken.getCurrentAccessToken() != null) {
+                // here is facebook
 
-            database = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
+            }
+            else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+                //ffirebase
+                database = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
 
-            database.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                database.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    int i ;
-                    if (dataSnapshot.child("timer").getValue() == null){
-                        i = 0;
+                        int i ;
+                        if (dataSnapshot.child("timer").getValue() == null){
+                            i = 0;
+
+                        }
+                        else {
+                            i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                        }
+
+                        i++;
+                        final String user = auth.getUid();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference reference = database.getReference("usertimer");
+                        TimerUser timerUser = new TimerUser(user, i);
+                        reference.child(user).setValue(timerUser);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                    else {
-                        i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                });
+            }
+            else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
+                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
+                database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
+
+                database.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        int i ;
+                        if (dataSnapshot.child("timer").getValue() == null){
+                            i = 0;
+
+                        }
+                        else {
+                            i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                        }
+
+                        i++;
+                        final String user = auth.getUid();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference reference = database.getReference("usertimer");
+                        TimerUser timerUser = new TimerUser(user, i);
+                        reference.child(user).setValue(timerUser);
                     }
 
-                    i++;
-                    final String user = auth.getUid();
-                    FirebaseDatabase database = FirebaseDatabase.getInstance();
-                    DatabaseReference reference = database.getReference("usertimer");
-                    TimerUser timerUser = new TimerUser(user, i);
-                    reference.child(user).setValue(timerUser);
-                }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
+                    }
+                });
 
-                }
-            });
+            }
+
 
             mHandler.postDelayed(this, 1000);
 

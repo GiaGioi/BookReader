@@ -64,7 +64,8 @@ public class FragmentKiNangAdapter extends
 
     @Override
     public int getItemCount() {
-        return gridViewModels.size();
+        //return gridViewModels.size();
+        return 1;
     }
 
     public class FragmentKiNangHolder extends RecyclerView.ViewHolder {

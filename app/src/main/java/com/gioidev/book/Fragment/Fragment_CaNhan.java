@@ -25,7 +25,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
 import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.gioidev.book.Activities.DangkiActivity;
 import com.gioidev.book.Activities.HomeActivity;
@@ -37,6 +39,7 @@ import com.gioidev.book.Model.TimerUser;
 import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -50,6 +53,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.smarteist.autoimageslider.SliderView;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -93,12 +97,14 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
     FirebaseAuth auth;
     DatabaseReference mDatabase;
 
+    private CallbackManager callbackManager;
+
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ca_nhan, container, false);
 
         auth = FirebaseAuth.getInstance();
 
-
+        callbackManager = CallbackManager.Factory.create();
         tvTime = view.findViewById(R.id.tvTimeused);
         tvLogOut = view.findViewById(R.id.tvLogOUt);
         tvLogOut.setOnClickListener(new View.OnClickListener() {
@@ -106,6 +112,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
             public void onClick(View v) {
 
                   if (AccessToken.getCurrentAccessToken() != null) {
+                      // here is facebook
                     Log.e("ditconme","ddeo dang xuat duoc");
                     LoginManager.getInstance().logOut();
                     Intent intent = new Intent(getContext(), LoginActivity.class);
@@ -114,15 +121,35 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
                 }
                  else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
                     signOutAuthenication();
+                    //ffirebase
                 }
                  else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
                     signOut();
+                    //google
                 }
 
             }
         });
         tvten = view.findViewById(R.id.tvTen);
-//        tvten.setText(user.getEmail());
+        if (AccessToken.getCurrentAccessToken() != null) {
+            // here is facebook
+
+
+        }
+        else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+
+            //ffirebase
+            tvten.setText(auth.getCurrentUser().getEmail());
+        }
+        else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+
+            //google
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+            if (acct != null) {
+                tvten.setText(acct.getDisplayName());
+            }
+        }
+
         startRepeating();
 
         return view;
@@ -135,6 +162,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail().build();
         GoogleSignInClient signInClient = GoogleSignIn.getClient(getContext(), signInOptions);
+
         signInClient.revokeAccess().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -184,37 +212,79 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
 
         @Override
         public void run() {
+            if (AccessToken.getCurrentAccessToken() != null) {
+                // here is facebook
 
-            mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
+            }
+            else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+                //ffirebase
+                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
 
-            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                    int s ;
-                    if (dataSnapshot.child("timer").getValue() == null){
-                        s = 0;
+                        int s ;
+                        if (dataSnapshot.child("timer").getValue() == null){
+                            s = 0;
+
+                        }
+                        else {
+                            s=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                        }
+                        int p1,p2,p3;
+                        p1 = s %60;
+                        p2 = s/60;
+                        p3 = p2%60;
+                        p2 = p2/60;
+
+
+
+                        tvTime.setText(p2 + ":" + p3 + ":" + p1);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
                     }
-                    else {
-                        s=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                });
+
+            }
+            else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+                //google
+                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
+
+                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        int s ;
+                        if (dataSnapshot.child("timer").getValue() == null){
+                            s = 0;
+
+                        }
+                        else {
+                            s=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                        }
+                        int p1,p2,p3;
+                        p1 = s %60;
+                        p2 = s/60;
+                        p3 = p2%60;
+                        p2 = p2/60;
+
+
+
+                        tvTime.setText(p2 + ":" + p3 + ":" + p1);
                     }
-                    int p1,p2,p3;
-                    p1 = s %60;
-                    p2 = s/60;
-                    p3 = p2%60;
-                    p2 = p2/60;
 
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
 
+                    }
+                });
+            }
 
-                    tvTime.setText(p2 + ":" + p3 + ":" + p1);
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                }
-            });
 
             mHandler.postDelayed(this, 1000);
 
