@@ -24,4 +24,5 @@ public class TimerUser {
     public void setTimer(int timer) {
         this.timer = timer;
     }
+    
 }
