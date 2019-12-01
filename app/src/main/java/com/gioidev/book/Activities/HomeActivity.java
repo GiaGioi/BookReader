@@ -40,6 +40,7 @@ import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
 import com.gioidev.book.Fragment.BookcaseFragment;
+import com.gioidev.book.Fragment.Fragment_Audio_Book;
 import com.gioidev.book.Fragment.Fragment_CaNhan;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Fragment.Fragment_Khach_Hang;
@@ -247,8 +248,8 @@ TextView textViewnameemail;
         }else if (id == R.id.nav_comic) {
 
         }else if (id == R.id.nav_audio_book) {
-            Intent intent = new Intent(HomeActivity.this,AudioBookActivity.class);
-            startActivity(intent);
+            fragment = new Fragment_Audio_Book();
+            loadFragment(fragment);
 
         }else
             if (id == R.id.nav_link) {

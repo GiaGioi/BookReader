@@ -62,6 +62,7 @@ public class AdapterAudio extends RecyclerView.Adapter<AdapterAudio.MyViewHolder
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.mName.setText(downSongs.get(position).getName());
+        holder.mTime.setText(downSongs.get(position).getTime());
     }
 
     @Override
@@ -71,12 +72,13 @@ public class AdapterAudio extends RecyclerView.Adapter<AdapterAudio.MyViewHolder
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView mName;
+        private TextView mTime;
         private LinearLayout linearLayout;
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
         linearLayout = itemView.findViewById(R.id.cardviewsong);
         mName = itemView.findViewById(R.id.namesong);
-
+        mTime = itemView.findViewById(R.id.timesong);
     }
 
 

@@ -73,7 +73,7 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
 
 
         View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.songcardview,null);
-        cardviewsong = (LinearLayout) view.findViewById(R.id.cardviewsong);
+
 
         namesong = (TextView) view.findViewById(R.id.namesong);
         mRecyclerView= findViewById(R.id.recyclesong);
@@ -168,14 +168,8 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
                     mRecyclerView.setAdapter(myAdapter);
 
 
-                    final ArrayList<JcAudio> jcAudios = new ArrayList<>();
-                    Log.e("TAG", "onCreate: "+ Chapter );
-                    jcAudios.add(JcAudio.createFromURL(Chapter, Url));
                     myAdapter.notifyDataSetChanged();
-                    jcAudios.add(JcAudio.createFromAssets("Asset audio", "audio.mp3"));
-                    jcplayer.initPlaylist(jcAudios, null);
 
-                    jcplayer.createNotification();
 
                 }
 
@@ -201,10 +195,7 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
     public void playsong(int adapterPosition) throws IOException {
 
             final DownSong downSong = downSongArrayList.get(adapterPosition);
-//        final ArrayList<JcAudio> jcAudios = new ArrayList<>();
-//        jcplayer.playAudio(JcAudio.createFromAssets(downSong.getLink()));
-//        jcAudios.add(JcAudio.createFromAssets("Play audio", "audio.mp3"));
-//        jcplayer.initAnonPlaylist(jcAudios);
+
 
         if (mediaPlayer!=null){
             mediaPlayer.stop();
@@ -217,7 +208,7 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mp.start();
-//                jcplayer.setJcPlayerManagerListener(AudioBookActivity.this);
+
             }
         });
         mediaPlayer.prepareAsync();
