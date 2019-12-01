@@ -97,6 +97,9 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     private Button btnReadBook;
     private ImageView imageForward;
     private TextView tvCategory;
+    private TextView tvTenBook;
+
+
     FolioReader folioReader;
     String filename;
     Uri uri;
@@ -184,6 +187,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         btnReadBook = findViewById(R.id.btnReadBook);
         imageForward = findViewById(R.id.image_forward);
         tvCategory = findViewById(R.id.tvCategory);
+        tvTenBook = findViewById(R.id.tvTenBook);
 
         btnReadBook.setOnClickListener(this);
         imageX.setOnClickListener(this);
@@ -192,7 +196,6 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         Intent intent = getIntent();
         String namebook = intent.getStringExtra("NameBook");
         String nameauthor = intent.getStringExtra("NameAuthor");
-        String url = intent.getStringExtra("Url");
         String description = intent.getStringExtra("Description");
         String gs = intent.getStringExtra("Gs");
         String imagebg = intent.getStringExtra("Image");
@@ -206,6 +209,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         expandableTextView.setText(description);
         tvPrice.setText(price);
         tvCategory.setText(category);
+        tvTenBook.setText(namebook);
 
         sharedPreferences=getSharedPreferences("DATA2",MODE_PRIVATE);
         sharedPreferences.edit().putString("Image",imagebg).apply();
@@ -228,6 +232,9 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                     new DownloadfilePDF().execute();
 
                 if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("3"))
+                    new DownloadfilePDF().execute();
+
+                if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("4"))
                     new DownloadfilePDF().execute();
 
                 break;
@@ -415,6 +422,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                 String url1 = intent.getStringExtra("Url");
                 uri = Uri.parse(url1);
 
+                Log.e("TAG", "doInBackground: " + url1 );
                 URL url = new URL(url1);
                 URLConnection conection = url.openConnection();
                 conection.connect();
