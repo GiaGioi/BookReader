@@ -81,8 +81,7 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         myAdapter = new AdapterAudio(this,downSongArrayList);
 
-        jcplayer = (JcPlayerView) findViewById(R.id.jcplayer);
-        jcplayer.setJcPlayerManagerListener(this);
+
         mStorageRef = FirebaseStorage.getInstance().getReference();
 
         getDataHorizontal();
