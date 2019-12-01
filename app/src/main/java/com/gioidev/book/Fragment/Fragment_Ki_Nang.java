@@ -42,9 +42,8 @@ public class Fragment_Ki_Nang extends Fragment{
         v = inflater.inflate(R.layout.fragment_ki_nang,container,false);
 
         recyclerView = v.findViewById(R.id.rv_fragment_ki_nang);
-        adapter = new FragmentKiNangAdapter(getContext(),gridViewModels);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        recyclerView.setAdapter(adapter);
+//        adapter = new FragmentKiNangAdapter(getContext(),gridViewModels);
+//        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         return v;
     }
 
@@ -56,7 +55,7 @@ public class Fragment_Ki_Nang extends Fragment{
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                gridViewModels.clear();
+//                gridViewModels.clear();
                 List<String> keys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     keys.add(snapshot.getKey());
@@ -80,11 +79,11 @@ public class Fragment_Ki_Nang extends Fragment{
                     gridViewModel.setGs(Gs);
                     gridViewModel.setPrice(Price);
                     gridViewModel.setCategory(Category);
-
-                    gridViewModels.add(gridViewModel);
-
+//
+//                    gridViewModels.add(gridViewModel);
+//
 //                    recyclerView.setAdapter(adapter);
-                    adapter.notifyDataSetChanged();
+//                    adapter.notifyDataSetChanged();
 
                 }
             }

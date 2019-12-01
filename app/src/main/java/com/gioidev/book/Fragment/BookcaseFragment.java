@@ -36,13 +36,14 @@ public class BookcaseFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_book_case, container, false);
-//        FragmentActivity fragmentActivity = null;
+
         tabBookCase = view.findViewById(R.id.tab_book_case);
         viewpageBookCase = view.findViewById(R.id.viewpage_book_case);
 
-
-//        Fragment_Ki_Nang homeFragment = new Fragment_Ki_Nang();
-//        Functions.changeMainFragment(getActivity(), homeFragment);
+        adapter = new ViewPagerAdapter(getChildFragmentManager());
+        adapter.AddFragment(new Fragment_Ki_Nang(),"Sách kĩ năng");
+        adapter.AddFragment(new Fragment_Khach_Hang(),"Marketing - Khách hàng");
+        adapter.AddFragment(new Fragment_Phong_Thuy(),"Tử vi - Phong thủy");
         viewpageBookCase.setAdapter(adapter);
         tabBookCase.setupWithViewPager(viewpageBookCase);
 
@@ -56,10 +57,7 @@ public class BookcaseFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.AddFragment(new Fragment_Ki_Nang(),"Sách kĩ năng");
-        adapter.AddFragment(new Fragment_Khach_Hang(),"Marketing - Khách hàng");
-        adapter.AddFragment(new Fragment_Phong_Thuy(),"Tử vi - Phong thủy");
+
 
     }
     //    private void setDataOnVerticalRecyclerView() {

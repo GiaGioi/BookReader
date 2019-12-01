@@ -3,6 +3,7 @@ package com.gioidev.book.Adapter.AdapterHome;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,13 +16,11 @@ import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
 import com.gioidev.book.Activities.ReadBookActivity;
+import com.gioidev.book.Activities.ReadBookComicActivity;
 import com.gioidev.book.Model.ComicBookModel;
 import com.gioidev.book.R;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import es.dmoral.toasty.Toasty;
 
 public class ComicBookAdapter extends PagerAdapter {
 
@@ -48,6 +47,7 @@ public class ComicBookAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, final int position) {
         layoutInflater = LayoutInflater.from(context);
+
         ComicBookModel model = models.get(position);
         View view = layoutInflater.inflate(R.layout.item_comic_book, container, false);
 
@@ -65,20 +65,21 @@ public class ComicBookAdapter extends PagerAdapter {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // finish();
                 SharedPreferences preferences = context.getSharedPreferences("Data", Context.MODE_PRIVATE);
                 preferences.edit().putString("Horizontal","4").apply();
 
-                Intent intent = new Intent(context, ReadBookActivity.class);
-                intent.putExtra("url", String.valueOf(model.getUrl()));
+                Intent intent = new Intent(context,ReadBookActivity.class);
                 intent.putExtra("NameBook", model.getNameBook());
                 intent.putExtra("NameAuthor", model.getNameAuthor());
+                intent.putExtra("Url", model.getUrl());
                 intent.putExtra("Description", model.getDescription());
                 intent.putExtra("Gs", model.getGs());
                 intent.putExtra("Image", model.getImage());
                 intent.putExtra("Price", model.getPrice());
                 intent.putExtra("Category", model.getCategory());
                 context.startActivity(intent);
-                // finish();
+
             }
         });
 

@@ -22,7 +22,6 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.gioidev.book.Adapter.AdapterHome.ComicBookAdapter;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
-import com.gioidev.book.Model.ChildComicBookModel;
 import com.gioidev.book.Model.ComicBookModel;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.Model.HorizontalModel;
@@ -207,7 +206,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                sliderModels.clear();
                 List<String> keys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     keys.add(snapshot.getKey());
@@ -243,28 +242,20 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         });
     }
-
     public void getDataComicBook() {
         mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/Comic");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
+                comicBookModels.clear();
                 List<String> keys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                    ArrayList<ChildComicBookModel> models = new ArrayList<>();
-                    ChildComicBookModel model = new ChildComicBookModel();
-                    String url2 = String.valueOf(snapshot.child("url").getValue());
-                    model.setUrl(url2);
-                    models.add(model);
-
-                    Log.e(TAG, "onDataChange: " + String.valueOf(model.getUrl()));
 
                     String nameBook = String.valueOf(snapshot.child("NameBook").getValue());
                     String nameAuthor = String.valueOf(snapshot.child("NameAuthor").getValue());
                     String Description = String.valueOf(snapshot.child("Description").getValue());
+                    String url = String.valueOf(snapshot.child("Url").getValue());
                     String Image = String.valueOf(snapshot.child("Image").getValue());
                     String Gs = String.valueOf(snapshot.child("Gs").getValue());
                     String Price = String.valueOf(snapshot.child("Price").getValue());
@@ -273,6 +264,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     comicBookModel = new ComicBookModel();
                     comicBookModel.setNameBook(nameBook);
                     comicBookModel.setPrice(Price);
+                    comicBookModel.setUrl(url);
                     comicBookModel.setNameAuthor(nameAuthor);
                     comicBookModel.setImage(Image);
                     comicBookModel.setGs(Gs);
@@ -283,6 +275,8 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
 
                     mVerticalModel.setComicBookModels(comicBookModels);
                     mAdapter.notifyDataSetChanged();
+
+                    Log.e(TAG, "onDataChange: " + url );
                 }
             }
 
@@ -326,7 +320,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             mVerticalModel.setGridViewModels(gridViewModels);
 
             //comic book
-            for (int j = 0; j < 2; j++) {
+            for (int j = 0; j < 4; j++) {
                 //gridview
                 comicBookModels = new ArrayList<>();
                 comicBookModel = new ComicBookModel();
@@ -391,6 +385,8 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             public void run() {
                 getDataHorizontal();
                 getDataGridview();
+                getDataSlider();
+                getDataComicBook();
                 swipeRefreshLayout.setRefreshing(false);
             }
         }, 1000);
