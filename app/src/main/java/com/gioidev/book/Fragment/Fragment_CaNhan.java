@@ -4,11 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.facebook.AccessToken;
+import com.facebook.GraphRequest;
 import com.facebook.login.LoginManager;
 import com.gioidev.book.Activities.DangkiActivity;
 import com.gioidev.book.Activities.HomeActivity;
@@ -29,6 +33,7 @@ import com.gioidev.book.Activities.LoginActivity;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.Model.HorizontalModel;
+import com.gioidev.book.Model.TimerUser;
 import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -38,9 +43,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.smarteist.autoimageslider.SliderView;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,58 +66,45 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
 public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private TextView tvten;
+    private TextView tvten,tvTime;
     String TAG = "TAG";
     DrawerLayout drawer;
     private boolean isExit = false;
     private Timer timer = null;
     private TimerTask timeTask = null;
-
     private FrameLayout mainContainer;
     private RecyclerView rvVertical;
     ArrayList<VerticalModel> mArrayList = new ArrayList<>();
     private Button tvLogOut;
     VerticalRecyclerViewAdapter mAdapter;
-
     private SliderView imageSlider;
     private SwipeRefreshLayout swipeRefreshLayout;
-
     HorizontalModel mHorizontalModel;
     GridViewModel gridViewModel;
     VerticalModel mVerticalModel;
     List<HorizontalModel> horizontalModels;
     ArrayList<GridViewModel> gridViewModels;
-
+    private Chronometer chronometer;
+    private boolean running;
+    private long pauseOffset;
     String userId;
     HorizontalModel user;
     FirebaseDatabase database;
     FirebaseAuth auth;
     DatabaseReference mDatabase;
-    LineChartView lineChartView;
-    String[] axisData = {"Jan", "Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept",
-            "Oct", "Nov", "Dec"};
-    int[] yAxisData = {50, 20, 15, 30, 20, 60, 15, 40, 45, 10, 90, 18};
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_ca_nhan, container, false);
 
         auth = FirebaseAuth.getInstance();
 
-        FirebaseUser user = auth.getCurrentUser();
+
+        tvTime = view.findViewById(R.id.tvTimeused);
         tvLogOut = view.findViewById(R.id.tvLogOUt);
         tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                if (auth.getCurrentUser() != null) {
-//                    signOut();
-//                } else if (AccessToken.getCurrentAccessToken() != null) {
-//                    LoginManager.getInstance().logOut();
-//                    Intent intent = new Intent(getContext(), LoginActivity.class);
-//                    startActivity(intent);
-//
-//                } else {
-//                    signOutAuthenication();
-//                }
+
                   if (AccessToken.getCurrentAccessToken() != null) {
                     Log.e("ditconme","ddeo dang xuat duoc");
                     LoginManager.getInstance().logOut();
@@ -126,45 +123,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         });
         tvten = view.findViewById(R.id.tvTen);
 //        tvten.setText(user.getEmail());
-        lineChartView = view.findViewById(R.id.chart);
-
-        List yAxisValues = new ArrayList();
-        List axisValues = new ArrayList();
-
-        Line line = new Line(yAxisValues).setColor(Color.parseColor("#9C27B0"));
-
-        for (int i = 0; i < axisData.length; i++) {
-            axisValues.add(i, new AxisValue(i).setLabel(axisData[i]));
-        }
-
-        for (int i = 0; i < yAxisData.length; i++) {
-            yAxisValues.add(new PointValue(i, yAxisData[i]));
-        }
-
-        List lines = new ArrayList();
-        lines.add(line);
-
-        LineChartData data = new LineChartData();
-        data.setLines(lines);
-
-        Axis axis = new Axis();
-        axis.setValues(axisValues);
-        axis.setTextSize(16);
-        axis.setTextColor(Color.parseColor("#03A9F4"));
-        data.setAxisXBottom(axis);
-
-        Axis yAxis = new Axis();
-        yAxis.setName("Read per month");
-        yAxis.setTextColor(Color.parseColor("#03A9F4"));
-        yAxis.setTextSize(16);
-        data.setAxisYLeft(yAxis);
-
-        lineChartView.setLineChartData(data);
-        Viewport viewport = new Viewport(lineChartView.getMaximumViewport());
-        viewport.top = 110;
-        lineChartView.setMaximumViewport(viewport);
-        lineChartView.setCurrentViewport(viewport);
-
+        startRepeating();
 
         return view;
 
@@ -207,4 +166,66 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
     public void onRefresh() {
 
     }
+    private Handler mHandler = new Handler();
+
+    public void startRepeating() {
+        //mHandler.postDelayed(mToastRunnable, 5000);
+
+        mToastRunnable.run();
+    }
+
+    public void stopRepeating() {
+        mHandler.removeCallbacks(mToastRunnable);
+    }
+
+
+
+    private Runnable mToastRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+
+            mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
+
+            mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    int s ;
+                    if (dataSnapshot.child("timer").getValue() == null){
+                        s = 0;
+
+                    }
+                    else {
+                        s=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                    }
+                    int p1,p2,p3;
+                    p1 = s %60;
+                    p2 = s/60;
+                    p3 = p2%60;
+                    p2 = p2/60;
+
+
+
+                    tvTime.setText(p2 + ":" + p3 + ":" + p1);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            mHandler.postDelayed(this, 1000);
+
+
+        }
+    };
+    @Override
+    public void onDestroy() {
+        stopRepeating();
+        super.onDestroy();
+    }
+
+
 }

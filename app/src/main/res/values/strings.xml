@@ -35,5 +35,6 @@
     <string name="expand">Xem thêm</string>
     <string name="collapse">Thu gọn</string>
     <string name="title_activity_audio_book">AudioBookActivity</string>
+    <string name="timeused">Thời gian đã sử dụng:</string>
     <string name="home">Home</string>
 </resources>

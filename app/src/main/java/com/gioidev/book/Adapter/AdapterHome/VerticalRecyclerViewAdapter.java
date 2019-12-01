@@ -16,8 +16,14 @@ import com.gioidev.book.Model.ComicBookModel;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.Model.SliderModel;
+import com.gioidev.book.Model.TimerUser;
 import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.smarteist.autoimageslider.SliderView;
 
 import java.util.ArrayList;
@@ -25,11 +31,18 @@ import java.util.List;
 
 public class VerticalRecyclerViewAdapter extends
         RecyclerView.Adapter<VerticalRecyclerViewAdapter.VerticalRecyclerViewHolder> {
-
+    FirebaseAuth auth;
     private Context mContext;
     RecyclerView rvVertical;
     HorizontalRecyclerViewAdapter mAdapter;
     private ArrayList<VerticalModel> mArrayList = new ArrayList<>();
+
+    public void setConfig(RecyclerView config, Context context, List<HorizontalModel> horizontalModels, List<String> keys){
+
+        rvVertical.setLayoutManager(new LinearLayoutManager(context));
+        mAdapter = new HorizontalRecyclerViewAdapter(context, horizontalModels);
+        rvVertical.setAdapter(mAdapter);
+    }
 
     public VerticalRecyclerViewAdapter(Context mContext, ArrayList<VerticalModel> mArrayList) {
         this.mContext = mContext;
