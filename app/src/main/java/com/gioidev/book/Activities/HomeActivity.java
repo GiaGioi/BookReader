@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,10 +32,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.example.jean.jcplayer.model.JcAudio;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.appevents.AppEventsLogger;
 import com.facebook.login.LoginManager;
@@ -79,6 +83,9 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import com.smarteist.autoimageslider.SliderView;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -126,8 +133,8 @@ TextView textViewnameemail;
         auth = FirebaseAuth.getInstance();
         toolbar = findViewById(R.id.toolbar);
         imageView = findViewById(R.id.imageView);
-        textView = findViewById(R.id.textView);
-        textViewnameemail = findViewById(R.id.textViewnameemail);
+
+
         setSupportActionBar(toolbar);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -139,8 +146,13 @@ TextView textViewnameemail;
             Profile profile = Profile.getCurrentProfile();
 //            textViewnameemail.setText(profile.getName() + "");
         }
+
+        LayoutInflater inflater = getLayoutInflater();
+        View myView = inflater.inflate(R.layout.nav_header_main, null);
+        TextView tvEmail = (TextView) myView.findViewById(R.id.textViewnameemail);
+
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        textViewnameemail = (TextView) findViewById(R.id.textViewnameemail);
 
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -163,7 +175,27 @@ TextView textViewnameemail;
 
         Fragment_Home homeFragment = new Fragment_Home();
         Functions.changeMainFragment(HomeActivity.this, homeFragment);
-        startRepeating();
+
+        if (AccessToken.getCurrentAccessToken() != null) {
+            // here is facebook
+
+        }
+        else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+
+            //ffirebase
+            tvEmail.setText(""+user.getEmail());
+        }
+        else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+
+            //google
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
+            if (acct != null) {
+                tvEmail.setText(""+acct.getEmail());
+            }
+        }
+
+            startRepeating();
+
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -188,6 +220,7 @@ TextView textViewnameemail;
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             Fragment fragment;
             switch (menuItem.getItemId()) {
+
                 case R.id.navigation_home:
                     fragment = new Fragment_Home();
                     loadFragment(fragment);
@@ -290,7 +323,7 @@ TextView textViewnameemail;
 
     private Handler mHandler = new Handler();
 
-    public void startRepeating() {
+    public void  startRepeating() {
         //mHandler.postDelayed(mToastRunnable, 5000);
 
         mToastRunnable.run();
@@ -308,43 +341,48 @@ TextView textViewnameemail;
         public void run() {
             if (AccessToken.getCurrentAccessToken() != null) {
                 // here is facebook
-
+            loadUserProfile(AccessToken.getCurrentAccessToken());
             }
             else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
                 //ffirebase
-                database = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
+                if (auth.getUid()!=null) {
+                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid() + "");
 
-                database.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    database.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        int i ;
-                        if (dataSnapshot.child("timer").getValue() == null){
-                            i = 0;
+                            int i;
+                            if (dataSnapshot.child("timer").getValue() == null) {
+                                i = 0;
+
+                            } else {
+                                i = Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                            }
+                            boolean vip = false;
+                            if (i >= 3600) vip = true;
+                            i++;
+                            final String user = auth.getUid();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference("usertimer");
+                            TimerUser timerUser = new TimerUser(user, i, vip);
+                            if (timerUser != null) {
+                                reference.child(user).setValue(timerUser);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                        else {
-                            i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
-                        }
+                    });
+                }
 
-                        i++;
-                        final String user = auth.getUid();
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference reference = database.getReference("usertimer");
-                        TimerUser timerUser = new TimerUser(user, i);
-                        reference.child(user).setValue(timerUser);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
             }
             else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
                 database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
-
+                Toast.makeText(HomeActivity.this, ""+acct.getId(), Toast.LENGTH_SHORT).show();
                 database.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -382,9 +420,72 @@ TextView textViewnameemail;
     };
     @Override
     protected void onDestroy() {
+        stopRepeating();
         super.onDestroy();
     }
+    private void loadUserProfile(AccessToken newAccessToken)
+    {
+        GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response)
+            {
+                try {
+                    String first_name = object.getString("first_name");
+                    String last_name = object.getString("last_name");
+                    String email = object.getString("email");
+                    String id = object.getString("id");
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.dontAnimate();
 
+
+                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(id);
+
+                    database.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            int i ;
+                            if (dataSnapshot.child("timer").getValue() == null){
+                                i = 0;
+
+                            }
+                            else {
+                                i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                            }
+
+                            i++;
+                            boolean vip = false;
+                            if (i >= 3600){
+                                 vip = true;
+                            }
+
+                            final String user = id;
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference("usertimer");
+                            TimerUser timerUser = new TimerUser(user, i,vip);
+                            reference.child(user).setValue(timerUser);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields","first_name,last_name,email,id");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+    }
 
 
 }

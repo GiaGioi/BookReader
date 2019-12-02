@@ -23,12 +23,20 @@
                 android:src="@drawable/icon_book" />
 
             <TextView
-                android:id="@+id/tvTen"
+            android:id="@+id/tvTen"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:text="ABC"
+            android:textSize="20sp" />
+            <TextView
+                android:textColor="#FF0000"
+                android:id="@+id/tvVIP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
-                android:text="ABC"
                 android:textSize="20sp" />
 
 
@@ -40,10 +48,12 @@
             android:layout_margin="10dp"
             android:orientation="horizontal">
             <TextView
+                android:textSize="20sp"
                 android:text="@string/timeused"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
             <TextView
+                android:textSize="20sp"
                 android:id="@+id/tvTimeused"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

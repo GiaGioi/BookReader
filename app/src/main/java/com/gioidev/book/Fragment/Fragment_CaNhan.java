@@ -24,7 +24,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.GraphRequest;
@@ -71,7 +74,7 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
 public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private TextView tvten,tvTime;
+    private TextView tvten,tvTime,tvVIP;
     String TAG = "TAG";
     DrawerLayout drawer;
     private boolean isExit = false;
@@ -107,24 +110,28 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
 
         callbackManager = CallbackManager.Factory.create();
         tvTime = view.findViewById(R.id.tvTimeused);
+        tvVIP = view.findViewById(R.id.tvVIP);
         tvLogOut = view.findViewById(R.id.tvLogOUt);
         tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
+
                   if (AccessToken.getCurrentAccessToken() != null) {
                       // here is facebook
-                    Log.e("ditconme","ddeo dang xuat duoc");
+                      stopRepeating();
                     LoginManager.getInstance().logOut();
                     Intent intent = new Intent(getContext(), LoginActivity.class);
                     startActivity(intent);
                     getActivity().finish();
                 }
                  else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+
                     signOutAuthenication();
                     //ffirebase
                 }
                  else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+
                     signOut();
                     //google
                 }
@@ -134,8 +141,6 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         tvten = view.findViewById(R.id.tvTen);
         if (AccessToken.getCurrentAccessToken() != null) {
             // here is facebook
-
-
         }
         else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
 
@@ -171,6 +176,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
                 auth.signOut();
                 Intent intent = new Intent(getContext(), LoginActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                stopRepeating();
                 startActivity(intent);
                 getActivity().finish();
 
@@ -185,7 +191,9 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
     }
 
     private void signOutAuthenication() {
+
         auth.signOut();
+
         Intent intent = new Intent(getContext(), LoginActivity.class);
         startActivity(intent);
         getActivity().finish();
@@ -199,7 +207,6 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
 
     public void startRepeating() {
         //mHandler.postDelayed(mToastRunnable, 5000);
-
         mToastRunnable.run();
     }
 
@@ -219,36 +226,43 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
             }
             else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
                 //ffirebase
-                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
+                if (auth.getUid()!=null){
+                    mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
 
-                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                }
 
-                        int s ;
-                        if (dataSnapshot.child("timer").getValue() == null){
-                            s = 0;
+                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            int s;
+                            if (dataSnapshot.child("timer").getValue() == null) {
+                                s = 0;
+
+                            } else {
+                                s = Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                            }
+                            int p1, p2, p3;
+                            p1 = s % 60;
+                            p2 = s / 60;
+                            p3 = p2 % 60;
+                            p2 = p2 / 60;
+                            boolean vip = false;
+                            if (s>3600) {
+                                 vip = true;
+
+                            }
+                            if(vip == true){
+                                tvVIP.setText("VIP");
+                            }
+                            tvTime.setText(p2 + ":" + p3 + ":" + p1 );
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                        else {
-                            s=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
-                        }
-                        int p1,p2,p3;
-                        p1 = s %60;
-                        p2 = s/60;
-                        p3 = p2%60;
-                        p2 = p2/60;
-
-
-
-                        tvTime.setText(p2 + ":" + p3 + ":" + p1);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                    });
 
             }
             else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
@@ -298,5 +312,64 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         super.onDestroy();
     }
 
+    private void loadUserProfile(AccessToken newAccessToken)
+    {
+        GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+            @Override
+            public void onCompleted(JSONObject object, GraphResponse response)
+            {
+                try {
 
+                    String first_name = object.getString("first_name");
+                    String last_name = object.getString("last_name");
+                    String email = object.getString("email");
+                    String id = object.getString("id");
+                    tvten.setText(email);
+                    mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(id);
+
+                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            int s ;
+                            if (dataSnapshot.child("timer").getValue() == null){
+                                s = 0;
+
+                            }
+                            else {
+                                s=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                            }
+                            int p1,p2,p3;
+                            p1 = s %60;
+                            p2 = s/60;
+                            p3 = p2%60;
+                            p2 = p2/60;
+
+
+
+                            tvTime.setText(p2 + ":" + p3 + ":" + p1);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.dontAnimate();
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+        Bundle parameters = new Bundle();
+        parameters.putString("fields","first_name,last_name,email,id");
+        request.setParameters(parameters);
+        request.executeAsync();
+
+    }
 }
