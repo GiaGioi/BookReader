@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:theme="@style/AppTheme.NoActionBar">
-
+    tools:context=".Activities.SearchActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,29 +26,8 @@
             app:hintTextColor="@color/colorAuther" />
 
     </LinearLayout>
-
-    <View
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/bg_shadow" />
-
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/tab_book_case"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/color2"
-        app:tabGravity="fill"
-        app:tabIndicatorColor="@color/color1"
-        app:tabMode="auto"
-        app:tabTextAppearance="@style/MyTabLayoutTextAppearance" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:background="@drawable/bg_shadow" />
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewpage_book_case"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:id="@+id/rvSearch"/>
 </LinearLayout>

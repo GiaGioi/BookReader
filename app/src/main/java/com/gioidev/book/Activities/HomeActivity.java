@@ -31,6 +31,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
 import com.gioidev.book.Fragment.BookcaseFragment;
+import com.gioidev.book.Fragment.FragmentComic;
 import com.gioidev.book.Fragment.Fragment_CaNhan;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Fragment.Fragment_Khach_Hang;
@@ -200,13 +201,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         } else if (id == R.id.nav_short_story) {
 
         } else if (id == R.id.nav_comic) {
-
+                fragment  = new FragmentComic();
+                loadFragment(fragment);
         } else if (id == R.id.nav_audio_book) {
             Intent intent = new Intent(HomeActivity.this, AudioBookActivity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_link) {
-//
 
         }
 

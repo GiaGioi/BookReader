@@ -177,6 +177,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     String Gs = String.valueOf(snapshot.child("Gs").getValue());
                     String Price = String.valueOf(snapshot.child("Price").getValue());
                     String Category = String.valueOf(snapshot.child("Category").getValue());
+
                     gridViewModel = new GridViewModel();
                     gridViewModel.setNameBook(nameBook);
                     gridViewModel.setPrice(Price);
