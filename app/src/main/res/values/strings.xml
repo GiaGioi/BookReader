@@ -37,4 +37,9 @@
     <string name="title_activity_audio_book">AudioBookActivity</string>
     <string name="timeused">Thời gian đã sử dụng:</string>
     <string name="home">Home</string>
+    <string name="thongtin">Thông tin bản quyền</string>
+    <string name="bq">Thực hiện bởi nhóm LuLQuit</string>
+    <string name="Email">Gmail: duc99iter@gmail.com</string>
+    <string name="SDT">SĐT: 0383135586</string>
+    <string name="DC">Địa chỉ: Hà Nội</string>
 </resources>

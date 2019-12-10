@@ -12,7 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="230dp"
             android:layout_margin="10dp"
-            android:background="@drawable/bgbtn1"
+            android:background="@drawable/bgbtn3"
             android:orientation="horizontal">
 
             <ImageView
@@ -43,20 +43,66 @@
         </LinearLayout>
 
         <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="horizontal">
+        <TextView
+            android:textColor="#FF0000"
+            android:textSize="20sp"
+            android:text="@string/timeused"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:textSize="20sp"
+            android:id="@+id/tvTimeused"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+    </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/icon_in4"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
             <TextView
+                android:id="@+id/tvIn4"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center"
                 android:textSize="20sp"
-                android:text="@string/timeused"
+                android:text="Thông tin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+            <ImageView
+                android:layout_gravity="center"
+                android:src="@drawable/icon_gmail"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
             <TextView
+                android:id="@+id/tvEmailSend"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center"
                 android:textSize="20sp"
-                android:id="@+id/tvTimeused"
+                android:text="Gửi yêu cầu hỗ trợ"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
+
+
 
         </LinearLayout>
 
