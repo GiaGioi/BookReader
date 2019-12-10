@@ -1,137 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-
-    >
-<!--<ImageView-->
-<!--    android:id="@+id/imagemusic"-->
-<!--    android:src="@drawable/music"-->
-<!--    android:layout_width="wrap_content"-->
-<!--    android:layout_height="wrap_content"/>-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/namesong"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_marginStart="55dp"-->
-<!--        android:layout_marginLeft="55dp"-->
-<!--        android:layout_marginTop="-2dp"-->
-<!--        android:layout_toEndOf="@+id/imagemusic"-->
-<!--        android:layout_toRightOf="@id/imagemusic"-->
-<!--        android:text="Name Audio"-->
-<!--        android:textSize="16sp" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/artist"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentTop="true"-->
-<!--        android:layout_marginStart="57dp"-->
-<!--        android:layout_marginLeft="57dp"-->
-<!--        android:layout_marginTop="43dp"-->
-<!--        android:layout_toEndOf="@+id/imagemusic"-->
-<!--        android:layout_toRightOf="@id/imagemusic"-->
-<!--        android:text="Artist"-->
-<!--        android:textSize="16sp" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/imageplay"-->
-<!--        android:layout_width="48dp"-->
-<!--        android:layout_height="49dp"-->
-<!--        android:layout_alignBottom="@id/artist"-->
-<!--        android:layout_marginLeft="160dp"-->
-<!--        android:layout_marginEnd="-83dp"-->
-<!--        android:layout_marginRight="-83dp"-->
-<!--        android:layout_marginBottom="23dp"-->
-<!--        android:layout_toStartOf="@id/imagestop"-->
-<!--        android:layout_toLeftOf="@id/imagestop"-->
-<!--        android:layout_toRightOf="@id/namesong"-->
-<!--        android:src="@drawable/play" />-->
-
-<!--    <ImageView-->
-<!--        android:id="@+id/imagestop"-->
-<!--        android:layout_width="48dp"-->
-<!--        android:layout_height="49dp"-->
-<!--        android:layout_marginLeft="125dp"-->
-<!--        android:layout_toRightOf="@id/namesong"-->
-<!--        android:src="@drawable/stop" />-->
-        <LinearLayout
-        android:id="@+id/cardviewsong"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignTop="@+id/namesong"
-        android:layout_alignBottom="@+id/separator"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_margin="8dp"
+    app:cardElevation="8dp"
+    android:id="@+id/cardviewsong"
+    android:layout_height="80dp">
+    <LinearLayout
+        android:layout_gravity="center"
+        android:weightSum="10"
         android:orientation="horizontal"
-        android:background="?android:attr/selectableItemBackground"
-        >
-
-        <View
-            android:id="@+id/song_progress_view"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0"
-            android:background="#b5e6c808"
-            />
-
-<!--        <View-->
-<!--            android:id="@+id/song_anti_progress_view"-->
-<!--            android:layout_width="0dp"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:layout_weight="1" />-->
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_margin="8dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:textColor="@color/colorAccent"
+                android:text="name song"
+                android:id="@+id/namesong"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+            <TextView
+                android:textColor="@color/colorAccent"
+                android:text="3:00"
+                android:id="@+id/timesong"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
     </LinearLayout>
-<ImageView
-    android:paddingTop="12dp"
-    android:src="@drawable/iconmusic"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-    <TextView
-        android:id="@+id/namesong"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingTop="12dp"
-        android:gravity="start"
-        android:paddingLeft="15dp"
-        android:paddingStart="20dp"
-        android:text="SONG TITLE"
-        android:textAlignment="textStart"
-        android:textSize="18sp"
-        />
-<ImageView
-    android:id="@+id/btnplaymusic"
-    android:paddingTop="15dp"
-    android:layout_marginLeft="250dp"
-    android:src="@drawable/playsong"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"/>
-    <ImageView
-        android:paddingTop="15dp"
-        android:layout_marginLeft="280dp"
-        android:src="@drawable/stopmusic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-<!--    <Button-->
-<!--        android:id="@+id/btn_delete"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_alignParentRight="true"-->
-<!--        android:layout_below="@+id/namesong"-->
-<!--        android:layout_gravity="end"-->
-<!--        android:text="Delete"-->
-<!--        />-->
-
-    <TextView
-        android:id="@+id/separator"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_below="@+id/btnplaymusic"
-        android:background="@android:color/darker_gray"
-        android:paddingEnd="3dp"
-        android:paddingStart="3dp"
-        />
-
-
-</RelativeLayout>
+</androidx.cardview.widget.CardView>
