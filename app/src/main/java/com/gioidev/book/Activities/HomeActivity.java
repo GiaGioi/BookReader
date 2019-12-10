@@ -416,7 +416,9 @@ TextView textViewnameemail;
             }
             else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
-                database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getIdToken());
+                if (acct != null) {
+                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(  Objects.requireNonNull(acct.getIdToken()));
+                }
                 Toast.makeText(HomeActivity.this, ""+acct.getId(), Toast.LENGTH_SHORT).show();
                 database.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -456,6 +458,102 @@ TextView textViewnameemail;
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+    private void loadUserProfile(AccessToken newAccessToken)
+
+    {
+
+        GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
+
+            @Override
+
+            public void onCompleted(JSONObject object, GraphResponse response)
+
+            {
+                try {
+
+                    String first_name = object.getString("first_name");
+
+                    String last_name = object.getString("last_name");
+
+                    String email = object.getString("email");
+
+                    String id = object.getString("id");
+
+                    RequestOptions requestOptions = new RequestOptions();
+
+                    requestOptions.dontAnimate();
+
+                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(id);
+
+
+
+                    database.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                        @Override
+
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+
+
+                            int i ;
+
+                            if (dataSnapshot.child("timer").getValue() == null){
+
+                                i = 0;
+
+                            }
+
+                            else {
+
+                                i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                            }
+
+                            i++;
+
+                            boolean vip = false;
+
+                            if (i >= 3600){
+
+                                vip = true;
+
+                            }
+
+                            final String user = id;
+
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+                            DatabaseReference reference = database.getReference("usertimer");
+
+                            TimerUser timerUser = new TimerUser(user, i,vip);
+
+                            reference.child(user).setValue(timerUser);
+
+                        }
+                        @Override
+
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+                } catch (JSONException e) {
+
+                    e.printStackTrace();
+
+                }
+
+            }
+
+        });
+
+        Bundle parameters = new Bundle();
+
+        parameters.putString("fields","first_name,last_name,email,id");
+
+        request.setParameters(parameters);
+
+        request.executeAsync();
     }
 
 }
