@@ -36,6 +36,7 @@ import com.facebook.login.LoginManager;
 import com.gioidev.book.Activities.DangkiActivity;
 import com.gioidev.book.Activities.HomeActivity;
 import com.gioidev.book.Activities.LoginActivity;
+import com.gioidev.book.Activities.Manhinhchao.In4Activity;
 import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.Model.HorizontalModel;
@@ -74,7 +75,7 @@ import lecho.lib.hellocharts.model.Viewport;
 import lecho.lib.hellocharts.view.LineChartView;
 
 public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private TextView tvten,tvTime,tvVIP;
+    private TextView tvten,tvTime,tvVIP,tvIn4,tvEmailSend;
     String TAG = "TAG";
     DrawerLayout drawer;
     private boolean isExit = false;
@@ -112,6 +113,31 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
         tvTime = view.findViewById(R.id.tvTimeused);
         tvVIP = view.findViewById(R.id.tvVIP);
         tvLogOut = view.findViewById(R.id.tvLogOUt);
+        tvIn4 = view.findViewById(R.id.tvIn4);
+        tvIn4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), In4Activity.class);
+                startActivity(intent);
+
+            }
+        });
+        tvEmailSend = view.findViewById(R.id.tvEmailSend);
+        tvEmailSend.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{"duc99iter@gmail.com"});
+                i.putExtra(Intent.EXTRA_SUBJECT, "Báo lỗi BookReader");
+                i.putExtra(Intent.EXTRA_TEXT   , "Nội dung lỗi");
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(getContext(), "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
         tvLogOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -268,7 +294,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
             else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
                 //google
                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
-                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
+                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getIdToken());
 
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override

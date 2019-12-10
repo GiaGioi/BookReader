@@ -381,7 +381,7 @@ TextView textViewnameemail;
             }
             else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
-                database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
+                database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getIdToken());
                 Toast.makeText(HomeActivity.this, ""+acct.getId(), Toast.LENGTH_SHORT).show();
                 database.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
