@@ -414,9 +414,9 @@ TextView textViewnameemail;
                 //Toast.makeText(HomeActivity.this, ""+acct.getId(), Toast.LENGTH_SHORT).show();
 
             }
-
-
-            mHandler.postDelayed(this, 1000);
+//
+//
+//            mHandler.postDelayed(this, 1000);
 
 
         }
