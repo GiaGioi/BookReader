@@ -324,7 +324,7 @@ TextView textViewnameemail;
     private Handler mHandler = new Handler();
 
     public void  startRepeating() {
-        //mHandler.postDelayed(mToastRunnable, 5000);
+        mHandler.postDelayed(mToastRunnable, 1000);
 
         mToastRunnable.run();
     }
