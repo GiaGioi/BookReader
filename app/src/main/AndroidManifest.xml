@@ -57,6 +57,7 @@
             </intent-filter>
         </activity> <!-- Home -->
         <activity android:name=".Activities.HomeActivity" />
+        <activity android:name=".Activities.Manhinhchao.In4Activity" />
 
         <meta-data
             android:name="preloaded_fonts"

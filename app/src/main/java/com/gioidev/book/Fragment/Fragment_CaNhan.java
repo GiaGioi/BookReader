@@ -281,7 +281,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
                             if(vip == true){
                                 tvVIP.setText("VIP");
                             }
-                            tvTime.setText(p2 + ":" + p3 + ":" + p1 );
+                            tvTime.setText("\t" + p2 + "\t" + "Phút" );
                         }
 
                         @Override

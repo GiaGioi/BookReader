@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
@@ -10,109 +11,121 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="230dp"
+            android:layout_height="180dp"
             android:layout_margin="10dp"
             android:background="@drawable/bgbtn3"
             android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="85dp"
-                android:layout_height="85dp"
+            <com.mikhaellopez.circularimageview.CircularImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
-                android:layout_marginLeft="25dp"
-                android:src="@drawable/icon_book" />
+                android:layout_marginLeft="@dimen/nav_header_10dp"
+                android:src="@drawable/icon_book"
+                app:civ_border_color="#3f51b5"
+                app:civ_border_width="4dp"
+                app:civ_shadow="true"
+                app:civ_shadow_color="#3f51b5"
+                app:civ_shadow_radius="10" />/>
 
             <TextView
-            android:id="@+id/tvTen"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            android:text="ABC"
-            android:textSize="20sp" />
+                android:id="@+id/tvTen"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:text="ABC"
+                android:textSize="20sp" />
+
             <TextView
-                android:textColor="#FF0000"
                 android:id="@+id/tvVIP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="30dp"
+                android:textColor="#FF0000"
                 android:textSize="20sp" />
 
 
         </LinearLayout>
 
         <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:orientation="horizontal">
-        <TextView
-            android:textColor="#FF0000"
-            android:textSize="20sp"
-            android:text="@string/timeused"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:textSize="20sp"
-            android:id="@+id/tvTimeused"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-
-    </LinearLayout>
-        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
-            <ImageView
-                android:layout_gravity="center"
-                android:src="@drawable/icon_in4"
-                android:layout_width="50dp"
-                android:layout_height="50dp"/>
-            <TextView
-                android:id="@+id/tvIn4"
-                android:layout_marginLeft="8dp"
-                android:layout_gravity="center"
-                android:textSize="20sp"
-                android:text="Thông tin"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/timeused"
+                android:textColor="#FF0000"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/tvTimeused"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp" />
 
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
             android:orientation="horizontal">
+
             <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_gravity="center"
-                android:src="@drawable/icon_gmail"
-                android:layout_width="50dp"
-                android:layout_height="50dp"/>
+                android:src="@drawable/icon_in4" />
+
+            <TextView
+                android:id="@+id/tvIn4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:text="Thông tin"
+                android:textSize="18sp" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:src="@drawable/icon_gmail" />
+
             <TextView
                 android:id="@+id/tvEmailSend"
-                android:layout_marginLeft="8dp"
-                android:layout_gravity="center"
-                android:textSize="20sp"
-                android:text="Gửi yêu cầu hỗ trợ"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginLeft="8dp"
+                android:text="Gửi yêu cầu hỗ trợ"
+                android:textSize="18sp" />
 
 
         </LinearLayout>
 
         <Button
-            android:background="@drawable/bgbtn"
             android:id="@+id/tvLogOUt"
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_margin="25dp"
+            android:background="@drawable/bgbtn"
             android:text="Đăng Xuất"
             android:textColor="#FFFFFF"
             android:textSize="18sp" />
