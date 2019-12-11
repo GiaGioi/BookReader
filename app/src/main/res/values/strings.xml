@@ -35,7 +35,7 @@
     <string name="expand">Xem thêm</string>
     <string name="collapse">Thu gọn</string>
     <string name="title_activity_audio_book">AudioBookActivity</string>
-    <string name="timeused">Thời gian đã sử dụng:</string>
+    <string name="timeused">Thời gian đọc sách:</string>
     <string name="home">Home</string>
     <string name="thongtin">Thông tin bản quyền</string>
     <string name="bq">Thực hiện bởi nhóm LuLQuit</string>

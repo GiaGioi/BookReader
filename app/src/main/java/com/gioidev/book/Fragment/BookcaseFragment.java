@@ -22,6 +22,8 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
+
 public class BookcaseFragment extends Fragment {
     private EditText tvSearch;
     private TabLayout tabBookCase;
@@ -53,6 +55,24 @@ public class BookcaseFragment extends Fragment {
             }
         });
         return view;
+    }
+    public void Search_Dir(File dir) {
+        String pdfPattern = ".pdf";
+
+        File FileList[] = dir.listFiles();
+
+        if (FileList != null) {
+            for (int i = 0; i < FileList.length; i++) {
+
+                if (FileList[i].isDirectory()) {
+                    Search_Dir(FileList[i]);
+                } else {
+                    if (FileList[i].getName().endsWith(pdfPattern)){
+                        //here you have that file.
+                    }
+                }
+            }
+        }
     }
 
 }
