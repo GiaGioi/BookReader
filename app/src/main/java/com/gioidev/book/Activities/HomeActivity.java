@@ -133,8 +133,8 @@ TextView textViewnameemail;
         auth = FirebaseAuth.getInstance();
         toolbar = findViewById(R.id.toolbar);
         imageView = findViewById(R.id.imageView);
-
-
+        textView = findViewById(R.id.textView);
+        textViewnameemail = findViewById(R.id.textViewnameemail);
         setSupportActionBar(toolbar);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -278,11 +278,11 @@ TextView textViewnameemail;
 
         } else if (id == R.id.nav_short_story) {
 
-        }else if (id == R.id.nav_comic) {
+        } else if (id == R.id.nav_comic) {
 
-        }else if (id == R.id.nav_audio_book) {
-            fragment = new Fragment_Audio_Book();
-            loadFragment(fragment);
+        } else if (id == R.id.nav_audio_book) {
+            Intent intent = new Intent(HomeActivity.this, AudioBookActivity.class);
+            startActivity(intent);
 
         }else
             if (id == R.id.nav_link) {
@@ -324,7 +324,7 @@ TextView textViewnameemail;
     private Handler mHandler = new Handler();
 
     public void  startRepeating() {
-        //mHandler.postDelayed(mToastRunnable, 5000);
+        mHandler.postDelayed(mToastRunnable, 1000);
 
         mToastRunnable.run();
     }
@@ -381,39 +381,42 @@ TextView textViewnameemail;
             }
             else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
-                database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getIdToken());
-                Toast.makeText(HomeActivity.this, ""+acct.getId(), Toast.LENGTH_SHORT).show();
-                database.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (acct != null) {
+                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
+                    database.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                        int i ;
-                        if (dataSnapshot.child("timer").getValue() == null){
-                            i = 0;
+                            int i ;
+                            if (dataSnapshot.child("timer").getValue() == null){
+                                i = 0;
+
+                            }
+                            else {
+                                i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                            }
+
+                            i++;
+                            final String user = acct.getId();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference("usertimer");
+                            TimerUser timerUser = new TimerUser(user, i);
+                            reference.child(user).setValue(timerUser);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
-                        else {
-                            i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
-                        }
+                    });
 
-                        i++;
-                        final String user = auth.getUid();
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        DatabaseReference reference = database.getReference("usertimer");
-                        TimerUser timerUser = new TimerUser(user, i);
-                        reference.child(user).setValue(timerUser);
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                }
+                //Toast.makeText(HomeActivity.this, ""+acct.getId(), Toast.LENGTH_SHORT).show();
 
             }
-
-
-            mHandler.postDelayed(this, 1000);
+//
+//
+//            mHandler.postDelayed(this, 1000);
 
 
         }

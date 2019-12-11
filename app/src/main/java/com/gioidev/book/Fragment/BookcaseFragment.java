@@ -1,32 +1,29 @@
 package com.gioidev.book.Fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
+import android.widget.EditText;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
-import com.gioidev.book.Activities.HomeActivity;
+import com.gioidev.book.Activities.SearchActivity;
 import com.gioidev.book.Adapter.AdapterBook.ViewPagerAdapter;
-import com.gioidev.book.Model.GridViewModel;
-import com.gioidev.book.Model.HorizontalModel;
-import com.gioidev.book.Model.SliderModel;
-import com.gioidev.book.Model.VerticalModel;
 import com.gioidev.book.R;
-import com.gioidev.book.Utils.Functions;
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class BookcaseFragment extends Fragment {
-
+    private EditText tvSearch;
     private TabLayout tabBookCase;
     private ViewPager viewpageBookCase;
     ViewPagerAdapter adapter;
@@ -39,62 +36,23 @@ public class BookcaseFragment extends Fragment {
 
         tabBookCase = view.findViewById(R.id.tab_book_case);
         viewpageBookCase = view.findViewById(R.id.viewpage_book_case);
+        tvSearch = view.findViewById(R.id.tvSearch);
 
         adapter = new ViewPagerAdapter(getChildFragmentManager());
+        //add fragment
         adapter.AddFragment(new Fragment_Ki_Nang(),"Sách kĩ năng");
         adapter.AddFragment(new Fragment_Khach_Hang(),"Marketing - Khách hàng");
         adapter.AddFragment(new Fragment_Phong_Thuy(),"Tử vi - Phong thủy");
         viewpageBookCase.setAdapter(adapter);
         tabBookCase.setupWithViewPager(viewpageBookCase);
 
-
-        //add fragment
-
-
+        tvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), SearchActivity.class));
+            }
+        });
         return view;
     }
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
-
-
-    }
-    //    private void setDataOnVerticalRecyclerView() {
-//        for (int i = 1; i <= 1; i++) {
-//
-//            mVerticalModel = new VerticalModel();
-//
-//            mVerticalModel.setTitle("Title " + i);
-//
-//            //horizontal view
-//            for (int j = 0; j < 10; j++) {
-//                horizontalModels = new ArrayList<>();
-//                mHorizontalModel = new HorizontalModel();
-//                horizontalModels.add(mHorizontalModel);
-//            }
-//            mVerticalModel.setArrayList(horizontalModels);
-//
-//            //slider
-//            for (int j = 0; j < 4; j++) {
-//                sliderModels = new ArrayList<>();
-//                sliderModel = new SliderModel();
-//                sliderModels.add(sliderModel);
-//            }
-//            mVerticalModel.setSliderModels(sliderModels);
-//
-//            for (int j = 0; j < 6; j++) {
-//                //gridview
-//                gridViewModels = new ArrayList<>();
-//                gridViewModel = new GridViewModel();
-//                gridViewModels.add(gridViewModel);
-//            }
-//            mVerticalModel.setGridViewModels(gridViewModels);
-//
-//
-//            mArrayList.add(mVerticalModel);
-//
-//        }
-//        mAdapter.notifyDataSetChanged();
-//    }
 }

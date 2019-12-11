@@ -23,7 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Activities.Manhinhchao.In4Activity"></activity>
+        <activity android:name=".Activities.SearchActivity"></activity>
         <activity android:name=".Activities.ReadBookComicActivity" /> <!-- Add key pdf tron -->
         <meta-data
             android:name="pdftron_license_key"

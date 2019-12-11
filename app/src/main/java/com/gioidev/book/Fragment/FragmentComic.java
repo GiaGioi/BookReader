@@ -1,6 +1,7 @@
 package com.gioidev.book.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,10 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gioidev.book.Adapter.AdapterBook.FragmentKiNangAdapter;
-import com.gioidev.book.Model.GridViewFragmentModel;
+import com.gioidev.book.Adapter.AdapterBook.ComicBookFragmentAdapter;
+import com.gioidev.book.Adapter.AdapterHome.ComicBookAdapter;
+import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
+import com.gioidev.book.Model.ComicBookModel;
+import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.R;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,38 +28,36 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment_Ki_Nang extends Fragment{
-    View v;
-    RecyclerView recyclerView;
-    FragmentKiNangAdapter adapter;
-    ArrayList<GridViewFragmentModel> gridViewModels = new ArrayList<>();
-    GridViewFragmentModel gridViewModel;
+public class FragmentComic extends Fragment {
+
+    private RecyclerView rvfragmentcomic;
+    ComicBookFragmentAdapter adapter;
+    ArrayList<ComicBookModel> models = new ArrayList<>();
+    ComicBookModel comicBookModel;
 
     DatabaseReference mDatabase;
 
-    public Fragment_Ki_Nang(){
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_comic, container, false);
 
-        v = inflater.inflate(R.layout.fragment_ki_nang,container,false);
+        rvfragmentcomic = view.findViewById(R.id.rvfragmentcomic);
+        rvfragmentcomic.setLayoutManager(new GridLayoutManager(getContext(),3));
+        adapter = new ComicBookFragmentAdapter(getContext(),models);
+        rvfragmentcomic.setAdapter(adapter);
 
-        recyclerView = v.findViewById(R.id.rv_fragment_ki_nang);
-        adapter = new FragmentKiNangAdapter(getContext(),gridViewModels);
-        recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        recyclerView.setAdapter(adapter);
-
-        getData();
-        return v;
+        getDataHorizontal();
+        return view;
     }
-    public void getData(){
-        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/SkillBook");
+
+    public void getDataHorizontal() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/Comic");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                gridViewModels.clear();
+                models.clear();
                 List<String> keys = new ArrayList<>();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     keys.add(snapshot.getKey());
@@ -68,20 +71,23 @@ public class Fragment_Ki_Nang extends Fragment{
                     String Price = String.valueOf(snapshot.child("Price").getValue());
                     String Category = String.valueOf(snapshot.child("Category").getValue());
 
-                    gridViewModel = new GridViewFragmentModel();
-                    gridViewModel.setNameBook(nameBook);
-                    gridViewModel.setNameAuthor(nameAuthor);
-                    gridViewModel.setDescription(Description);
-                    gridViewModel.setImage(Image);
-                    gridViewModel.setUrl(Url);
-                    gridViewModel.setGs(Gs);
-                    gridViewModel.setPrice(Price);
-                    gridViewModel.setCategory(Category);
-                    gridViewModels.add(gridViewModel);
+                    comicBookModel = new ComicBookModel();
+                    comicBookModel.setNameBook(nameBook);
+                    comicBookModel.setPrice(Price);
+                    comicBookModel.setUrl(Url);
+                    comicBookModel.setNameAuthor(nameAuthor);
+                    comicBookModel.setImage(Image);
+                    comicBookModel.setGs(Gs);
+                    comicBookModel.setDescription(Description);
+                    comicBookModel.setCategory(Category);
 
+                    models.add(comicBookModel);
                     adapter.notifyDataSetChanged();
+
+                    Log.e("TAG", "onDataChange: " + comicBookModel.getImage());
                 }
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
