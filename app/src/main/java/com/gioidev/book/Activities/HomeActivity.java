@@ -220,7 +220,6 @@ TextView textViewnameemail;
 
         return super.onOptionsItemSelected(item);
     }
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @SuppressLint("WrongConstant")
         @Override
@@ -286,58 +285,18 @@ TextView textViewnameemail;
             Intent intent = new Intent(HomeActivity.this, AudioBookActivity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_link) {
+        }else
+            if (id == R.id.nav_link) {
+//
 
         }
 
-//        if (FirebaseAuth.getInstance().getAccessToken(true) != null){
-//            signOut();
-//        }
-//        else if(auth.getCurrentUser().getDisplayName() != null){
-//            signOutAuthenication();
-//        }
-//        else if (AccessToken.getCurrentAccessToken()!= null){
-//            LoginManager.getInstance().logOut();
-//            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
+
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    //    private void signOut() {
-//   final FirebaseAuth auth = FirebaseAuth.getInstance();
-//    GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//            .requestIdToken(getString(R.string.default_web_client_id))
-//            .requestEmail().build();
-//    GoogleSignInClient signInClient = GoogleSignIn.getClient(HomeActivity.this,signInOptions);
-//    signInClient.revokeAccess().addOnSuccessListener(new OnSuccessListener<Void>() {
-//        @Override
-//        public void onSuccess(Void aVoid) {
-//            Toast.makeText(HomeActivity.this,auth.getCurrentUser().getDisplayName()+" Đăng xuất thành công" ,Toast.LENGTH_SHORT).show();
-//            auth.signOut();
-//            Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
-//            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }).addOnFailureListener(new OnFailureListener() {
-//        @Override
-//        public void onFailure(@NonNull Exception e) {
-//
-//        }
-//    });
-//
-//    }
-//    private void signOutAuthenication(){
-//        auth.signOut();
-//        Intent intent = new Intent(HomeActivity.this,LoginActivity.class);
-//        startActivity(intent);
-//        finish();
-//    }
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void onBackPressed() {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -457,19 +416,19 @@ TextView textViewnameemail;
 //
 //            }
 
+            }
+//
+//
+//            mHandler.postDelayed(this, 1000);
 
-            mHandler.postDelayed(this, 1000);
-
-
-        }
     };
     @Override
     protected void onDestroy() {
         stopRepeating();
         super.onDestroy();
     }
-    private void loadUserProfile(AccessToken newAccessToken) {
-
+    private void loadUserProfile(AccessToken newAccessToken)
+    {
         GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
 
             @Override
@@ -490,6 +449,7 @@ TextView textViewnameemail;
                     RequestOptions requestOptions = new RequestOptions();
 
                     requestOptions.dontAnimate();
+
 
                     database = FirebaseDatabase.getInstance().getReference("usertimer").child(id);
 
@@ -537,12 +497,14 @@ TextView textViewnameemail;
                             reference.child(user).setValue(timerUser);
 
                         }
+
                         @Override
 
                         public void onCancelled(@NonNull DatabaseError databaseError) {
 
                         }
                     });
+
 
                 } catch (JSONException e) {
 
@@ -561,6 +523,8 @@ TextView textViewnameemail;
         request.setParameters(parameters);
 
         request.executeAsync();
+
     }
+
 
 }
