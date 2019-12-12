@@ -361,7 +361,7 @@ TextView textViewnameemail;
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference reference = database.getReference("usertimer");
                             TimerUser timerUser = new TimerUser(user, i, vip);
-                            if (timerUser != null) {
+                            if (user != null) {
                                 reference.child(user).setValue(timerUser);
                             }
                         }
@@ -402,8 +402,10 @@ TextView textViewnameemail;
                            final String user = acct.getId();
                            FirebaseDatabase database = FirebaseDatabase.getInstance();
                            DatabaseReference reference = database.getReference("usertimer");
-                           TimerUser timerUser = new TimerUser(user, i);
-                           reference.child(user).setValue(timerUser);
+                           TimerUser timerUser = new TimerUser(user, i,vip);
+                           if (user != null) {
+                               reference.child(user).setValue(timerUser);
+                           }
                        }
 
                        @Override
