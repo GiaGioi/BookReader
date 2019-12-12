@@ -556,6 +556,6 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     protected void onDestroy() {
         super.onDestroy();
         FolioReader.clear();
-        dialog.dismiss();
+
     }
 }

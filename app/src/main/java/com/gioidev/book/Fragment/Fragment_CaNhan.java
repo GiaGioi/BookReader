@@ -294,7 +294,7 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
             else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
                 //google
                 GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
-                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getIdToken());
+                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
 
                 mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -313,10 +313,15 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
                         p2 = s/60;
                         p3 = p2%60;
                         p2 = p2/60;
+                        boolean vip = false;
+                        if (s>3600) {
+                            vip = true;
 
-
-
-                        tvTime.setText(p2 + ":" + p3 + ":" + p1);
+                        }
+                        if(vip == true){
+                            tvVIP.setText("VIP");
+                        }
+                        tvTime.setText("\t" + p2 + "\t" + "Phút" );
                     }
 
                     @Override
