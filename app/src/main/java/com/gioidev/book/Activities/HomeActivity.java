@@ -378,7 +378,7 @@ TextView textViewnameemail;
            else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
                if (acct != null) {
-                   database = FirebaseDatabase.getInstance().getReference("usertimer").child(  Objects.requireNonNull(acct.getId()));
+                   database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
                    database.addListenerForSingleValueEvent(new ValueEventListener() {
                        @Override
                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
