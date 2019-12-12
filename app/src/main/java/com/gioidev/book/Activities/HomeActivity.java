@@ -297,14 +297,7 @@ TextView textViewnameemail;
         return true;
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            doubleExit();
-        }
-    }
+
 
     private void doubleExit() {
         if (isExit) {
