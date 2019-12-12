@@ -324,7 +324,7 @@ TextView textViewnameemail;
     private Handler mHandler = new Handler();
 
     public void  startRepeating() {
-//        mHandler.postDelayed(mToastRunnable, 5000);
+       mHandler.postDelayed(mToastRunnable, 1000);
         mToastRunnable.run();
     }
 
@@ -382,44 +382,48 @@ TextView textViewnameemail;
 
             }
             //lỗi phần đếm thời gian của google
-//            else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
-//                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
-//                if (acct != null) {
-//                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(  Objects.requireNonNull(acct.getIdToken()));
-//                }
-//                database.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//
-//                        int i ;
-//                        if (dataSnapshot.child("timer").getValue() == null){
-//                            i = 0;
-//
-//                        }
-//                        else {
-//                            i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
-//                        }
-//
-//                        i++;
-//                        final String user = auth.getUid();
-//                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-//                        DatabaseReference reference = database.getReference("usertimer");
-//                        TimerUser timerUser = new TimerUser(user, i);
-//                        reference.child(user).setValue(timerUser);
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                    }
-//                });
-//
-//            }
+           else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
+               GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
+               if (acct != null) {
+                   database = FirebaseDatabase.getInstance().getReference("usertimer").child(  Objects.requireNonNull(acct.getId()));
+                   database.addListenerForSingleValueEvent(new ValueEventListener() {
+                       @Override
+                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                           int i ;
+                           if (dataSnapshot.child("timer").getValue() == null){
+                               i = 0;
+
+                           }
+                           else {
+                               i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                           }
+                           boolean vip = false;
+                           if (i >= 3600)
+                               vip = true;
+
+                           if(vip == true){
+                               tvVip.setText("VIP");
+                           }
+                           i++;
+                           final String user = acct.getId();
+                           FirebaseDatabase database = FirebaseDatabase.getInstance();
+                           DatabaseReference reference = database.getReference("usertimer");
+                           TimerUser timerUser = new TimerUser(user, i);
+                           reference.child(user).setValue(timerUser);
+                       }
+
+                       @Override
+                       public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                       }
+                   });
+               }
+
+          }
 
             }
-//
-//
-//            mHandler.postDelayed(this, 1000);
+
 
     };
     @Override
