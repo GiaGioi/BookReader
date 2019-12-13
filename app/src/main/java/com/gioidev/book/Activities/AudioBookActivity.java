@@ -46,16 +46,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AudioBookActivity extends AppCompatActivity implements JcPlayerManagerListener {
-    private Button btntest;
+public class AudioBookActivity extends AppCompatActivity {
     RecyclerView mRecyclerView;
     ArrayList<DownSong> downSongArrayList = new ArrayList<>();
     AdapterAudio myAdapter;
     DatabaseReference database;
     private StorageReference mStorageRef;
-    private JcPlayerView jcplayer;
-    private LinearLayout cardviewsong;
-    private ImageView btnplaymusic;
 
 
 
@@ -69,12 +65,8 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_audio_book);
-//        setUpRV();
-
 
         View view = LayoutInflater.from(getBaseContext()).inflate(R.layout.songcardview,null);
-
-
         namesong = (TextView) view.findViewById(R.id.namesong);
         mRecyclerView= findViewById(R.id.recyclesong);
         mRecyclerView.setHasFixedSize(true);
@@ -94,46 +86,7 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
 
     }
 
-    @Override
-    public void onCompletedAudio() {
 
-    }
-
-    @Override
-    public void onContinueAudio(@NotNull JcStatus jcStatus) {
-
-    }
-
-    @Override
-    public void onJcpError(@NotNull Throwable throwable) {
-
-    }
-
-    @Override
-    public void onPaused(@NotNull JcStatus jcStatus) {
-
-    }
-
-    @Override
-    public void onPlaying(@NotNull JcStatus jcStatus) {
-
-
-    }
-
-    @Override
-    public void onPreparedAudio(@NotNull JcStatus jcStatus) {
-
-    }
-
-    @Override
-    public void onStopped(@NotNull JcStatus jcStatus) {
-
-    }
-
-    @Override
-    public void onTimeChanged(@NotNull JcStatus jcStatus) {
-
-    }
 
 
     public void getDataHorizontal() {
@@ -187,7 +140,7 @@ public class AudioBookActivity extends AppCompatActivity implements JcPlayerMana
     @Override
     protected void onStop() {
         super.onStop();
-        jcplayer.createNotification();
+
     }
 
 

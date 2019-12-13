@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.jean.jcplayer.model.JcAudio;
@@ -32,7 +33,6 @@ public class AdapterAudio extends RecyclerView.Adapter<AdapterAudio.MyViewHolder
 
         Context context;
     List<DownSong> downSongs;
-    private JcPlayerView jcplayer;
     public AdapterAudio(Context context, List<DownSong> downSongs) {
         this.context = context;
         this.downSongs = downSongs;
@@ -73,7 +73,7 @@ public class AdapterAudio extends RecyclerView.Adapter<AdapterAudio.MyViewHolder
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView mName;
         private TextView mTime;
-        private LinearLayout linearLayout;
+        private CardView linearLayout;
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
         linearLayout = itemView.findViewById(R.id.cardviewsong);
@@ -83,62 +83,5 @@ public class AdapterAudio extends RecyclerView.Adapter<AdapterAudio.MyViewHolder
 
 
     }
-//    Context context;
-//    ArrayList<DownSong> downSongs;
-//    private OnlistSongListener monlistSongListener;
 
-//    public AdapterAudio(Context context, ArrayList<DownSong> downSongs,OnlistSongListener onlistSongListener ) {
-//        this.context = context;
-//        this.downSongs = downSongs;
-//        this.onlistSongListener = OnlistSongListener;
-//    }
-
-//    public AdapterAudio(Context context, ArrayList<DownSong> downSongs, OnlistSongListener onlistSongListener) {
-//        this.context = context;
-//        this.downSongs = downSongs;
-//        this.monlistSongListener = onlistSongListener;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public SongHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//
-//        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.songcardview, parent, false);
-//        return new SongHolder(view,monlistSongListener);
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull SongHolder songHolder, int position) {
-//        DownSong downSong = downSongs.get(position);
-//
-//        songHolder.mName.setText(downSong.getName());
-////        songHolder.mLink.setText(downSong.getLink());
-////        songHolder.mTime.setText(downSong.getTime());
-//
-//
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        return  downSongs.size();
-//    }
-//    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-//
-//        TextView mName;
-//        OnlistSongListener onlistSongListener;
-//        public ViewHolder(@NonNull View itemView, OnlistSongListener onlistSongListener) {
-//            super(itemView);
-//            mName = itemView.findViewById(R.id.namesong);
-//            this.onlistSongListener = onlistSongListener;
-//            itemView.setOnClickListener(this);
-//        }
-//
-//        @Override
-//        public void onClick(View v) {
-//            onlistSongListener.onSongClick(getAdapterPosition());
-//        }
-//    }
-//    public interface OnlistSongListener{
-//        void onSongClick(int position);
-//    }
 }

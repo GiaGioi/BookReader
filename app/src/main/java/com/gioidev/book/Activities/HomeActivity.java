@@ -46,6 +46,7 @@ import com.gioidev.book.Adapter.AdapterHome.VerticalRecyclerViewAdapter;
 import com.gioidev.book.Fragment.BookcaseFragment;
 import com.gioidev.book.Fragment.FragmentComic;
 import com.gioidev.book.Fragment.Fragment_Audio_Book;
+import com.gioidev.book.Fragment.Fragment_Book_Vip;
 import com.gioidev.book.Fragment.Fragment_CaNhan;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Fragment.Fragment_Khach_Hang;
@@ -270,6 +271,8 @@ TextView textViewnameemail;
             fragment = new Fragment_Khach_Hang();
             loadFragment(fragment);
         } else if (id == R.id.nav_horoscope) {
+            fragment = new Fragment_Book_Vip();
+            loadFragment(fragment);
 
         } else if (id == R.id.nav_skillbook) {
             fragment = new Fragment_Ki_Nang();

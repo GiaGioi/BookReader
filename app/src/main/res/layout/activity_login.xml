@@ -47,6 +47,7 @@
         android:layout_height="wrap_content">
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/inputpassword"
+            android:drawableStart="@drawable/iconfinder_password"
             android:drawableLeft="@drawable/iconfinder_password"
             android:inputType="textPassword"
             android:layout_width="351dp"
@@ -54,7 +55,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
             android:background="@drawable/bgbtn1"
-            android:paddingLeft="55dp"
+            android:paddingLeft="22dp"
             android:paddingRight="20dp"
             android:drawablePadding="15dp"
             android:hint="Mật khẩu" />

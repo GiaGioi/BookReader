@@ -41,7 +41,7 @@ public class Fragment_Comic extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_comic, container, false);
-        recyclerView = v.findViewById(R.id.rv_fragment_comic);
+        recyclerView = v.findViewById(R.id.rvfragmentcomic);
         getdata();
         adapter = new FragmentComicAdapter(getContext(),gridViewModels);
         recyclerView.setAdapter(adapter);
