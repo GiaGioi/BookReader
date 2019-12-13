@@ -42,9 +42,9 @@ public class BookcaseFragment extends Fragment {
 
         adapter = new ViewPagerAdapter(getChildFragmentManager());
         //add fragment
-        adapter.AddFragment(new Fragment_Ki_Nang(),"Sách kĩ năng");
-        adapter.AddFragment(new Fragment_Khach_Hang(),"Marketing - Khách hàng");
-        adapter.AddFragment(new Fragment_Phong_Thuy(),"Tử vi - Phong thủy");
+        adapter.AddFragment(new Fragment_Ki_Nang(),"Tủ sách");
+//        adapter.AddFragment(new Fragment_Khach_Hang(),"Marketing - Khách hàng");
+//        adapter.AddFragment(new Fragment_Phong_Thuy(),"Tử vi - Phong thủy");
         viewpageBookCase.setAdapter(adapter);
         tabBookCase.setupWithViewPager(viewpageBookCase);
 

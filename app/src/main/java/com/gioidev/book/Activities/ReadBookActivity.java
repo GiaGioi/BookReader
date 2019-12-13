@@ -49,6 +49,7 @@ import com.folioreader.util.AppUtil;
 import com.folioreader.util.OnHighlightListener;
 import com.folioreader.util.ReadPositionListener;
 import com.gioidev.book.Fragment.FakePageFragment;
+import com.gioidev.book.Fragment.Fragment_Ki_Nang;
 import com.gioidev.book.Model.HorizontalModel;
 import com.gioidev.book.R;
 import com.google.android.material.appbar.AppBarLayout;
@@ -189,6 +190,18 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         tvCategory = findViewById(R.id.tvCategory);
         tvTenBook = findViewById(R.id.tvTenBook);
 
+//        btnReadBook.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                boolean vip = false;
+//                if (getBaseContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+//                    if (equals(vip)== true){
+//                        Log.e("ok","dit con me");
+//                    }
+//
+//                }
+//            }
+//        });
         btnReadBook.setOnClickListener(this);
         imageX.setOnClickListener(this);
         imageShare.setOnClickListener(this);
@@ -225,7 +238,14 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
             case R.id.btnReadBook:
 //                download();
 //                viewDialog();
+
                 if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("0")){
+//                    Bundle bundle = new Bundle();
+////                    bundle.putString("data",horizontalModel.getUrl());
+//
+//                    Fragment_Ki_Nang fragobj = new Fragment_Ki_Nang();
+//                    fragobj.setArguments(bundle);
+
                     new DownloadfromInternet().execute();
                 }
                 if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("1"))

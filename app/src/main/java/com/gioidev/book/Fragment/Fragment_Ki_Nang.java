@@ -1,6 +1,7 @@
 package com.gioidev.book.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,8 +46,9 @@ public class Fragment_Ki_Nang extends Fragment{
         adapter = new FragmentKiNangAdapter(getContext(),gridViewModels);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         recyclerView.setAdapter(adapter);
-
-        getData();
+//        String strtext = getArguments().getString("data");
+//        Log.e("data",strtext);
+//        getData();
         return v;
     }
     public void getData(){
