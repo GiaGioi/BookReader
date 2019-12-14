@@ -139,4 +139,5 @@ public class Fragment_Ki_Nang extends Fragment{
             }
         });
     }
+
 }

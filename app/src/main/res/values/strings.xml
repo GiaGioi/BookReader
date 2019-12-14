@@ -42,4 +42,8 @@
     <string name="Email">Gmail: duc99iter@gmail.com</string>
     <string name="SDT">SĐT: 0383135586</string>
     <string name="DC">Địa chỉ: Hà Nội</string>
+    <string name="example_title">Xóa sách</string>
+    <string name="example_subtitle">Bạn có muốn cuốn sách hay này!</string>
+    <string name="oke">Delete</string>
+    <string name="dismiss">Cancel</string>
 </resources>
