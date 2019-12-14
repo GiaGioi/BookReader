@@ -52,9 +52,7 @@ public class SearchActivity extends AppCompatActivity {
 //                        .orderByChild("childNode")
 //                        .startAt("[a-zA-Z0-9]*")
 //                        .endAt(searchText);
-                databaseReference.orderByChild("nameBook")
-                        .startAt(searchText)
-                        .endAt(searchText+"\uf8ff");
+
             }
         });
 
@@ -64,7 +62,9 @@ public class SearchActivity extends AppCompatActivity {
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
 
 //        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
-
+        databaseReference.orderByChild("NameBook")
+                .startAt(searchText)
+                .endAt(searchText+"\uf8ff");
 
     }
 

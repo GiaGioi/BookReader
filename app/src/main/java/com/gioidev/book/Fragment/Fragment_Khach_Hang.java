@@ -43,11 +43,11 @@ public class Fragment_Khach_Hang extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_khach_hang, container, false);
         recyclerView = v.findViewById(R.id.rv_fragment_khachhang);
-        getdata();
         adapter = new FragmentKhachHangAdapter(getContext(),gridViewModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        adapter.notifyDataSetChanged();
+        getdata();
+
         return v;
     }
     public void getdata(){
@@ -81,6 +81,7 @@ public class Fragment_Khach_Hang extends Fragment {
                     gridViewModel.setCategory(Category);
 
                     gridViewModels.add(gridViewModel);
+                    adapter.notifyDataSetChanged();
 
 
 

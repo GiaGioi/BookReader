@@ -1,11 +1,13 @@
 package com.gioidev.book.Fragment;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,8 +38,8 @@ public class Fragment_Ki_Nang extends Fragment{
     FragmentKiNangAdapter adapter;
     ArrayList<User> gridViewModels = new ArrayList<>();
     User gridViewModel;
-    private EditText tvSearch;
 
+    private SearchView searchview;
 
 
     DatabaseReference mDatabase;
@@ -50,16 +52,9 @@ public class Fragment_Ki_Nang extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_ki_nang,container,false);
-        tvSearch = (EditText) v.findViewById(R.id.tvSearch);
-        tvSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String searchText = tvSearch.getText().toString();
-                mDatabase.orderByChild("nameBook")
-                        .startAt(searchText)
-                        .endAt(searchText+"\uf8ff");
-            }
-        });
+
+        searchview = (SearchView) v.findViewById(R.id.searchview);
+
         recyclerView = v.findViewById(R.id.rv_fragment_ki_nang);
         adapter = new FragmentKiNangAdapter(getContext(),gridViewModels);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));

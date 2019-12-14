@@ -1,6 +1,7 @@
 package com.gioidev.book.Fragment;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,11 +42,11 @@ public class Fragment_Tam_ly extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_tamly, container, false);
         recyclerView = v.findViewById(R.id.rv_fragment_tamly);
-        getdata();
         adapter = new FragmentTamlyAdapter(getContext(),gridViewModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
-        adapter.notifyDataSetChanged();
+        getdata();
+
         return v;
     }
     public void getdata(){
@@ -78,9 +79,9 @@ public class Fragment_Tam_ly extends Fragment {
                     gridViewModel.setPrice(Price);
                     gridViewModel.setCategory(Category);
 
+                    Log.e("TAG", "onDataChange: " + gridViewModel.getNameAuthor());
                     gridViewModels.add(gridViewModel);
-
-
+                    adapter.notifyDataSetChanged();
 
                 }
             }

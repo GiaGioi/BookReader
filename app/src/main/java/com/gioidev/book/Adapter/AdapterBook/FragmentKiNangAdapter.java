@@ -40,6 +40,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import es.dmoral.toasty.Toasty;
 
@@ -147,6 +148,25 @@ public class FragmentKiNangAdapter extends
             tvNameBook = itemView.findViewById(R.id.tvnamBook_fragment_ki_nang);
         }
     }
+//    public void filter(String s){
+//        s = s.toLowerCase(Locale.getDefault());
+//        gridViewModels.clear();
+//        if (s.length()==0){
+//            gridViewModels.addAll(.getAllPC());
+//        }
+//        else{
+//            for (PC model : pcdao.getAllPC()){
+//                if (model.getTitle().toLowerCase(Locale.getDefault())
+//                        .contains(s)){
+//                    pcs.add(model);
+//                }
+//            }
+//        }
+//        notifyDataSetChanged();
+//
+//
+//
+//    }
 
 
 }
