@@ -17,6 +17,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.gioidev.book.Adapter.AdapterBook.FragmentKhachHangAdapter;
+import com.gioidev.book.Fragment.FragmentComic;
+import com.gioidev.book.Fragment.Fragment_Book_Vip;
+import com.gioidev.book.Fragment.Fragment_Comic;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Fragment.Fragment_Khach_Hang;
 import com.gioidev.book.Fragment.Fragment_Sach_Moi_Nhat;
@@ -115,33 +118,37 @@ public class VerticalRecyclerViewAdapter extends
 
         holder.tvViewNewBook.setOnClickListener(new View.OnClickListener() {
             Fragment fragment;
-            Fragment_Home fragment_home;
-            @Override
             public void onClick(View v) {
-//                Fragment_Sach_Moi_Nhat fragment_sach_moi_nhat = new Fragment_Sach_Moi_Nhat();
-//
-//                FragmentTransaction mFragmentTransaction = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
-//                mFragmentTransaction.replace(R.id.fragment_container, fragment_sach_moi_nhat).mFragmentTransaction.addToBackStack(null).commit();
-//                mInquiryFragment = new InquiryDashboardFragment();
-
+                fragment = new Fragment_Sach_Moi_Nhat();
+                loadFragment(fragment);
 
             }
         });
         holder.tvViewPrivate.setOnClickListener(new View.OnClickListener() {
+            Fragment fragment;
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, current.getTitle(), Toast.LENGTH_SHORT).show();
+                fragment = new Fragment_Sach_Moi_Nhat();
+                loadFragment(fragment);
             }
         });
         holder.tvViewComic.setOnClickListener(new View.OnClickListener() {
+            Fragment fragment;
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, current.getTitle(), Toast.LENGTH_SHORT).show();
+                fragment = new FragmentComic();
+                loadFragment(fragment);
             }
         });
 
     }
-
+    private void loadFragment(Fragment fragment) {
+        // load fragment
+        FragmentTransaction transaction = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.main_container, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
     @Override
     public int getItemCount()  {
         return mArrayList.size();

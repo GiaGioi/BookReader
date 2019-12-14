@@ -61,7 +61,7 @@ public class FragmentComicAdapter extends RecyclerView.Adapter<FragmentComicAdap
             @Override
             public void onClick(View v) {
                 SharedPreferences preferences = mContext.getSharedPreferences("Data", Context.MODE_PRIVATE);
-                preferences.edit().putString("Horizontal","0").apply();
+                preferences.edit().putString("Horizontal","1").apply();
 
                 Intent intent = new Intent(mContext, ReadBookActivity.class);
                 intent.putExtra("NameBook", current.getNameBook());

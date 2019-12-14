@@ -292,7 +292,7 @@ TextView textViewnameemail;
             fragment = new Fragment_Book_Vip();
             loadFragment(fragment);
         } else if (id == R.id.nav_skillbook) {
-            fragment = new Fragment_Sach_Moi_Nhat();
+            fragment = new Fragment_Tam_ly();
             loadFragment(fragment);
 
         } else if (id == R.id.nav_short_story) {
