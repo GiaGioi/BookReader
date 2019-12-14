@@ -46,11 +46,10 @@ public class Fragment_Sach_Moi_Nhat extends Fragment {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         getdata();
-        getdata1();
         return v;
     }
     public void getdata(){
-        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/BookVip");
+        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/NewBook");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
