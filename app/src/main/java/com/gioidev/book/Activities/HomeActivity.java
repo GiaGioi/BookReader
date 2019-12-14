@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -207,8 +208,7 @@ TextView textViewnameemail;
                 tvEmail.setText(""+acct.getEmail());
             }
         }
-
-            startRepeating();
+        startRepeating();
 
     }
     @Override
@@ -280,7 +280,6 @@ TextView textViewnameemail;
         } else if (id == R.id.nav_horoscope) {
             fragment = new Fragment_Book_Vip();
             loadFragment(fragment);
-
         } else if (id == R.id.nav_skillbook) {
             fragment = new Fragment_Ki_Nang();
             loadFragment(fragment);
@@ -302,13 +301,23 @@ TextView textViewnameemail;
 
         }
 
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-
+    @Override
+    public void onBackPressed() {
+        if(getFragmentManager().getBackStackEntryCount() == 0) {
+            super.onBackPressed();
+        }
+        else if(getFragmentManager().getBackStackEntryCount() == 1) {
+            moveTaskToBack(false);
+        }
+        else {
+            getFragmentManager().popBackStack();
+        }
+    }
 
     private void doubleExit() {
         if (isExit) {
@@ -440,8 +449,7 @@ TextView textViewnameemail;
 
         super.onDestroy();
     }
-    private void loadUserProfile(AccessToken newAccessToken)
-    {
+    private void loadUserProfile(AccessToken newAccessToken) {
         GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
 
             @Override

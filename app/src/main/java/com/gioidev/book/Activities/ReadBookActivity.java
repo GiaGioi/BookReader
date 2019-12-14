@@ -1,5 +1,6 @@
 package com.gioidev.book.Activities;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -9,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.DownloadManager;
 import android.app.ProgressDialog;
@@ -51,9 +53,17 @@ import com.folioreader.util.ReadPositionListener;
 import com.gioidev.book.Fragment.FakePageFragment;
 import com.gioidev.book.Fragment.Fragment_Ki_Nang;
 import com.gioidev.book.Model.HorizontalModel;
+import com.gioidev.book.Model.User;
 import com.gioidev.book.R;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.pdftron.pdf.controls.DocumentActivity;
 
 import java.io.BufferedInputStream;
@@ -76,6 +86,7 @@ import es.dmoral.toasty.Toasty;
 public class ReadBookActivity extends AppCompatActivity implements View.OnClickListener
         , OnHighlightListener, ReadPositionListener, FolioReader.OnClosedListener {
 
+    public final String TAG = ReadBookActivity.class.getSimpleName();
     private Button btnDialog;
     Dialog dialog;
     private RelativeLayout rvLayout;
@@ -99,12 +110,17 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageForward;
     private TextView tvCategory;
     private TextView tvTenBook;
+    long maxid = 0;
+    String namebook2;
+    String namebook;
 
-
+    FirebaseDatabase database;
+    DatabaseReference reference;
     FolioReader folioReader;
     String filename;
     Uri uri;
     SharedPreferences sharedPreferences;
+    User user;
 
 
     @Override
@@ -117,9 +133,10 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                 .setOnClosedListener(this);
 
         getHighlightsAndSave();
+        user = new User();
         expandtext();
         init();
-
+        getUID();
 
     }
 
@@ -174,6 +191,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         });
     }
 
+    @SuppressLint("NewApi")
     public void init() {
         imageX = findViewById(R.id.image_x);
         imageShare = findViewById(R.id.image_share);
@@ -224,11 +242,33 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         tvCategory.setText(category);
         tvTenBook.setText(namebook);
 
-        sharedPreferences=getSharedPreferences("DATA2",MODE_PRIVATE);
-        sharedPreferences.edit().putString("Image",imagebg).apply();
+//        sharedPreferences = getSharedPreferences("DATA2",MODE_PRIVATE);
+//        sharedPreferences.edit().putString("Image",imagebg).apply();
 
+    }
 
+    private void getUID() {
+        Intent intent = getIntent();
+        namebook = intent.getStringExtra("NameBook");
+        reference = FirebaseDatabase.getInstance().getReference("user").child("PDF");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<String> keys = new ArrayList<>();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    keys.add(snapshot.getKey());
+                    namebook2 = String.valueOf(snapshot.child("nameBook").getValue());
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        Log.e(TAG, "getUID: " + namebook);
+        Log.e(TAG, "getUID2: " + namebook2);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -236,24 +276,23 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.btnReadBook:
-//                download();
-//                viewDialog();
+                if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal", "").equals("0")) {
 
-                if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("0")){
                     new DownloadfromInternet().execute();
                 }
-                if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("1"))
+                if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal", "").equals("1")) {
                     new DownloadfilePDF().execute();
 
-                if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("3"))
+                }
+                if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal", "").equals("3")) {
                     new DownloadfilePDF().execute();
-
-                if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("4"))
+                }
+                if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal", "").equals("4")) {
                     new DownloadfilePDF().execute();
-
+                }
                 break;
             case R.id.image_x:
-                startActivity(new Intent(ReadBookActivity.this,HomeActivity.class));
+                startActivity(new Intent(ReadBookActivity.this, HomeActivity.class));
                 break;
 
             case R.id.image_share:
@@ -261,19 +300,19 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                 Intent intent = new Intent(Intent.ACTION_SEND);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setType("text/plain");
-                intent.putExtra(Intent.EXTRA_TEXT,"Mời bạn đọc sách");
+                intent.putExtra(Intent.EXTRA_TEXT, "Mời bạn đọc sách");
                 startActivity(intent);
                 break;
 
 
-
         }
     }
-    public void viewDialog(){
+
+    public void viewDialog() {
         Intent intent = getIntent();
         String imagebg = intent.getStringExtra("Image");
 
-        View view = getLayoutInflater().inflate(R.layout.item_full_screen_dialog,null);
+        View view = getLayoutInflater().inflate(R.layout.item_full_screen_dialog, null);
         rvLayout = view.findViewById(R.id.rvLayout);
         view1 = view.findViewById(R.id.viewImage);
         progressBar = view.findViewById(R.id.progress);
@@ -291,58 +330,38 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         progressBar.setVisibility(View.VISIBLE);
         dialog.show();
     }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void download() {
+
+    private void getData() {
+        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+        if (user1 != null) {
+            String userID = user1.getUid();
+            user.setUid(userID);
+        }
         Intent intent = getIntent();
+        String namebook = intent.getStringExtra("NameBook");
+        String nameauthor = intent.getStringExtra("NameAuthor");
+        String description = intent.getStringExtra("Description");
+        String gs = intent.getStringExtra("Gs");
+        String imagebg = intent.getStringExtra("Image");
+        String price = intent.getStringExtra("Price");
+        String category = intent.getStringExtra("Category");
         String url = intent.getStringExtra("Url");
 
-        String storagePath = Environment.getExternalStorageDirectory()
-                .getPath()
-                + "/Book Reader/";
-        File f = new File(storagePath);
-        if (!f.exists()) {
-            f.mkdirs();
-        }
-        Uri uri = Uri.parse(url);
-        File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
-//
-//        filename = sdCardRoot.getPath();
-//
-//        Log.e("check_path", "" + filename);
-        Log.e("SD", "" + sdCardRoot);
-        if (sdCardRoot.exists()) {
-            Intent intentopen = new Intent(ReadBookActivity.this, OpenBookActivity.class);
-//            intentopen.putExtra("FileName", String.valueOf(filename));
-            startActivity(intentopen);
+        user.setNameBook(namebook);
+        user.setNameAuthor(nameauthor);
+        user.setDescription(description);
+        user.setGs(gs);
+        user.setImage(imagebg);
+        user.setPrice(price);
+        user.setCategory(category);
+        user.setUrl(url);
 
-
-        } else {
-            DownloadManager dm = (DownloadManager) getApplication().getSystemService(Context.DOWNLOAD_SERVICE);
-            DownloadManager.Request request = new DownloadManager.Request(uri)
-                    .setTitle("Book Reader")// Title of the Download Notification
-                    // Description of the Download Notification
-                    // Visibility of the download Notification
-                    .setDestinationUri(Uri.fromFile(f))// Uri of the destination file
-                    .setRequiresCharging(false)// Set if charging is required to begin the download
-                    .setAllowedOverMetered(true)// Set if download is allowed on Mobile network
-                    .setAllowedOverRoaming(true);// Set if download is allowed on roaming network
-
-//                Log.d("Storage ",""+pathname);
-            request.setDestinationInExternalPublicDir("/Book Reader", uri.getLastPathSegment());
-            dm.enqueue(request);
-
-
-            //File file = Environment.getDataDirectory();
-            //String pathname = String.valueOf(Environment.getDataDirectory());
-
-
-        }
-
-        //storagePath.mkdirs();
-//        String pathname = uri.toString();
-
+        Log.e(TAG, "getData: " + url);
 
     }
+
 
     class DownloadfromInternet extends AsyncTask<String, String, String> {
 
@@ -376,7 +395,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                 File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
                 filename = sdCardRoot.getPath();
 
-                Log.e("TAG", "onCreate: "+ filename);
+                Log.e("TAG", "onCreate: " + filename);
                 byte data[] = new byte[1024];
                 long total = 0;
                 while ((count = input.read(data)) != -1) {
@@ -409,25 +428,27 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         protected void onPostExecute(String file_url) {
             // Dismiss the dialog after the Music file was downloaded
 
-            sharedPreferences=getSharedPreferences("DATA",MODE_PRIVATE);
-            sharedPreferences.edit().putString("File",filename).apply();
-            startActivity(new Intent(ReadBookActivity.this,OpenBookActivity.class));
+            sharedPreferences = getSharedPreferences("DATA", MODE_PRIVATE);
+            sharedPreferences.edit().putString("File", filename).apply();
+            startActivity(new Intent(ReadBookActivity.this, OpenBookActivity.class));
             dialog.dismiss();
             // Play the music
         }
     }
 
     class DownloadfilePDF extends AsyncTask<String, String, String> {
-
-        // Show Progress bar before downloading Music
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             // Shows Progress Bar Dialog and then call doInBackground method
             viewDialog();
+            if (!namebook.equalsIgnoreCase(namebook2)) {
+                pushdata();
+            } else {
+                Log.e(TAG, "getUID: ");
+            }
         }
 
-        // Download Music File from Internet
         @Override
         protected String doInBackground(String... f_url) {
             int count;
@@ -436,7 +457,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                 String url1 = intent.getStringExtra("Url");
                 uri = Uri.parse(url1);
 
-                Log.e("TAG", "doInBackground: " + url1 );
+                Log.e("TAG", "doInBackground: " + url1);
                 URL url = new URL(url1);
                 URLConnection conection = url.openConnection();
                 conection.connect();
@@ -447,6 +468,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
                 // Output stream to write file in SD card
                 OutputStream output = new FileOutputStream(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
 
+
                 byte data[] = new byte[1024];
                 long total = 0;
                 while ((count = input.read(data)) != -1) {
@@ -468,23 +490,45 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
             return null;
         }
 
-        // While Downloading Music File
         protected void onProgressUpdate(String... progress) {
             // Set progress percentage
 
             progressBar.setProgress(Integer.parseInt(progress[0]));
         }
 
-        // Once Music File is downloaded
         @Override
         protected void onPostExecute(String file_url) {
-            // Dismiss the dialog after the Music file was downloaded
-            // Play the music
             File sdCardRoot = new File(Environment.getExternalStorageDirectory().getPath() + "/Book Reader/" + uri.getLastPathSegment());
 
             DocumentActivity.openDocument(ReadBookActivity.this, Uri.parse(sdCardRoot.getPath()));
             dialog.dismiss();
         }
+    }
+
+    @SuppressLint("NewApi")
+    public void pushdata() {
+        database = FirebaseDatabase.getInstance();
+        reference = database.getReference("user").child("PDF");
+        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+        assert user1 != null;
+        String getUid = user1.getUid();
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    maxid = (dataSnapshot.getChildrenCount() + 1);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        getData();
+//        reference.child(getUid).child(String.valueOf(maxid)).setValue(user);
+        reference.push().setValue(user);
+
     }
 
     @Override

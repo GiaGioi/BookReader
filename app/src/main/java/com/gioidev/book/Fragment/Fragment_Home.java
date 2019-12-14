@@ -123,6 +123,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     keys.add(snapshot.getKey());
 
+
                     String nameBook = String.valueOf(snapshot.child("NameBook").getValue());
                     String nameAuthor = String.valueOf(snapshot.child("NameAuthor").getValue());
                     String Description = String.valueOf(snapshot.child("Description").getValue());
