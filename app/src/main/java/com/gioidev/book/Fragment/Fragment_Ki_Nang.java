@@ -58,7 +58,7 @@ public class Fragment_Ki_Nang extends Fragment{
         FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
         assert user1 != null;
         String getUid = user1.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference("user").child("PDF");
+        mDatabase = FirebaseDatabase.getInstance().getReference("user").child("PDF").child(getUid);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -85,7 +85,7 @@ public class Fragment_Ki_Nang extends Fragment{
         FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
         assert user1 != null;
         String getUid = user1.getUid();
-        mDatabase = FirebaseDatabase.getInstance().getReference("user").child("PDF");
+        mDatabase = FirebaseDatabase.getInstance().getReference("user").child("PDF").child(getUid);
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

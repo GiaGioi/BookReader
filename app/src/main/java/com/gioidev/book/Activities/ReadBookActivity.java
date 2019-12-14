@@ -248,9 +248,12 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void getUID() {
+        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+        assert user1 != null;
+        String getUid = user1.getUid();
         Intent intent = getIntent();
         namebook = intent.getStringExtra("NameBook");
-        reference = FirebaseDatabase.getInstance().getReference("user").child("PDF");
+        reference = FirebaseDatabase.getInstance().getReference("user").child("PDF").child(getUid);
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -527,7 +530,7 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
         });
         getData();
 //        reference.child(getUid).child(String.valueOf(maxid)).setValue(user);
-        reference.push().setValue(user);
+        reference.child(getUid).push().setValue(user);
 
     }
 

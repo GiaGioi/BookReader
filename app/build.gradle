@@ -104,4 +104,7 @@ dependencies {
     //pdf open file
     implementation "com.pdftron:pdftron:7.0.4"
     implementation "com.pdftron:tools:7.0.4"
+
+    // Material Dialog Library
+    implementation 'com.shreyaspatil:MaterialDialog:2.0'
 }
