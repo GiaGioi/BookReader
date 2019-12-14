@@ -52,6 +52,7 @@ import com.gioidev.book.Fragment.Fragment_CaNhan;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Fragment.Fragment_Khach_Hang;
 import com.gioidev.book.Fragment.Fragment_Ki_Nang;
+import com.gioidev.book.Fragment.Fragment_Tam_ly;
 import com.gioidev.book.Fragment.Fragment_TruyenNgan;
 import com.gioidev.book.Model.DownSong;
 import com.gioidev.book.Model.TimerUser;
@@ -208,6 +209,13 @@ TextView textViewnameemail;
                 tvEmail.setText(""+acct.getEmail());
             }
         }
+
+        View headerview = navigationView.getHeaderView(0);
+        FirebaseUser emailfirebase = auth.getCurrentUser();
+        String email1 = emailfirebase.getEmail();
+        Log.e("Email: ",email1);
+        textViewnameemail = headerview.findViewById(R.id.textViewnameemail);
+        textViewnameemail.setText(email1);
         startRepeating();
 
     }
@@ -281,7 +289,7 @@ TextView textViewnameemail;
             fragment = new Fragment_Book_Vip();
             loadFragment(fragment);
         } else if (id == R.id.nav_skillbook) {
-            fragment = new Fragment_Ki_Nang();
+            fragment = new Fragment_Tam_ly();
             loadFragment(fragment);
 
         } else if (id == R.id.nav_short_story) {

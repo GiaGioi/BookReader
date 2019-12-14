@@ -24,9 +24,9 @@ public class SearchActivity extends AppCompatActivity {
 
     private EditText tvSearch;
     private RecyclerView rvSearch;
+    FirebaseDatabase firebaseDatabase;
 
-
-    private DatabaseReference mUserDatabase;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,7 @@ public class SearchActivity extends AppCompatActivity {
         tvSearch = findViewById(R.id.tvSearch);
         rvSearch = findViewById(R.id.rvSearch);
 
-        mUserDatabase = FirebaseDatabase.getInstance().getReference("Users");
+//        mUserDatabase = FirebaseDatabase.getInstance().getReference("Users");
 
         rvSearch.setHasFixedSize(true);
         rvSearch.setLayoutManager(new LinearLayoutManager(this));
@@ -47,8 +47,14 @@ public class SearchActivity extends AppCompatActivity {
 
                 String searchText = tvSearch.getText().toString();
 
-                firebaseUserSearch(searchText);
-
+//                firebaseUserSearch(searchText);
+//                firebaseDatabase.getReference("pdf")
+//                        .orderByChild("childNode")
+//                        .startAt("[a-zA-Z0-9]*")
+//                        .endAt(searchText);
+                databaseReference.orderByChild("nameBook")
+                        .startAt(searchText)
+                        .endAt(searchText+"\uf8ff");
             }
         });
 
@@ -57,7 +63,7 @@ public class SearchActivity extends AppCompatActivity {
 
         Toast.makeText(SearchActivity.this, "Started Search", Toast.LENGTH_LONG).show();
 
-        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
+//        Query firebaseSearchQuery = mUserDatabase.orderByChild("name").startAt(searchText).endAt(searchText + "\uf8ff");
 
 
     }

@@ -5,12 +5,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.gioidev.book.Adapter.AdapterBook.FragmentKiNangAdapter;
@@ -34,6 +36,9 @@ public class Fragment_Ki_Nang extends Fragment{
     FragmentKiNangAdapter adapter;
     ArrayList<User> gridViewModels = new ArrayList<>();
     User gridViewModel;
+    private EditText tvSearch;
+
+
 
     DatabaseReference mDatabase;
 
@@ -45,13 +50,22 @@ public class Fragment_Ki_Nang extends Fragment{
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         v = inflater.inflate(R.layout.fragment_ki_nang,container,false);
-
+        tvSearch = (EditText) v.findViewById(R.id.tvSearch);
+        tvSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String searchText = tvSearch.getText().toString();
+                mDatabase.orderByChild("nameBook")
+                        .startAt(searchText)
+                        .endAt(searchText+"\uf8ff");
+            }
+        });
         recyclerView = v.findViewById(R.id.rv_fragment_ki_nang);
         adapter = new FragmentKiNangAdapter(getContext(),gridViewModels);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         recyclerView.setAdapter(adapter);
         getUID();
-
+        getData();
         return v;
     }
     private void getUID(){
