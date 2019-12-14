@@ -240,12 +240,6 @@ public class ReadBookActivity extends AppCompatActivity implements View.OnClickL
 //                viewDialog();
 
                 if (getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("0")){
-//                    Bundle bundle = new Bundle();
-////                    bundle.putString("data",horizontalModel.getUrl());
-//
-//                    Fragment_Ki_Nang fragobj = new Fragment_Ki_Nang();
-//                    fragobj.setArguments(bundle);
-
                     new DownloadfromInternet().execute();
                 }
                 if(getApplication().getSharedPreferences("Data", Context.MODE_PRIVATE).getString("Horizontal","").equals("1"))

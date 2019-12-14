@@ -7,11 +7,19 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
+import com.gioidev.book.Adapter.AdapterBook.FragmentKhachHangAdapter;
+import com.gioidev.book.Fragment.Fragment_Home;
+import com.gioidev.book.Fragment.Fragment_Khach_Hang;
+import com.gioidev.book.Fragment.Fragment_Sach_Moi_Nhat;
 import com.gioidev.book.Model.ComicBookModel;
 import com.gioidev.book.Model.GridViewModel;
 import com.gioidev.book.Model.HorizontalModel;
@@ -104,10 +112,19 @@ public class VerticalRecyclerViewAdapter extends
         holder.viewPager.setAdapter(comicBookAdapter);
         holder.viewPager.setPadding(130, 0, 130, 0);
 
+
         holder.tvViewNewBook.setOnClickListener(new View.OnClickListener() {
+            Fragment fragment;
+            Fragment_Home fragment_home;
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, current.getTitle(), Toast.LENGTH_SHORT).show();
+//                Fragment_Sach_Moi_Nhat fragment_sach_moi_nhat = new Fragment_Sach_Moi_Nhat();
+//
+//                FragmentTransaction mFragmentTransaction = ((FragmentActivity)mContext).getSupportFragmentManager().beginTransaction();
+//                mFragmentTransaction.replace(R.id.fragment_container, fragment_sach_moi_nhat).mFragmentTransaction.addToBackStack(null).commit();
+//                mInquiryFragment = new InquiryDashboardFragment();
+
+
             }
         });
         holder.tvViewPrivate.setOnClickListener(new View.OnClickListener() {
@@ -129,6 +146,7 @@ public class VerticalRecyclerViewAdapter extends
     public int getItemCount()  {
         return mArrayList.size();
     }
+
 
     class VerticalRecyclerViewHolder extends RecyclerView.ViewHolder {
         private TextView tvTitle;

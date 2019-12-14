@@ -51,6 +51,7 @@ import com.gioidev.book.Fragment.Fragment_CaNhan;
 import com.gioidev.book.Fragment.Fragment_Home;
 import com.gioidev.book.Fragment.Fragment_Khach_Hang;
 import com.gioidev.book.Fragment.Fragment_Ki_Nang;
+import com.gioidev.book.Fragment.Fragment_TruyenNgan;
 import com.gioidev.book.Model.DownSong;
 import com.gioidev.book.Model.TimerUser;
 import com.gioidev.book.Model.VerticalModel;
@@ -143,9 +144,14 @@ TextView textViewnameemail;
         setSupportActionBar(toolbar);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            String email = user.getEmail();
-            textViewnameemail.setText(email);
+        if (this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")) {
+            textViewnameemail.setText(auth.getCurrentUser().getEmail());
+        }
+        else if (this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+            GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
+            if (acct != null) {
+                textViewnameemail.setText(acct.getDisplayName());
+            }
         }
         else if (AccessToken.getCurrentAccessToken()!= null){
             Profile profile = Profile.getCurrentProfile();
@@ -154,6 +160,7 @@ TextView textViewnameemail;
 
         LayoutInflater inflater = getLayoutInflater();
         View myView = inflater.inflate(R.layout.nav_header_main, null);
+
         TextView tvEmail = (TextView) myView.findViewById(R.id.textViewnameemail);
 
 
@@ -279,7 +286,8 @@ TextView textViewnameemail;
             loadFragment(fragment);
 
         } else if (id == R.id.nav_short_story) {
-
+            fragment = new Fragment_TruyenNgan();
+            loadFragment(fragment);
         } else if (id == R.id.nav_comic) {
             fragment = new FragmentComic();
             loadFragment(fragment);
@@ -320,7 +328,7 @@ TextView textViewnameemail;
     private Handler mHandler = new Handler();
 
     public void  startRepeating() {
-       mHandler.postDelayed(mToastRunnable, 1000);
+
         mToastRunnable.run();
     }
 
@@ -338,7 +346,8 @@ TextView textViewnameemail;
             }
             else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
                 //ffirebase
-                if (auth.getUid()!=null) {
+                //Toast.makeText(HomeActivity.this, "bO DANG LAP LAI", Toast.LENGTH_SHORT).show();
+
                     database = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid() + "");
 
                     database.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -374,50 +383,52 @@ TextView textViewnameemail;
 
                         }
                     });
-                }
 
+
+                mHandler.postDelayed(mToastRunnable, 1000);
             }
             //lỗi phần đếm thời gian của google
            else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
-               if (acct != null) {
-                   database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
-                   database.addListenerForSingleValueEvent(new ValueEventListener() {
-                       @Override
-                       public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    if (acct!=null) {
+                        database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
+                        database.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                           int i ;
-                           if (dataSnapshot.child("timer").getValue() == null){
-                               i = 0;
+                                int i;
+                                if (dataSnapshot.child("timer").getValue() == null) {
+                                    i = 0;
 
-                           }
-                           else {
-                               i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
-                           }
-                           boolean vip = false;
-                           if (i >= 3600)
-                               vip = true;
+                                } else {
+                                    i = Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                                }
+                                boolean vip = false;
+                                if (i >= 3600)
+                                    vip = true;
 
-                           if(vip == true){
-                               tvVip.setText("VIP");
-                           }
-                           i++;
-                           final String user = acct.getId();
-                           FirebaseDatabase database = FirebaseDatabase.getInstance();
-                           DatabaseReference reference = database.getReference("usertimer");
-                           TimerUser timerUser = new TimerUser(user, i,vip);
-                           if (user != null) {
-                               reference.child(user).setValue(timerUser);
-                           }
-                       }
+                                if (vip == true) {
+                                    tvVip.setText("VIP");
+                                }
+                                i++;
+                                final String user = acct.getId();
+                                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                DatabaseReference reference = database.getReference("usertimer");
+                                TimerUser timerUser = new TimerUser(user, i, vip);
+                                if (user != null) {
+                                    reference.child(user).setValue(timerUser);
+                                }
+                            }
 
-                       @Override
-                       public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                       }
-                   });
-               }
+                            }
+                        });
+                    }
 
+
+                mHandler.postDelayed(mToastRunnable, 1000);
           }
 
             }
@@ -426,7 +437,7 @@ TextView textViewnameemail;
     };
     @Override
     protected void onDestroy() {
-        stopRepeating();
+
         super.onDestroy();
     }
     private void loadUserProfile(AccessToken newAccessToken)

@@ -252,10 +252,54 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
             }
             else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
                 //ffirebase
-                if (auth.getUid()!=null){
-                    mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
 
-                }
+                    //d
+                    mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid());
+                    mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                            int s;
+                            if (dataSnapshot.child("timer").getValue() == null) {
+                                s = 0;
+
+                            } else {
+                                s = Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                            }
+                            int p1, p2, p3;
+                            p1 = s % 60;
+                            p2 = s / 60;
+                            p3 = p2 % 60;
+                            //p2 = p2 / 60;
+                            boolean vip = false;
+                            if (s>3600) {
+                                vip = true;
+
+                            }
+                            if(vip == true){
+                                tvVIP.setText("VIP");
+                            }
+                            tvTime.setText("\t" + p2 + "\t" + "Phút");
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+
+            }
+            else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
+                //google
+                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
+                //Toast.makeText(getContext(), ""+acct.getId(), Toast.LENGTH_SHORT).show();
+
+                if (acct != null) {
+                    mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
 
                     mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -272,16 +316,16 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
                             p1 = s % 60;
                             p2 = s / 60;
                             p3 = p2 % 60;
-                            p2 = p2 / 60;
+                            //p2 = p2/60;
                             boolean vip = false;
-                            if (s>3600) {
-                                 vip = true;
+                            if (s > 3600) {
+                                vip = true;
 
                             }
-                            if(vip == true){
+                            if (vip == true) {
                                 tvVIP.setText("VIP");
                             }
-                            tvTime.setText("\t" + p2 + "\t" + "Phút" );
+                            tvTime.setText("\t" + p2 + "\t" + "Phút");
                         }
 
                         @Override
@@ -289,50 +333,10 @@ public class Fragment_CaNhan extends Fragment implements SwipeRefreshLayout.OnRe
 
                         }
                     });
-
-            }
-            else if (getContext().getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
-                //google
-                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(getContext());
-                mDatabase = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
-
-                mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                        int s ;
-                        if (dataSnapshot.child("timer").getValue() == null){
-                            s = 0;
-
-                        }
-                        else {
-                            s=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
-                        }
-                        int p1,p2,p3;
-                        p1 = s %60;
-                        p2 = s/60;
-                        p3 = p2%60;
-                        p2 = p2/60;
-                        boolean vip = false;
-                        if (s>3600) {
-                            vip = true;
-
-                        }
-                        if(vip == true){
-                            tvVIP.setText("VIP");
-                        }
-                        tvTime.setText("\t" + p2 + "\t" + "Phút" );
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                    }
-                });
+                }
             }
 
 
-            mHandler.postDelayed(this, 1000);
 
 
         }

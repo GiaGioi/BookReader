@@ -48,7 +48,7 @@ public class Fragment_Ki_Nang extends Fragment{
         recyclerView.setAdapter(adapter);
 //        String strtext = getArguments().getString("data");
 //        Log.e("data",strtext);
-//        getData();
+        getData();
         return v;
     }
     public void getData(){

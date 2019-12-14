@@ -16,32 +16,31 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.gioidev.book.Activities.ReadBookActivity;
-import com.gioidev.book.Fragment.Fragment_Comic;
 import com.gioidev.book.Model.GridViewFragmentModel;
 import com.gioidev.book.R;
 
 import java.util.ArrayList;
 
-public class FragmentComicAdapter extends RecyclerView.Adapter<FragmentComicAdapter.FragmentComicHolder> {
+public class FragmentKhachHangAdapter extends RecyclerView.Adapter<FragmentKhachHangAdapter.FragmentKhachHangHolder> {
     private Context mContext;
     private ArrayList<GridViewFragmentModel> gridViewModels;
 
-    public FragmentComicAdapter(Context mContext, ArrayList<GridViewFragmentModel> gridViewModels) {
+    public FragmentKhachHangAdapter(Context mContext, ArrayList<GridViewFragmentModel> gridViewModels) {
         this.mContext = mContext;
         this.gridViewModels = gridViewModels;
     }
 
     @NonNull
     @Override
-    public FragmentComicHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FragmentKhachHangHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_fragment_comic, parent, false);
+                .inflate(R.layout.item_fragment_khach_hang, parent, false);
 
-        return new FragmentComicHolder(view);
+        return new FragmentKhachHangHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull FragmentComicHolder holder, int position) {
+    public void onBindViewHolder(@NonNull FragmentKhachHangHolder holder, int position) {
         final GridViewFragmentModel current = gridViewModels.get(position);
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,6 +59,7 @@ public class FragmentComicAdapter extends RecyclerView.Adapter<FragmentComicAdap
         holder.linerBook.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 SharedPreferences preferences = mContext.getSharedPreferences("Data", Context.MODE_PRIVATE);
                 preferences.edit().putString("Horizontal","0").apply();
 
@@ -88,20 +88,19 @@ public class FragmentComicAdapter extends RecyclerView.Adapter<FragmentComicAdap
         return gridViewModels.size();
     }
 
-    public class FragmentComicHolder extends RecyclerView.ViewHolder {
+    public class FragmentKhachHangHolder extends RecyclerView.ViewHolder {
 
-    private LinearLayout linerBook;
-    private ImageView imageClick;
-    private TextView tvAuther;
-    private TextView tvNameBook;
+        private LinearLayout linerBook;
+        private ImageView imageClick;
+        private TextView tvAuther;
+        private TextView tvNameBook;
 
-    public FragmentComicHolder(@NonNull View itemView) {
-        super(itemView);
-        linerBook = itemView.findViewById(R.id.linerBook_comic);
-        imageClick = itemView.findViewById(R.id.image_fragment_comic);
-        tvAuther = itemView.findViewById(R.id.tvAuther_fragment_comic);
-        tvNameBook = itemView.findViewById(R.id.tvnamBook_fragment_comic);
+        public FragmentKhachHangHolder (@NonNull View itemView) {
+            super(itemView);
+            linerBook = itemView.findViewById(R.id.linerBook_khachhang);
+            imageClick = itemView.findViewById(R.id.image_fragment_khachhang);
+            tvAuther = itemView.findViewById(R.id.tvAuther_fragment_khachhang);
+            tvNameBook = itemView.findViewById(R.id.tvnamBook_fragment_khachhang);
+        }
     }
-}
-
 }

@@ -11,7 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.gioidev.book.Adapter.AdapterBook.FragmentKhachHangAdapter;
+import com.gioidev.book.Adapter.AdapterBook.FragmentComicAdapter;
+import com.gioidev.book.Adapter.AdapterBook.FragmentKiNangAdapter;
 import com.gioidev.book.Adapter.AdapterBook.FragmentSachMoiNhatAdapter;
 import com.gioidev.book.Model.GridViewFragmentModel;
 import com.gioidev.book.R;
@@ -24,34 +25,32 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Fragment_Khach_Hang extends Fragment {
-
+public class Fragment_Sach_Moi_Nhat extends Fragment {
     View v;
     RecyclerView recyclerView;
-    FragmentKhachHangAdapter adapter;
+    FragmentSachMoiNhatAdapter adapter;
     ArrayList<GridViewFragmentModel> gridViewModels = new ArrayList<>();
     GridViewFragmentModel gridViewModel;
 
     DatabaseReference mDatabase;
-    public Fragment_Khach_Hang(){
 
+    public Fragment_Sach_Moi_Nhat(){
     }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.fragment_khach_hang, container, false);
-        recyclerView = v.findViewById(R.id.rv_fragment_khachhang);
+        v = inflater.inflate(R.layout.fragment_sach_moi_nhat, container, false);
+        recyclerView = v.findViewById(R.id.rvfragmentsachmoinhat);
         getdata();
-        adapter = new FragmentKhachHangAdapter(getContext(),gridViewModels);
+        adapter = new FragmentSachMoiNhatAdapter(getContext(),gridViewModels);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),3));
         adapter.notifyDataSetChanged();
         return v;
     }
     public void getdata(){
-        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/Marketing");
+        mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/NewBook");
         mDatabase.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
