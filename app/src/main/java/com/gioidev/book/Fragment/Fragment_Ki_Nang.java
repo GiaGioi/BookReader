@@ -53,7 +53,7 @@ public class Fragment_Ki_Nang extends Fragment{
 
         v = inflater.inflate(R.layout.fragment_ki_nang,container,false);
 
-        searchview = (SearchView) v.findViewById(R.id.searchview);
+//        searchview = (SearchView) v.findViewById(R.id.searchview);
 
         recyclerView = v.findViewById(R.id.rv_fragment_ki_nang);
         adapter = new FragmentKiNangAdapter(getContext(),gridViewModels);
