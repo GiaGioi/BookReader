@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Activities.DownloadActivity">
+    tools:context="com.gioidev.wakabook.Activities.DownloadActivity">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDownload"

@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/app_bar_main"
-    tools:context=".Activities.HomeActivity">
+    tools:context="com.gioidev.wakabook.Activities.HomeActivity">
 
     <FrameLayout
         android:id="@+id/main_container_framgent"

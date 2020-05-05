@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    tools:context=".Activities.Manhinhchao.ManhinhchaoActivity">
+    tools:context="com.gioidev.wakabook.Activities.Manhinhchao.ManhinhchaoActivity">
 
     <TextView
         android:id="@+id/tvText"
