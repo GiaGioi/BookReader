@@ -75,11 +75,11 @@ import java.util.TimerTask;
 
 import es.dmoral.toasty.Toasty;
 
-public class HomeActivity extends AppCompatActivity  implements NavigationView.OnNavigationItemSelectedListener{
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private FirebaseAuth auth;
-//    private GoogleSignInClient mGoogleSignInClient;
+    //    private GoogleSignInClient mGoogleSignInClient;
     private GoogleApiClient mGoogleApiClient;
-    private TextView txtName,txtEmail;
+    private TextView txtName, txtEmail;
 
     private CallbackManager callbackManager;
     String TAG = "TAG";
@@ -94,7 +94,7 @@ public class HomeActivity extends AppCompatActivity  implements NavigationView.O
     ArrayList<VerticalModel> mArrayList = new ArrayList<>();
 
     VerticalRecyclerViewAdapter mAdapter;
-TextView textViewnameemail;
+    TextView textViewnameemail;
     private SliderView imageSlider;
     private SwipeRefreshLayout swipeRefreshLayout;
 
@@ -112,7 +112,7 @@ TextView textViewnameemail;
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
         auth = FirebaseAuth.getInstance();
-        View view = getLayoutInflater().inflate(R.layout.nav_header_main,null);
+        View view = getLayoutInflater().inflate(R.layout.nav_header_main, null);
 
         toolbar = findViewById(R.id.toolbar);
         imageView = findViewById(R.id.imageView);
@@ -121,16 +121,14 @@ TextView textViewnameemail;
         setSupportActionBar(toolbar);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")) {
+        if (this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu", "").equals("0")) {
             textViewnameemail.setText(Objects.requireNonNull(auth.getCurrentUser()).getEmail());
-        }
-        else if (this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+        } else if (this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu", "").equals("1")) {
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(this);
             if (acct != null) {
                 textViewnameemail.setText(acct.getDisplayName());
             }
-        }
-        else if (AccessToken.getCurrentAccessToken()!= null){
+        } else if (AccessToken.getCurrentAccessToken() != null) {
             Profile profile = Profile.getCurrentProfile();
             textViewnameemail.setText(profile.getName() + "");
         }
@@ -142,13 +140,10 @@ TextView textViewnameemail;
 
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = findViewById(R.id.nav_view);
 
         navigationView.setNavigationItemSelectedListener(this);
@@ -169,19 +164,16 @@ TextView textViewnameemail;
         if (AccessToken.getCurrentAccessToken() != null) {
             // here is facebook
 
-        }
-        else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
-
+        } else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu", "").equals("0")) {
             //firebase
-            tvEmail.setText(""+ Objects.requireNonNull(user).getEmail());
-            Log.e(TAG, "User: "  + user.getEmail());
-        }
-        else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")){
+            tvEmail.setText("" + Objects.requireNonNull(user).getEmail());
+            Log.e(TAG, "User: " + user.getEmail());
+        } else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu", "").equals("1")) {
 
             //google
             GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
             if (acct != null) {
-                tvEmail.setText(""+acct.getEmail());
+                tvEmail.setText("" + acct.getEmail());
             }
         }
 
@@ -197,23 +189,26 @@ TextView textViewnameemail;
         startRepeating();
 
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main,menu);
+        inflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.action_vip) {
-            Toasty.success(this,"Vip",Toast.LENGTH_SHORT).show();
+            Toasty.success(this, "Vip", Toast.LENGTH_SHORT).show();
         }
 
         return super.onOptionsItemSelected(item);
     }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @SuppressLint("WrongConstant")
         @Override
@@ -221,23 +216,22 @@ TextView textViewnameemail;
             Fragment fragment;
             switch (menuItem.getItemId()) {
 
-
                 case R.id.navigation_home:
                     fragment = new Fragment_Home();
                     loadFragment(fragment);
                     toolbar.setVisibility(View.VISIBLE);
                     toolbar.setTitle(R.string.home);
                     return true;
-                case R.id.navigation_category:
 
-                    overridePendingTransition(R.anim.right_to_left,R.anim.left_to_right);
+                case R.id.navigation_category:
+                    overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
                     fragment = new BookcaseFragment();
                     loadFragment(fragment);
                     toolbar.setVisibility(View.GONE);
-
                     return true;
+
                 case R.id.navigation_image:
-                    overridePendingTransition(R.anim.right_to_left,R.anim.left_to_right);
+                    overridePendingTransition(R.anim.right_to_left, R.anim.left_to_right);
                     Fragment fragmentcanhan;
                     fragmentcanhan = new Fragment_CaNhan();
                     loadFragment(fragmentcanhan);
@@ -248,6 +242,7 @@ TextView textViewnameemail;
             return false;
         }
     };
+
     private void loadFragment(Fragment fragment) {
         // load fragment
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -282,8 +277,7 @@ TextView textViewnameemail;
             Intent intent = new Intent(HomeActivity.this, AudioBookActivity.class);
             startActivity(intent);
 
-        }else
-            if (id == R.id.nav_link) {
+        } else if (id == R.id.nav_link) {
 //
 
         }
@@ -295,13 +289,11 @@ TextView textViewnameemail;
 
     @Override
     public void onBackPressed() {
-        if(getFragmentManager().getBackStackEntryCount() == 0) {
+        if (getFragmentManager().getBackStackEntryCount() == 0) {
             super.onBackPressed();
-        }
-        else if(getFragmentManager().getBackStackEntryCount() == 1) {
+        } else if (getFragmentManager().getBackStackEntryCount() == 1) {
             moveTaskToBack(false);
-        }
-        else {
+        } else {
             getFragmentManager().popBackStack();
         }
     }
@@ -321,9 +313,10 @@ TextView textViewnameemail;
             timer.schedule(timeTask, 2000);
         }
     }
+
     private Handler mHandler = new Handler();
 
-    public void  startRepeating() {
+    public void startRepeating() {
 
         mToastRunnable.run();
     }
@@ -337,15 +330,55 @@ TextView textViewnameemail;
         @Override
         public void run() {
             if (AccessToken.getCurrentAccessToken() != null) {
-                // here is facebook
-            loadUserProfile(AccessToken.getCurrentAccessToken());
-            }
-            else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("0")){
+                loadUserProfile(AccessToken.getCurrentAccessToken());
+            } else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu", "").equals("0")) {
                 //ffirebase
                 //Toast.makeText(HomeActivity.this, "bO DANG LAP LAI", Toast.LENGTH_SHORT).show();
 
-                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid() + "");
+                database = FirebaseDatabase.getInstance().getReference("usertimer").child(auth.getUid() + "");
 
+                database.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                        int i;
+                        if (dataSnapshot.child("timer").getValue() == null) {
+                            i = 0;
+
+                        } else {
+                            i = Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                        }
+                        boolean vip = false;
+                        if (i >= 3600)
+                            vip = true;
+
+                        if (vip == true) {
+                            tvVip.setText("VIP");
+                        }
+                        i++;
+                        final String user = auth.getUid();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        DatabaseReference reference = database.getReference("usertimer");
+                        TimerUser timerUser = new TimerUser(user, i, vip);
+                        if (user != null) {
+                            reference.child(user).setValue(timerUser);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                mHandler.postDelayed(mToastRunnable, 1000);
+            }
+            //lỗi phần đếm thời gian của google
+            else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu", "").equals("1")) {
+                GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
+                if (acct != null) {
+                    database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
                     database.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -361,11 +394,11 @@ TextView textViewnameemail;
                             if (i >= 3600)
                                 vip = true;
 
-                            if(vip == true){
+                            if (vip == true) {
                                 tvVip.setText("VIP");
                             }
                             i++;
-                            final String user = auth.getUid();
+                            final String user = acct.getId();
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference reference = database.getReference("usertimer");
                             TimerUser timerUser = new TimerUser(user, i, vip);
@@ -379,71 +412,29 @@ TextView textViewnameemail;
 
                         }
                     });
+                }
 
 
                 mHandler.postDelayed(mToastRunnable, 1000);
             }
-            //lỗi phần đếm thời gian của google
-           else if (HomeActivity.this.getSharedPreferences("DATA", Context.MODE_PRIVATE).getString("hieungu","").equals("1")) {
-               GoogleSignInAccount acct = GoogleSignIn.getLastSignedInAccount(HomeActivity.this);
-                    if (acct!=null) {
-                        database = FirebaseDatabase.getInstance().getReference("usertimer").child(acct.getId());
-                        database.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                                int i;
-                                if (dataSnapshot.child("timer").getValue() == null) {
-                                    i = 0;
-
-                                } else {
-                                    i = Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
-                                }
-                                boolean vip = false;
-                                if (i >= 3600)
-                                    vip = true;
-
-                                if (vip == true) {
-                                    tvVip.setText("VIP");
-                                }
-                                i++;
-                                final String user = acct.getId();
-                                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                DatabaseReference reference = database.getReference("usertimer");
-                                TimerUser timerUser = new TimerUser(user, i, vip);
-                                if (user != null) {
-                                    reference.child(user).setValue(timerUser);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-
-
-                mHandler.postDelayed(mToastRunnable, 1000);
-          }
-
-            }
+        }
 
 
     };
+
     @Override
     protected void onDestroy() {
 
         super.onDestroy();
     }
+
     private void loadUserProfile(AccessToken newAccessToken) {
         GraphRequest request = GraphRequest.newMeRequest(newAccessToken, new GraphRequest.GraphJSONObjectCallback() {
 
             @Override
 
-            public void onCompleted(JSONObject object, GraphResponse response)
-
-            {
+            public void onCompleted(JSONObject object, GraphResponse response) {
                 try {
 
                     String first_name = object.getString("first_name");
@@ -462,7 +453,6 @@ TextView textViewnameemail;
                     database = FirebaseDatabase.getInstance().getReference("usertimer").child(id);
 
 
-
                     database.addListenerForSingleValueEvent(new ValueEventListener() {
 
                         @Override
@@ -470,25 +460,22 @@ TextView textViewnameemail;
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
 
+                            int i;
 
-                            int i ;
-
-                            if (dataSnapshot.child("timer").getValue() == null){
+                            if (dataSnapshot.child("timer").getValue() == null) {
 
                                 i = 0;
 
-                            }
+                            } else {
 
-                            else {
-
-                                i=Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
+                                i = Integer.valueOf(String.valueOf(dataSnapshot.child("timer").getValue()));
                             }
 
                             i++;
 
                             boolean vip = false;
 
-                            if (i >= 3600){
+                            if (i >= 3600) {
 
                                 vip = true;
 
@@ -500,7 +487,7 @@ TextView textViewnameemail;
 
                             DatabaseReference reference = database.getReference("usertimer");
 
-                            TimerUser timerUser = new TimerUser(user, i,vip);
+                            TimerUser timerUser = new TimerUser(user, i, vip);
 
                             reference.child(user).setValue(timerUser);
 
@@ -526,7 +513,7 @@ TextView textViewnameemail;
 
         Bundle parameters = new Bundle();
 
-        parameters.putString("fields","first_name,last_name,email,id");
+        parameters.putString("fields", "first_name,last_name,email,id");
 
         request.setParameters(parameters);
 
