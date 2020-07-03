@@ -82,8 +82,6 @@ public class Fragment_Book_Vip extends Fragment {
 
                     models.add(bookVipModel);
                     adapter.notifyDataSetChanged();
-
-                    Log.e("TAG", "onDataChange: " + bookVipModel.getImage());
                 }
             }
 

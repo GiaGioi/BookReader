@@ -46,4 +46,11 @@
     <string name="example_subtitle">Bạn có muốn cuốn sách hay này!</string>
     <string name="oke">Delete</string>
     <string name="dismiss">Cancel</string>
+    <string name="username">Tên đăng nhập/Email</string>
+    <string name="password">Mật khẩu</string>
+    <string name="register">Đăng kí ngay</string>
+    <string name="Forgot_Password">Quên mật khẩu?</string>
+    <string name="login">Đăng nhập</string>
+    <string name="or">Hoặc</string>
+    <string name="todo">TODO</string>
 </resources>

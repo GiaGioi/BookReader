@@ -3,8 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,9 +15,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="40dp"
-        android:text="Đăng nhập"
+        android:text="@string/login"
         android:textColor="#000000"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold" />
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
@@ -33,9 +32,12 @@
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
             android:background="@drawable/bgbtn1"
-            android:drawableLeft="@drawable/iconfinder_username"
-            android:paddingLeft="8dp"
-            android:hint="Tên đăng nhập/Email" />
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            android:drawableStart="@drawable/iconfinder_username"
+            android:paddingStart="8dp"
+            android:hint="@string/username"
+            android:importantForAutofill="no" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -53,16 +55,19 @@
             android:layout_width="351dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
             android:layout_marginTop="40dp"
             android:background="@drawable/bgbtn1"
-            android:paddingLeft="22dp"
-            android:paddingRight="20dp"
+            android:paddingStart="22dp"
+            android:paddingEnd="20dp"
             android:drawablePadding="15dp"
-            android:hint="Mật khẩu" />
+            android:hint="@string/password" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
     <LinearLayout
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
@@ -72,19 +77,19 @@
             android:id="@+id/btnSignup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40dp"
-            android:text="Đăng kí ngay"
+            android:layout_marginStart="40dp"
+            android:text="@string/register"
             android:textColor="#212121"
-            android:textSize="19dp" />
+            android:textSize="19sp" />
 
         <TextView
             android:id="@+id/btnreset"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="95dp"
-            android:text="Quên mật khẩu?"
+            android:layout_marginStart="95dp"
+            android:text="@string/Forgot_Password"
             android:textColor="#212121"
-            android:textSize="19dp" />
+            android:textSize="19sp" />
     </LinearLayout>
 
     <Button
@@ -95,7 +100,7 @@
         android:layout_marginTop="60dp"
         android:background="@drawable/bgbtn"
         android:onClick="Login"
-        android:text="Đăng nhập"
+        android:text="@string/login"
         android:textAllCaps="false"
         android:textColor="@color/color2"
         android:textSize="17sp" />
@@ -118,8 +123,8 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:text="Hoặc"
-            android:textSize="25dp" />
+            android:text="@string/or"
+            android:textSize="25sp" />
 
         <View
             android:layout_width="100dp"
@@ -140,16 +145,17 @@
             android:id="@+id/loginfacebook"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="100dp"
+            android:layout_marginEnd="100dp"
             android:src="@drawable/iconfinder_facebook"
-           />
+            android:contentDescription="@string/todo" />
 
         <ImageView
             android:id="@+id/logingoogle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="100dp"
-            android:src="@drawable/icon_google" />
+            android:layout_marginStart="100dp"
+            android:src="@drawable/icon_google"
+            android:contentDescription="@string/todo" />
     </RelativeLayout>
 
     <ProgressBar

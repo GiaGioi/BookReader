@@ -80,7 +80,6 @@ public class FragmentComic extends Fragment {
                     models.add(comicBookModel);
                     adapter.notifyDataSetChanged();
 
-                    Log.e("TAG", "onDataChange: " + comicBookModel.getImage());
                 }
             }
 
