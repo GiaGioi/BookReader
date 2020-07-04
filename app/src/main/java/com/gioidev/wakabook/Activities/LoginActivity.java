@@ -1,10 +1,13 @@
 package com.gioidev.wakabook.Activities;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -24,6 +27,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.gioidev.book.R;
@@ -44,10 +48,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import java.util.Arrays;
 import java.util.Objects;
 
 
 public class LoginActivity extends AppCompatActivity {
+
+    public static final String TAG = LoginActivity.class.getSimpleName();
     private EditText inputEmail, inputPassword;
     private FirebaseAuth auth;
     private Button btnLogin;
@@ -57,6 +64,7 @@ public class LoginActivity extends AppCompatActivity {
     static final int GOOGLE_SIGN = 123;
     private SharedPreferences sharedPreferences;
 
+    Activity activity;
     public static final String DESCRIPTION = "description";
     public static final String BUNDLE = "bundel";
     private ImageView logingoogle;
@@ -74,10 +82,11 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.activity_login);
+        callbackManager = CallbackManager.Factory.create();
+
         sharedPreferences = getSharedPreferences("DATA", MODE_PRIVATE);
-        AppEventsLogger.activateApp(this);
+//        AppEventsLogger.activateApp(this);
         //dang loi o dong nay
 //        LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this, Arrays.asList("public_profile"));
         checkloginstatus();
@@ -87,7 +96,7 @@ public class LoginActivity extends AppCompatActivity {
             finish();
         }
 //        googleButton = (SignInButton) findViewById(R.id.googleButton);
-        facebookButton = (LoginButton) findViewById(R.id.facebookButton);
+//        facebookButton = (LoginButton) findViewById(R.id.facebookButton);
         inputEmail = (EditText) findViewById(R.id.inputemail);
         inputPassword = (EditText) findViewById(R.id.inputpassword);
         btnSignup = (TextView) findViewById(R.id.btnSignup);
@@ -117,47 +126,22 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (v.getId() == R.id.loginfacebook) {
-                    facebookButton.performClick();
+                    LoginFacebook();
+                    AccessToken accessToken = AccessToken.getCurrentAccessToken();
+                    boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
+                    if (isLoggedIn) {
+                        Toast.makeText(activity, "" +  accessToken.getUserId(), Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });
-        // dang nhap google
 
-        //ket thuc dang nhap google
+        /**
+         * Đăng nhập google
+         */
 
-        facebookButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    callbackManager = CallbackManager.Factory.create();
-                    LoginButton loginButton = (LoginButton) findViewById(R.id.facebookButton);
-                    loginButton.setReadPermissions("email", "public_profile", "id");
-                    loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-                        @Override
-                        public void onSuccess(LoginResult loginResult) {
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            startActivity(intent);
-                            finish();
-                        }
-
-                        @Override
-                        public void onCancel() {
-                            //                  Log.d(TAG, "facebook:onCancel");
-
-                        }
-
-                        @Override
-                        public void onError(FacebookException error) {
-                            //                  Log.d(TAG, "facebook:onError", error);
-                            // ...
-                        }
-                    });
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
         GoogleSignInOptions gso = null;
         try {
             gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -179,6 +163,47 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    void init(Context applicationContext, String applicationId) {
+        FacebookSdk.setApplicationId(applicationId);
+        FacebookSdk.sdkInitialize(applicationContext, new FacebookSdk.InitializeCallback() {
+            @Override
+            public void onInitialized() {
+
+            }
+        });
+        callbackManager = CallbackManager.Factory.create();
+    }
+
+    /**
+     * Login Facebook
+     */
+    private void LoginFacebook() {
+        try {
+            LoginManager.getInstance().registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Toast.makeText(LoginActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancel() {
+                    // App code
+                }
+
+                @Override
+                public void onError(FacebookException exception) {
+                    // App code
+                }
+            });
+            LoginManager.getInstance().logOut();
+            LoginManager.getInstance().logInWithReadPermissions(LoginActivity.this,
+                    Arrays.asList("public_profile", "email"));
+        } catch (Exception e) {
+            Log.e("Facebook Manager", "login: catch " );
+            e.printStackTrace();
+        }
+    }
+
     void SigninGoole() {
 //        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
@@ -188,8 +213,6 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
 
         if (requestCode == GOOGLE_SIGN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
@@ -212,7 +235,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-//    @Override
+    //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        callbackManager.onActivityResult(requestCode, resultCode, data);
 //        super.onActivityResult(requestCode, resultCode, data);
@@ -225,7 +248,6 @@ public class LoginActivity extends AppCompatActivity {
 //            }
 //        }
 //    };
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);

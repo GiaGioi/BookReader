@@ -157,7 +157,6 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
                     mVerticalModel.setArrayList(horizontalModels);
                     mAdapter.notifyDataSetChanged();
 
-                    Log.e(TAG, "onDataChange: " + mHorizontalModel.getImage());
                 }
             }
 
@@ -254,6 +253,7 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
             }
         });
     }
+
     public void getDataComicBook() {
         mDatabase = FirebaseDatabase.getInstance().getReference("books").child("PDF/Comic");
         mDatabase.addValueEventListener(new ValueEventListener() {
@@ -287,8 +287,6 @@ public class Fragment_Home extends Fragment implements SwipeRefreshLayout.OnRefr
 
                     mVerticalModel.setComicBookModels(comicBookModels);
                     mAdapter.notifyDataSetChanged();
-
-                    Log.e(TAG, "onDataChange: " + url );
                 }
             }
 

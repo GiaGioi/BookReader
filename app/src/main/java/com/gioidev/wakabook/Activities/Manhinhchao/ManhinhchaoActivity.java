@@ -2,6 +2,7 @@ package com.gioidev.wakabook.Activities.Manhinhchao;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
@@ -39,7 +40,7 @@ public class ManhinhchaoActivity extends AppCompatActivity {
 
 
         try {
-            PackageInfo info = getPackageManager().getPackageInfo(
+            @SuppressLint("PackageManagerGetSignatures") PackageInfo info = getPackageManager().getPackageInfo(
                     "com.gioidev.book",
                     PackageManager.GET_SIGNATURES);
             for (Signature signature : info.signatures) {
@@ -47,10 +48,8 @@ public class ManhinhchaoActivity extends AppCompatActivity {
                 md.update(signature.toByteArray());
                 Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
             }
-        } catch (PackageManager.NameNotFoundException e) {
-
-        } catch (NoSuchAlgorithmException e) {
-
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         SharedPreferences prefs = getSharedPreferences("prefs",MODE_PRIVATE);

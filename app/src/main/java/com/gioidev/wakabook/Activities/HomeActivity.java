@@ -110,8 +110,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        AppEventsLogger.activateApp(this);
         auth = FirebaseAuth.getInstance();
         View view = getLayoutInflater().inflate(R.layout.nav_header_main, null);
 
