@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "174667417184",
+    "firebase_url": "https://book-reader-f9dcd.firebaseio.com",
+    "project_id": "book-reader-f9dcd",
+    "storage_bucket": "book-reader-f9dcd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:174667417184:android:a58904b76d3b1f07426505",
+        "android_client_info": {
+          "package_name": "com.gioidev.wakabook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "174667417184-7k5venc401ujr2j2rar8kefd0l4q1f56.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gioidev.wakabook",
+            "certificate_hash": "f6c1652d3cec2165b2fb5844d7d69a487162febb"
+          }
+        },
+        {
+          "client_id": "174667417184-k92c902lnqtko2l1r7im5g7602ebueub.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoaP9gb7xufDfuEjLLhVIxWpII3oEQKfI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "174667417184-k92c902lnqtko2l1r7im5g7602ebueub.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
