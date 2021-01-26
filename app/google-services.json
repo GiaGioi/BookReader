@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "174667417184-0trb4fn4dakg4tdtu485h7kvam70uedd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gioidev.wakabook",
+            "certificate_hash": "76a6f46e28d3cff25e6f2b5ee68b7b71b73dae02"
+          }
+        },
+        {
           "client_id": "174667417184-7k5venc401ujr2j2rar8kefd0l4q1f56.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

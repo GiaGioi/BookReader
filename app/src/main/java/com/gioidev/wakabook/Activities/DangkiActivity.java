@@ -51,7 +51,7 @@ public class DangkiActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Xin hãy nhập địa chỉ email", Toast.LENGTH_SHORT).show();
             return;
         }
-         else if (!email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")){
+        else if (!email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")){
             Toast.makeText(getApplicationContext(), "Xin hãy nhập đúng định dạng email", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -75,6 +75,7 @@ public class DangkiActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Hãy nhập lại mật khẩu", Toast.LENGTH_SHORT).show();
             return;
         }
+
 //        auth.createUserWithEmailAndPassword(email, password)
 //                .addOnCompleteListener(DangkiActivity.this, new OnCompleteListener<AuthResult>() {
 //                    @Override

@@ -58,17 +58,7 @@ public class AudioBookActivity extends AppCompatActivity {
 
         getDataHorizontal();
 
-
-
-
-
-
-
     }
-
-
-
-
     public void getDataHorizontal() {
         database = FirebaseDatabase.getInstance().getReference("audiobook").child("audio1");
         database.addValueEventListener(new ValueEventListener() {
@@ -85,7 +75,7 @@ public class AudioBookActivity extends AppCompatActivity {
                     Url = String.valueOf(snapshot.child("Url").getValue());
                     String Talker = String.valueOf(snapshot.child("Talker").getValue());
                     String Time = String.valueOf(snapshot.child("Time").getValue());
-                     Chapter = String.valueOf(snapshot.child("Chapter").getValue());
+                    Chapter = String.valueOf(snapshot.child("Chapter").getValue());
 
                     DownSong  downSong = new DownSong();
                     downSong.setName(nameBook);
@@ -99,13 +89,8 @@ public class AudioBookActivity extends AppCompatActivity {
                     downSongArrayList.add(downSong);
                     mRecyclerView.setAdapter(myAdapter);
 
-
                     myAdapter.notifyDataSetChanged();
-
-
                 }
-
-
 
             }
 
@@ -115,7 +100,6 @@ public class AudioBookActivity extends AppCompatActivity {
             }
         });
 
-
     }
     @Override
     protected void onStop() {
@@ -123,11 +107,9 @@ public class AudioBookActivity extends AppCompatActivity {
 
     }
 
-
     public void playsong(int adapterPosition) throws IOException {
 
             final DownSong downSong = downSongArrayList.get(adapterPosition);
-
 
         if (mediaPlayer!=null){
             mediaPlayer.stop();

@@ -78,7 +78,6 @@ public class Fragment_Tam_ly extends Fragment {
                     gridViewModel.setPrice(Price);
                     gridViewModel.setCategory(Category);
 
-                    Log.e("TAG", "onDataChange: " + gridViewModel.getNameAuthor());
                     gridViewModels.add(gridViewModel);
                     adapter.notifyDataSetChanged();
 
